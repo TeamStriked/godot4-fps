@@ -1,0 +1,3 @@
+[submodule "addons/TerrainPlugin"]
+	path = addons/TerrainPlugin
+	url = git@github.com:sboron/terrain-tool-godot4.git

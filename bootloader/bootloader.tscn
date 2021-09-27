@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://kl8v0pfdenvq"]
+
+[ext_resource type="Script" path="res://Game/Logic/Server/ServerLogic.cs" id="1_pxgnw"]
+[ext_resource type="Script" path="res://Game/Logic/Client/ClientLogic.cs" id="2_73ane"]
+
+[node name="Base" type="Node"]
+script = null
+
+[node name="ServerWindow" type="Window" parent="."]
+own_world_3d = true
+handle_input_locally = false
+title = "Server Window"
+position = Vector2i(100, 100)
+size = Vector2i(640, 480)
+script = null
+
+[node name="Root" type="Node" parent="ServerWindow"]
+script = ExtResource( "1_pxgnw" )
+
+[node name="ClientWindow" type="Window" parent="."]
+own_world_3d = true
+msaa = 1
+screen_space_aa = 1
+title = "Client Window"
+position = Vector2i(50, 50)
+size = Vector2i(1024, 768)
+mode = 2
+exclusive = true
+script = null
+
+[node name="Root" type="Node" parent="ClientWindow"]
+script = ExtResource( "2_73ane" )

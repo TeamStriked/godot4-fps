@@ -1,0 +1,129 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[{
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeAntiTiling3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeAntiTiling3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeDepthBlending3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeDepthBlending3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeNoisePerlin2D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeNoisePerlin2D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeSplatmapHeight3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeSplatmapHeight3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeTerrainGenerator3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeTerrainGenerator3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeTerrainMaterial3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeTerrainMaterial3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeTexturePack3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeTexturePack3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeTextureUnpack3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeTextureUnpack3D.gd"
+}, {
+"base": "VisualShaderNodeCustom",
+"class": &"VisualShaderNodeUVMultiply3D",
+"language": &"GDScript",
+"path": "res://addons/TerrainPlugin/Shader/VisualShaderNodeUVMultiply3D.gd"
+}]
+_global_script_class_icons={
+"VisualShaderNodeAntiTiling3D": "",
+"VisualShaderNodeDepthBlending3D": "",
+"VisualShaderNodeNoisePerlin2D": "",
+"VisualShaderNodeSplatmapHeight3D": "",
+"VisualShaderNodeTerrainGenerator3D": "",
+"VisualShaderNodeTerrainMaterial3D": "",
+"VisualShaderNodeTexturePack3D": "",
+"VisualShaderNodeTextureUnpack3D": "",
+"VisualShaderNodeUVMultiply3D": ""
+}
+
+[application]
+
+config/name="Game"
+run/main_scene="res://bootloader/bootloader.tscn"
+config/icon="res://icon.png"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/TerrainPlugin/plugin.cfg")
+
+[input]
+
+move_forward={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":87,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+move_backward={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":83,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+move_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+move_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+jump={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":32,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+move_walk={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":16777237,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+move_sprint={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":88,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+crouch={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":16777238,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+camera_switch={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":16777245,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+]
+}
+
+[rendering]
+
+environment/defaults/default_environment="res://default_env.tres"

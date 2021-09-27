@@ -1,0 +1,60 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhd3q77ehj4sw"]
+
+[ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_mv12o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
+radius = 0.7
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_clyx8"]
+radius = 0.7
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmkpv"]
+albedo_color = Color(1, 0, 0.4, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_tuety"]
+size = Vector3(0.16, 0.16, 0.7)
+
+[node name="Node3D" type="CharacterBody3D"]
+script = ExtResource( "1_mv12o" )
+cameraNodePath = NodePath("head/fps_camera")
+cameraThirdPersonPath = NodePath("tps_camera")
+tpsCharacterPath = NodePath("tps_character")
+
+[node name="collider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource( "CapsuleShape3D_msvy1" )
+script = null
+
+[node name="tps_character" type="Node3D" parent="."]
+script = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="tps_character"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+mesh = SubResource( "CapsuleMesh_clyx8" )
+skeleton = NodePath("../..")
+surface_material_override/0 = null
+script = null
+
+[node name="head" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56593, 0.0792691)
+script = null
+
+[node name="fps_camera" type="Camera3D" parent="head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.119468, 0.595574)
+fov = 90.0
+script = null
+
+[node name="WeaponHolder" type="Node3D" parent="head/fps_camera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.349452, -0.322674, -0.333759)
+script = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="head/fps_camera/WeaponHolder"]
+material_override = SubResource( "StandardMaterial3D_dmkpv" )
+mesh = SubResource( "BoxMesh_tuety" )
+skeleton = NodePath("")
+surface_material_override/0 = null
+script = null
+
+[node name="tps_camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.984971, 0.17272, 0, -0.17272, 0.984971, 0.039109, 3.85234, 3.58427)
+script = null
