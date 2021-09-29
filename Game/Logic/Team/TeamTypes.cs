@@ -1,4 +1,4 @@
-namespace Game.Logic.Team
+namespace FPS.Game.Logic.Team
 {
     public enum TeamTypes
     {

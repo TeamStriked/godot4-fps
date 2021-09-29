@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://bpkyn6wsgl35x"]
+[gd_scene load_steps=8 format=3 uid="uid://c6sivtw5qhr8i"]
 
 [ext_resource type="Texture2D" uid="uid://cu07punkq4gqw" path="res://assets/level/512x512 Texel Density Texture 1.png" id="1_vuali"]
-[ext_resource type="Script" path="res://CharacterBody3D.cs" id="2_cvj48"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ythy8"]
 size = Vector2(20, 20)
@@ -12,6 +11,30 @@ albedo_texture = ExtResource( "1_vuali" )
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_nnkr7"]
 data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
+
+[sub_resource type="CSharpScript" id="CSharpScript_1hsqh"]
+script/source = "using Godot;
+using System;
+
+public partial class CharacterBody3D : Godot.CharacterBody3D
+{
+    // Declare member variables here. Examples:
+    // private int a = 2;
+    // private string b = \"text\";
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+
+    }
+
+    //  // Called every frame. 'delta' is the elapsed time since the previous frame.
+    public override void _PhysicsProcess(float delta)
+    {
+       MoveAndSlide();
+    }
+}
+"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2u5dd"]
 
@@ -34,8 +57,8 @@ script = null
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.65659, 0)
-floor_stop_on_slope = true
-script = ExtResource( "2_cvj48" )
+collision/safe_margin = 0.05
+script = SubResource( "CSharpScript_1hsqh" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource( "CapsuleShape3D_2u5dd" )

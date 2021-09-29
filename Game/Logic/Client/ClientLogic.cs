@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Game.Logic.Client
+namespace FPS.Game.Logic.Client
 {
     public partial class ClientLogic : Game.Logic.Networking.NetworkLogic
     {

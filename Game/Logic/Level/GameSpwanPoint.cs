@@ -1,7 +1,7 @@
 using Godot;
 using System;
-using Game.Logic.Team;
-namespace Game.Logic.Level
+using FPS.Game.Logic.Team;
+namespace FPS.Game.Logic.Level
 {
     public partial class GameSpwanPoint : Position3D
     {

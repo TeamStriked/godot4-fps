@@ -1,6 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bhd3q77ehj4sw"]
+[gd_scene load_steps=7 format=3 uid="uid://bhd3q77ehj4sw"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_mv12o"]
+
+[sub_resource type="Curve3D" id="Curve3D_7kt0s"]
+_data = {
+"points": PackedVector3Array(),
+"tilts": PackedFloat32Array()
+}
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
 radius = 0.7
@@ -16,16 +22,25 @@ size = Vector3(0.16, 0.16, 0.7)
 
 [node name="Node3D" type="CharacterBody3D"]
 script = ExtResource( "1_mv12o" )
+path = SubResource( "Curve3D_7kt0s" )
 cameraNodePath = NodePath("head/fps_camera")
 cameraThirdPersonPath = NodePath("tps_camera")
 tpsCharacterPath = NodePath("tps_character")
+jumpForce = 8.5
 
 [node name="collider" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0423045, 1.45783, -0.00527358)
 shape = SubResource( "CapsuleShape3D_msvy1" )
 script = null
 
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.3, 0, 0, 0, 0.2, 0.606504, 0.317034, -0.338476)
+mesh = SubResource( "CapsuleMesh_clyx8" )
+surface_material_override/0 = null
+script = null
+
 [node name="tps_character" type="Node3D" parent="."]
+visible = false
 script = null
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="tps_character"]
@@ -36,11 +51,11 @@ surface_material_override/0 = null
 script = null
 
 [node name="head" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56593, 0.0792691)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56593, -0.515204)
 script = null
 
 [node name="fps_camera" type="Camera3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.119468, 0.595574)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0176958)
 fov = 90.0
 script = null
 
@@ -56,5 +71,6 @@ surface_material_override/0 = null
 script = null
 
 [node name="tps_camera" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.984971, 0.17272, 0, -0.17272, 0.984971, 0.039109, 3.85234, 3.58427)
+transform = Transform3D(1, 0, 0, 0, 0.984971, 0.17272, 0, -0.17272, 0.984971, 0.157198, 3.29522, 3.53642)
+current = true
 script = null

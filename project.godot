@@ -68,7 +68,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Game"
+config/name="FPS"
 run/main_scene="res://bootloader/bootloader.tscn"
 config/icon="res://icon.png"
 

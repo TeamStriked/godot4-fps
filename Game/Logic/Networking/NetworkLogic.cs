@@ -1,8 +1,8 @@
 using Godot;
 using System;
-using Game.Logic.World;
+using FPS.Game.Logic.World;
 
-namespace Game.Logic.Networking
+namespace FPS.Game.Logic.Networking
 {
     public abstract partial class NetworkLogic : Node
     {
@@ -107,22 +107,9 @@ namespace Game.Logic.Networking
         public virtual void mapLoadedSuccessfull()
         {
         }
+        
 
-        public override void _Input(InputEvent @event)
-        {
-            base._Input(@event);
+  
 
-            // Receives key input
-            if (@event is InputEventKey)
-            {
-                var ev = @event as InputEventKey;
-                switch (ev.Keycode)
-                {
-                    case Key.Escape:
-                        Input.SetMouseMode(Input.MouseMode.Visible);
-                        break;
-                }
-            }
-        }
     }
 }

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Game.Logic.Camera
+namespace FPS.Game.Logic.Camera
 {
     [Tool]
     public partial class FreeModeCamera : Camera3D
@@ -29,32 +29,36 @@ namespace Game.Logic.Camera
         bool _d = false;
         bool _q = false;
         bool _e = false;
-        
+
         bool _wasClicked = false;
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-            
+
         }
 
         public override void _Process(float delta)
         {
             base._Process(delta);
 
-            if(!activated)
+            if (!activated)
                 return;
 
             _update_mouselook();
             _update_movement(delta);
         }
 
+
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
 
-            if(!activated)
+            if (!activated)
+            {
+                @event.Dispose();
                 return;
+            }
 
             if (@event is InputEventMouseMotion)
             {
@@ -77,7 +81,6 @@ namespace Game.Logic.Camera
                     case MouseButton.WheelDown:
                         _vel_multiplier = Math.Clamp(_vel_multiplier / 1.1f, 0.2f, 20f); break;
                 }
-                
             }
 
             // Receives key input
@@ -105,7 +108,10 @@ namespace Game.Logic.Camera
                         _e = ev.Pressed; break;
                 }
             }
+
+            @event.Dispose();
         }
+    
 
         //Updates camera movement
         private void _update_movement(float delta)
@@ -155,8 +161,6 @@ namespace Game.Logic.Camera
                 RotateY(Mathf.Deg2Rad(-yaw));
                 RotateObjectLocal(new Vector3(1, 0, 0), Mathf.Deg2Rad(-pitch));
             }
-
-
         }
 
     }

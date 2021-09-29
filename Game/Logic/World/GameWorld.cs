@@ -1,10 +1,10 @@
 using Godot;
 using System;
-using Game.Logic.Camera;
-using Game.Logic.Level;
-using Game.Logic.Player;
+using FPS.Game.Logic.Camera;
+using FPS.Game.Logic.Level;
+using FPS.Game.Logic.Player;
 using System.Collections.Generic;
-namespace Game.Logic.World
+namespace FPS.Game.Logic.World
 {
     public partial class GameWorld : Node3D
     {
@@ -92,9 +92,11 @@ namespace Game.Logic.World
 
                     var player = path.GetNode(id.ToString()) as ServerPlayer;
                     player.networkId = id;
-                    player.DoTeleport(origin);
 
                     this.players.Add(id, player);
+
+                    player.DoTeleport(origin);
+
                 }
             }
         }

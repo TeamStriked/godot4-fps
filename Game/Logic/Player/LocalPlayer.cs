@@ -1,11 +1,14 @@
 using Godot;
 using System;
-using Game.Utils;
+using FPS.Game.Utils;
 using System.Collections.Generic;
-namespace Game.Logic.Player
+namespace FPS.Game.Logic.Player
 {
     public partial class LocalPlayer : NetworkPlayer
     {
+        [Export]
+        Curve3D path = new Curve3D();
+
         [Export]
         NodePath cameraNodePath = null;
 
@@ -18,20 +21,49 @@ namespace Game.Logic.Player
         bool isThirdPerson = false;
 
         //physics
-        float sprintSpeed = 10f;
-        float walkSpeed = 2.6f;
-        float defaultSpeed = 6.0f;
 
-        float Accel = 6;
-        float Deaccel = 8; //start speed 
-        float FlyAccel = 4; // stop speed
 
-        float jumpForce = 8.5f;
-        float jumpCoolDown = 0.7f;
+        [Export] float sprintSpeed = 12f;
+
+
+
+
+        [Export] float speedRechargeMultiplier = 2f;
+
+
+
+        [Export] float speedLooseMultiplier = 0.3f;
+
+
+
+        [Export] float currentSpeedAmount = 1.0f;
+
+
+        [Export] float walkSpeed = 2.6f;
+
+
+        [Export] float defaultSpeed = 6.0f;
+
+
+
+        [Export] float Accel = 6;
+
+
+        [Export] float Deaccel = 8; //start speed 
+
+
+        [Export] float FlyAccel = 4; // stop speed
+
+
+        [Export] float jumpForce = 9.0f;
+
+
+        [Export] float jumpCoolDown = 0.7f;
 
         private float currentJumpTime = 0.0f;
 
-        float gravity = 21.0f;
+
+        [Export] float gravity = 21.0f;
 
         //cam look
         float minLookAngleY = -90.0f;
@@ -43,9 +75,13 @@ namespace Game.Logic.Player
         float lookSensitivityX = 20.0f;
         float lookSensitivityY = 20.0f;
 
-        private float crouchUpSpeed = 6;
 
-        private float crouchDownSpeed = 18;
+
+        [Export] private float crouchUpSpeed = 6;
+
+
+
+        [Export] private float crouchDownSpeed = 18;
 
         //vec
         Vector3 vel = new Vector3();
@@ -59,16 +95,24 @@ namespace Game.Logic.Player
         private bool activated = false;
 
         // How precise the controller can change direction while not grounded 
-        private float AirControlPrecision = 16f;
+
+
+        [Export] private float AirControlPrecision = 16f;
 
         // When moving only forward, increase air control dramatically
-        private float AirControlAdditionForward = 8f;
+
+
+        [Export] private float AirControlAdditionForward = 8f;
         // Stop if under this speed
 
-        private float FrictionSpeedThreshold = 0.5f;
+
+
+        [Export] private float FrictionSpeedThreshold = 0.5f;
 
         // How fast the controller decelerates on the grounded
-        private float Friction = 15;
+
+
+        [Export] private float Friction = 15;
 
         private bool onCrouching = false;
 
@@ -105,6 +149,11 @@ namespace Game.Logic.Player
         {
             if (!activated)
                 return;
+
+            if (Input.GetMouseMode() != Input.MouseMode.Captured)
+                return;
+
+            var currentSpeed = LinearVelocity.Length();
 
             vel = LinearVelocity;
 
@@ -159,10 +208,19 @@ namespace Game.Logic.Player
                 {
                     moveSpeed = walkSpeed;
                 }
-                else if (Input.IsActionPressed("move_sprint"))
+
+
+                if (Input.IsActionPressed("move_sprint") && this.currentSpeedAmount > 0.1 && input.y != 0)
                 {
-                    moveSpeed = sprintSpeed;
                     onCrouching = false;
+
+                    currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * delta), 0, 1.0f);
+                    var offset = sprintSpeed - defaultSpeed;
+                    moveSpeed = defaultSpeed + (offset * currentSpeedAmount);
+                }
+                else if (!Input.IsActionPressed("move_sprint"))
+                {
+                    currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * delta), 0.0f, 1.0f);
                 }
 
                 //add speed
@@ -183,15 +241,23 @@ namespace Game.Logic.Player
                 }
 
                 Accelerate(ref vel, relativeDir, Accel, Deaccel, delta);
+
             }
 
             LinearVelocity = vel;
             MoveAndSlide();
 
-            if (currentJumpTime > 0.0f)
-            {
-                currentJumpTime -= delta;
-            }
+            GC.Collect(GC.MaxGeneration);
+            GC.WaitForPendingFinalizers();
+
+            //   if (GetSlideCollisionCount() >= 1)
+            // {
+            //   GetSlideCollision(0).Dispose();
+            //}
+
+            currentJumpTime = Mathf.Clamp(currentJumpTime - delta, 0, jumpCoolDown);
+            GD.Print(this.currentSpeedAmount);
+
         }
 
         private void Accelerate(ref Vector3 playerVelocity, Vector3 direction, float accel, float deaccel, float dt)
@@ -311,15 +377,16 @@ namespace Game.Logic.Player
 
         public override void _Process(float delta)
         {
+
             if (!activated)
+                return;
+
+            if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
 
             setCamera();
 
             setBodyHeight(delta);
-
-            if (Input.GetMouseMode() != Input.MouseMode.Captured)
-                return;
 
             if (mouseDelta.Length() > 0)
             {
@@ -375,11 +442,14 @@ namespace Game.Logic.Player
 
                 mouseDelta = Vector2.Zero;
             }
+
         }
 
 
         public override void _Input(InputEvent @event)
         {
+            base._Input(@event);
+
             if (!activated)
                 return;
 
@@ -387,6 +457,8 @@ namespace Game.Logic.Player
             {
                 mouseDelta = (@event as InputEventMouseMotion).Relative;
             }
+
+            @event.Dispose();
         }
 
         public void Activate()

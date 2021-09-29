@@ -3,7 +3,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace Game.Logic.Level
+namespace FPS.Game.Logic.Level
 {
     public partial class GameLevel : Node
     {

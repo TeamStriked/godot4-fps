@@ -53,7 +53,7 @@ spwanPointsPath = NodePath("spwanPoints")
 script = null
 
 [node name="Position3D" type="Position3D" parent="spwanPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.7628, 6.0183, -102.066)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.7628, 10, -102.066)
 script = ExtResource( "2_gs0dn" )
 
 [node name="design" type="Node" parent="."]

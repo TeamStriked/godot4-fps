@@ -1,23 +1,27 @@
-[gd_scene load_steps=3 format=3 uid="uid://kl8v0pfdenvq"]
+[gd_scene load_steps=5 format=3 uid="uid://kl8v0pfdenvq"]
 
+[ext_resource type="Script" path="res://bootloader/BaseWindow.cs" id="1_7gtdt"]
 [ext_resource type="Script" path="res://Game/Logic/Server/ServerLogic.cs" id="1_pxgnw"]
 [ext_resource type="Script" path="res://Game/Logic/Client/ClientLogic.cs" id="2_73ane"]
+[ext_resource type="Script" path="res://Game/UI/GameGraph.cs" id="4_h5gcj"]
 
 [node name="Base" type="Node"]
 script = null
 
 [node name="ServerWindow" type="Window" parent="."]
+process_mode = 3
 own_world_3d = true
-handle_input_locally = false
 title = "Server Window"
 position = Vector2i(100, 100)
 size = Vector2i(640, 480)
-script = null
+unfocusable = true
+script = ExtResource( "1_7gtdt" )
 
 [node name="Root" type="Node" parent="ServerWindow"]
 script = ExtResource( "1_pxgnw" )
 
 [node name="ClientWindow" type="Window" parent="."]
+process_mode = 3
 own_world_3d = true
 msaa = 1
 screen_space_aa = 1
@@ -25,8 +29,20 @@ title = "Client Window"
 position = Vector2i(50, 50)
 size = Vector2i(1024, 768)
 mode = 2
-exclusive = true
-script = null
+script = ExtResource( "1_7gtdt" )
 
 [node name="Root" type="Node" parent="ClientWindow"]
 script = ExtResource( "2_73ane" )
+
+[node name="GameGraph" type="CanvasLayer" parent="ClientWindow"]
+script = ExtResource( "4_h5gcj" )
+
+[node name="Content" type="Label" parent="ClientWindow/GameGraph"]
+offset_right = 137.0
+offset_bottom = 26.0
+text = "BLUB BLUB BLUB"
+structured_text_bidi_override_options = []
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}

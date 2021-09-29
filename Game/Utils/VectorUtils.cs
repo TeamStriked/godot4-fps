@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Game.Utils
+namespace FPS.Game.Utils
 {
     public static class VectorUtils
     {

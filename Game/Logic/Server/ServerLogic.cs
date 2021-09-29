@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace Game.Logic.Server
+namespace FPS.Game.Logic.Server
 {
     public partial class ServerLogic : Game.Logic.Networking.NetworkLogic
     {
@@ -52,6 +52,9 @@ namespace Game.Logic.Server
             this.World.setFreeMode(true);
         }
 
+
+
+
         public void onPlayerDisconnect(int id)
         {
             GD.Print("[Server] Client " + id.ToString() + " disconnected.");
@@ -72,7 +75,7 @@ namespace Game.Logic.Server
         [Remote]
         public override void mapLoadedSuccessfull()
         {
-            var id = Multiplayer.GetRemoteSenderId();
+         var id = Multiplayer.GetRemoteSenderId();
             GD.Print("[Server] Client " + id.ToString() + " world loaded.");
 
             var spwanPoint = this.World.Level.findFreeSpwanPoint();
@@ -82,53 +85,12 @@ namespace Game.Logic.Server
                 this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
             }
         }
-        
-        /*
-
-                [Remote]
-                public void authPlayer(string accessToken = null)
-                {
-                    var id = Multiplayer.GetRemoteSenderId();
-
-                    GD.Print("[Server] " + id.ToString() + " try to auth");
-
-                    if (GetNodeOrNull("world/map_holder/map") == null)
-                    {
-                        DisconnectClient(id, "Server not ready.");
-                        return;
-                    }
-
-                    if (accessToken != null)
-                    {
-                        GD.Print("[Server] Player authed succesfull.");
-                        CreatePlayer(id);
-                    }
-                    else
-                    {
-                        DisconnectClient(id, "No given auth token.");
-                    }
-                }
-
-                [Remote]
-                public void playerWorldLoaded(int characterId)
-                {
-                    var id = Multiplayer.GetRemoteSenderId();
-                    GD.Print("[Server][" + id + "] Player world loaded completly.");
-                }
-        */
+      
         public void CreatePlayer(int id)
         {
 
         }
-        /*
-                [Remote]
-                public void ActivatePlayer()
-                {
-                    GD.Print("[Server] Activate player");
-                    var id = Multiplayer.GetRemoteSenderId();
-
-                }
-        */
+      
         private void DisconnectClient(int id, string message = "")
         {
             GD.Print("[Server][Player][" + id + "] Disconnect Reason:" + message);

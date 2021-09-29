@@ -1,6 +1,6 @@
 using Godot;
 using System;
-namespace Game.Logic.Player
+namespace FPS.Game.Logic.Player
 {
     public abstract partial class NetworkPlayer : CharacterBody3D
     {
