@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cpmfpjvrlo3l5"]
+[gd_scene load_steps=18 format=3 uid="uid://cpmfpjvrlo3l5"]
 
 [ext_resource type="Script" path="res://Game/Logic/Level/GameLevel.cs" id="1_er0od"]
 [ext_resource type="Script" path="res://Game/Logic/Level/GameSpwanPoint.cs" id="2_gs0dn"]
@@ -34,6 +34,9 @@ data = PackedVector3Array(-70, 5, 0.5, 70, 5, 0.5, -70, -5, 0.5, 70, 5, 0.5, 70,
 [sub_resource type="BoxMesh" id="BoxMesh_ibtpn"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3kyle"]
+data = PackedVector3Array(-1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_8gp1x"]
 data = PackedVector3Array(-1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7tv41"]
@@ -161,6 +164,20 @@ script = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="design/objects/MeshInstance3D3/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_3kyle" )
+script = null
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="design/objects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.6038, -0.714447, -98.431)
+mesh = SubResource( "BoxMesh_ibtpn" )
+skeleton = NodePath("../..")
+surface_material_override/0 = null
+script = null
+
+[node name="StaticBody3D" type="StaticBody3D" parent="design/objects/MeshInstance3D5"]
+script = null
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="design/objects/MeshInstance3D5/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_8gp1x" )
 script = null
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="design/objects"]

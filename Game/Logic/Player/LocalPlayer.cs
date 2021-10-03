@@ -2,132 +2,37 @@ using Godot;
 using System;
 using FPS.Game.Utils;
 using System.Collections.Generic;
+using FPS.Game.Config;
 namespace FPS.Game.Logic.Player
 {
     public partial class LocalPlayer : NetworkPlayer
     {
-        [Export]
-        Curve3D path = new Curve3D();
+        //cam look
+        const float minLookAngleY = -90.0f;
+        const float maxLookAngleY = 90.0f;
 
-        [Export]
-        NodePath cameraNodePath = null;
+        const float minLookAngleX = -360.0f;
+        const float maxLookAngleX = 360.0f;
+        const int _averageFromThisManySteps = 3;
 
-        [Export]
-        NodePath cameraThirdPersonPath = null;
-
-        [Export]
-        NodePath tpsCharacterPath = null;
-
-        bool isThirdPerson = false;
-
-        //physics
-
-
-        [Export] float sprintSpeed = 12f;
-
-
-
-
-        [Export] float speedRechargeMultiplier = 2f;
-
-
-
-        [Export] float speedLooseMultiplier = 0.3f;
-
-
-
-        [Export] float currentSpeedAmount = 1.0f;
-
-
-        [Export] float walkSpeed = 2.6f;
-
-
-        [Export] float defaultSpeed = 6.0f;
-
-
-
-        [Export] float Accel = 6;
-
-
-        [Export] float Deaccel = 8; //start speed 
-
-
-        [Export] float FlyAccel = 4; // stop speed
-
-
-        [Export] float jumpForce = 9.0f;
-
-
-        [Export] float jumpCoolDown = 0.7f;
+        //vec
+        Vector2 mouseDelta = new Vector2();
 
         private float currentJumpTime = 0.0f;
 
+        // How precise the controller can change direction while not grounded
 
-        [Export] float gravity = 21.0f;
-
-        //cam look
-        float minLookAngleY = -90.0f;
-        float maxLookAngleY = 90.0f;
-
-        float minLookAngleX = -360.0f;
-        float maxLookAngleX = 360.0f;
-
-        float lookSensitivityX = 20.0f;
-        float lookSensitivityY = 20.0f;
-
-
-
-        [Export] private float crouchUpSpeed = 6;
-
-
-
-        [Export] private float crouchDownSpeed = 18;
-
-        //vec
-        Vector3 vel = new Vector3();
-        Vector2 mouseDelta = new Vector2();
-
-        private Camera3D _camera;
-        private Camera3D _thirdPersonCamera;
-
-        private Node3D _tpsCharacter;
-
-        private bool activated = false;
-
-        // How precise the controller can change direction while not grounded 
-
-
-        [Export] private float AirControlPrecision = 16f;
-
-        // When moving only forward, increase air control dramatically
-
-
-        [Export] private float AirControlAdditionForward = 8f;
-        // Stop if under this speed
-
-
-
-        [Export] private float FrictionSpeedThreshold = 0.5f;
 
         // How fast the controller decelerates on the grounded
 
+        private bool isThirdPerson = false;
 
-        [Export] private float Friction = 15;
 
         private bool onCrouching = false;
+        private bool onProne = false;
 
+        public bool canHandleInput = true;
 
-
-        private Node3D head = null;
-        private CollisionShape3D collider = null;
-        private CapsuleShape3D colliderShape = null;
-
-        private float origColliderPositionY = 0;
-        private float origColliderShapeHeight = 0;
-        private float origHeadY = 0;
-        private float crouchColliderMultiplier = 0.6f;
-
-        private const int _averageFromThisManySteps = 3;
 
         private List<float> _rotArrayX = new List<float>();
         private List<float> _rotArrayY = new List<float>();
@@ -135,7 +40,7 @@ namespace FPS.Game.Logic.Player
         private float rotationX = 0F;
         private float rotationY = 0F;
 
-
+        private bool jumpLocked = false;
 
         [Puppet]
         public override void onNetworkTeleport(Vector3 origin)
@@ -147,56 +52,75 @@ namespace FPS.Game.Logic.Player
         // Called when the node enters the scene tree for the first time.
         public override void _PhysicsProcess(float delta)
         {
-            if (!activated)
+            if (!canHandleInput)
                 return;
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
 
-            var currentSpeed = LinearVelocity.Length();
+            var currentSpeed = playerChar.LinearVelocity.Length();
 
-            vel = LinearVelocity;
+            var vel = playerChar.LinearVelocity;
 
             // reset the x and z velocity
             var input = new Vector2();
 
             //movement inputs
-            if (Input.IsActionPressed("move_forward"))
+            if (Input.IsActionPressed("game_moveForward"))
                 input.y -= 1f;
-            if (Input.IsActionPressed("move_backward"))
+            if (Input.IsActionPressed("game_moveBackward"))
                 input.y += 1f;
-            if (Input.IsActionPressed("move_left"))
+
+            if (Input.IsActionPressed("game_moveLeft"))
                 input.x -= 1f;
-            if (Input.IsActionPressed("move_right"))
+            if (Input.IsActionPressed("game_moveRight"))
                 input.x += 1f;
 
-            if (Input.IsActionPressed("crouch"))
+            if (Input.IsActionPressed("game_crouching"))
                 onCrouching = true;
             else
                 onCrouching = false;
 
-            if (Input.IsActionJustPressed("camera_switch"))
+            if (Input.IsActionPressed("game_prone"))
+                onProne = true;
+            else
+                onProne = false;
+
+            if (Input.IsActionPressed("game_camera_switch"))
+            {
                 isThirdPerson = !isThirdPerson;
+
+                if (isThirdPerson)
+                {
+                    this.playerChar.setCameraMode(PlayerCameraMode.TPS);
+                }
+                else
+                {
+                    this.playerChar.setCameraMode(PlayerCameraMode.FPS);
+                }
+            }
 
             input = input.Normalized();
 
             // get the forward and right directions
-            var forward = Transform.basis.z;
-            var right = Transform.basis.x;
+            var forward = this.playerChar.Transform.basis.z;
+            var right = this.playerChar.Transform.basis.x;
             var relativeDir = (forward * input.y + right * input.x);
 
             // apply gravity
-            if (!IsOnFloor())
+            if (!playerChar.IsOnFloor())
             {
                 onCrouching = false;
+                onProne = false;
 
-                if (Mathf.Abs(relativeDir.z) > 0.0001) // Pure side velocity doesn't allow air control
-                {
-                    ApplyAirControl(ref vel, relativeDir, delta);
-                }
+                float wishSpeed = relativeDir.Length();
+                Vector3 prevMove = new Vector3(playerChar.LinearVelocity.x, 0, playerChar.LinearVelocity.z);
+                Vector3 nextMove = AirAccelerate(relativeDir, prevMove, wishSpeed, Accel, delta);
+                nextMove.y = playerChar.LinearVelocity.y;
+                nextMove.y -= gravity * delta;
 
                 //add gravity
-                vel.y -= gravity * delta;
+                vel = nextMove;
             }
             else
             {
@@ -204,23 +128,33 @@ namespace FPS.Game.Logic.Player
                 var accel = Accel;
                 var deaccel = Deaccel;
 
-                if (Input.IsActionPressed("move_walk") || onCrouching)
+                if (onProne)
                 {
-                    moveSpeed = walkSpeed;
-                }
-
-
-                if (Input.IsActionPressed("move_sprint") && this.currentSpeedAmount > 0.1 && input.y != 0)
-                {
+                    moveSpeed = proneSpeed;
                     onCrouching = false;
-
-                    currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * delta), 0, 1.0f);
-                    var offset = sprintSpeed - defaultSpeed;
-                    moveSpeed = defaultSpeed + (offset * currentSpeedAmount);
                 }
-                else if (!Input.IsActionPressed("move_sprint"))
+                else
                 {
-                    currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * delta), 0.0f, 1.0f);
+                    if (Input.IsActionPressed("game_shifting") || onCrouching)
+                    {
+                        moveSpeed = walkSpeed;
+                    }
+                    else
+                    {
+                        if (Input.IsActionPressed("game_sprinting") && this.currentSpeedAmount > 0.1 && input.y != 0)
+                        {
+                            onCrouching = false;
+                            onProne = false;
+
+                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * delta), 0, 1.0f);
+                            var offset = sprintSpeed - defaultSpeed;
+                            moveSpeed = defaultSpeed + (offset * currentSpeedAmount);
+                        }
+                        else if (!Input.IsActionPressed("game_sprinting"))
+                        {
+                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * delta), 0.0f, 1.0f);
+                        }
+                    }
                 }
 
                 //add speed
@@ -228,36 +162,35 @@ namespace FPS.Game.Logic.Player
                 relativeDir.y = 0;
                 relativeDir.z *= moveSpeed;
 
-                // jumping 
-                if (Input.IsActionJustPressed("jump") && currentJumpTime <= 0.0f)
+                // jumping
+                if (Input.IsActionPressed("game_jumpUp") && currentJumpTime <= 0.0f && !jumpLocked && !onProne)
                 {
                     currentJumpTime = jumpCoolDown;
-                    vel.y = jumpForce;
+
+                    if (!onCrouching)
+                        vel.y = jumpForce;
+                    else
+                    {
+                        vel.y = jumpCrouchForce;
+                    }
+
                     onCrouching = false;
+                    jumpLocked = true;
                 }
-                else
+                else if (!Input.IsActionPressed("game_jumpUp"))
                 {
-                    ApplyFriction(ref relativeDir, delta);
+                    jumpLocked = false;
                 }
 
+                ApplyFriction(ref relativeDir, delta);
                 Accelerate(ref vel, relativeDir, Accel, Deaccel, delta);
-
             }
 
-            LinearVelocity = vel;
-            MoveAndSlide();
+            playerChar.LinearVelocity = vel;
+            playerChar.MoveAndSlide();
 
-            GC.Collect(GC.MaxGeneration);
-            GC.WaitForPendingFinalizers();
-
-            //   if (GetSlideCollisionCount() >= 1)
-            // {
-            //   GetSlideCollision(0).Dispose();
-            //}
-
+            //fix godot issue
             currentJumpTime = Mathf.Clamp(currentJumpTime - delta, 0, jumpCoolDown);
-            GD.Print(this.currentSpeedAmount);
-
         }
 
         private void Accelerate(ref Vector3 playerVelocity, Vector3 direction, float accel, float deaccel, float dt)
@@ -287,112 +220,86 @@ namespace FPS.Game.Logic.Player
             playerVelocity *= dropAmount / speed; // Reduce the velocity by a certain percent
         }
 
-        private void ApplyAirControl(ref Vector3 playerVelocity, Vector3 accelDir, float dt)
+
+
+        Vector3 AirAccelerate(Vector3 wishDir, Vector3 prevVelocity, float wishSpeed, float accel, float delta)
         {
-            // This only happens in the horizontal plane
-            // TODO: Verify that these work with various gravity values
-            var playerDirHorz = playerVelocity.ToHorizontal().Normalized();
-            var playerSpeedHorz = playerVelocity.ToHorizontal().Length();
+            if (wishSpeed > this.maxSpeedAir)
+                wishSpeed = this.maxSpeedAir;
 
-            var dot = playerDirHorz.Dot(accelDir);
-            if (dot > 0)
-            {
-                var k = AirControlPrecision * dot * dot * dt;
+            float currentSpeed = prevVelocity.Dot(wishDir);
+            float addSpeed = wishSpeed - currentSpeed;
 
-                // CPMA thingy:
-                // If we want pure forward movement, we have much more air control
-                var isPureForward = Mathf.Abs(mouseDelta.x) < 0.0001 && Mathf.Abs(mouseDelta.y) > 0;
-                if (isPureForward)
-                {
-                    k *= AirControlAdditionForward;
-                }
+            if (addSpeed <= 0)
+                return prevVelocity;
 
-                // A little bit closer to accelDir
-                playerDirHorz = playerDirHorz * playerSpeedHorz + accelDir * k;
-                playerDirHorz = playerDirHorz.Normalized();
+            float accelSpeed = accel * wishSpeed * delta;
 
-                // Assign new direction, without touching the vertical speed
-                playerVelocity = (playerDirHorz * playerSpeedHorz).ToHorizontal() + (-Vector3.Down) * playerVelocity.VerticalComponent();
-            }
+            if (accelSpeed > addSpeed)
+                accelSpeed = addSpeed;
+
+            return prevVelocity + wishDir * accelSpeed;
         }
+
 
         public override void _Ready()
         {
-            this.head = GetNode("head") as Node3D;
-            this._camera = GetNode(cameraNodePath) as Camera3D;
-            this._thirdPersonCamera = GetNode(cameraThirdPersonPath) as Camera3D;
-            this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
-
-            this.collider = GetNode("collider") as CollisionShape3D;
-            this.colliderShape = this.collider.Shape as CapsuleShape3D;
-
-            this.origColliderPositionY = this.collider.Transform.origin.y;
-            this.origHeadY = this.head.Transform.origin.y;
-            this.origColliderShapeHeight = this.colliderShape.Height;
+            base._Ready();
         }
 
-        private void setBodyHeight(float delta)
+        public void setPlayerCollider(float delta)
         {
-            if (onCrouching)
+            //change prone to steps by collider shape height (> 0.6, > 0.3)
+
+            var upSpeed = crouchUpSpeed;
+            var downSpeed = crouchDownSpeed;
+
+            if (this.playerChar.getShapeDivider() < this.crouchColliderMultiplier)
             {
-                this.setHeight(this.origColliderShapeHeight * this.crouchColliderMultiplier, origColliderPositionY * this.crouchColliderMultiplier, origHeadY * this.crouchColliderMultiplier, delta, crouchUpSpeed);
+                upSpeed = proneUpSpeed;
+                downSpeed = proneDownSpeed;
             }
-            else if (!onCrouching)
+
+            if (this.onProne)
             {
-                this.setHeight(this.origColliderShapeHeight, origColliderPositionY, origHeadY, delta, crouchDownSpeed);
-            }
-        }
-
-        private void setHeight(float shapeHeightTarget, float targetColliderPosY, float targetHeaderPosY, float speed, float delta)
-        {
-            var heightOffset = shapeHeightTarget;
-            this.colliderShape.Height = Mathf.Lerp(this.colliderShape.Height, shapeHeightTarget, delta * speed);
-
-            //set shape y
-            var gd = this.collider.Transform;
-            gd.origin = gd.origin.Lerp(new Vector3(0, targetColliderPosY, 0), delta * speed);
-            this.collider.Transform = gd;
-
-            //set shape y
-            var gdHead = this.head.Transform;
-            gdHead.origin = gdHead.origin.Lerp(new Vector3(0, targetHeaderPosY, 0), delta * speed);
-            this.head.Transform = gdHead;
-        }
-
-        public void setCamera()
-        {
-            if (isThirdPerson)
-            {
-                this._camera.Current = false;
-                this._thirdPersonCamera.Current = true;
-                this._tpsCharacter.Visible = true;
+                this.playerChar.setBodyHeight(delta, upSpeed, downSpeed, proneColliderMultiplier, onProne);
             }
             else
             {
-                this._camera.Current = true;
-                this._thirdPersonCamera.Current = false;
-                this._tpsCharacter.Visible = false;
+                this.playerChar.setBodyHeight(delta, upSpeed, downSpeed, crouchColliderMultiplier, onCrouching);
             }
         }
 
+        /**
+         * TODO: REPLACE WITH https://github.com/joelpt/onclick5/blob/master/Assets/SimpleSmoothMouseLook.cs*
+         *
+         */
         public override void _Process(float delta)
         {
 
-            if (!activated)
+            if (!canHandleInput)
                 return;
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
 
-            setCamera();
 
-            setBodyHeight(delta);
+            this.setPlayerCollider(delta);
+
+            if (!playerChar.IsOnFloor())
+            {
+                this.playerChar.setCameraZoom(false);
+            }
+            else
+            {
+                this.playerChar.setCameraZoom(rightMouseActivated);
+            }
 
             if (mouseDelta.Length() > 0)
             {
                 // rotate the camera along the x axis
-                rotationX += -mouseDelta.x * lookSensitivityX * delta;
-                rotationY += -mouseDelta.y * lookSensitivityY * delta;
+                rotationX += -mouseDelta.x * ConfigValues.sensitivityX * delta;
+                rotationY += -mouseDelta.y * ConfigValues.sensitivityY * delta;
 
                 // Add current rot to array, at end
                 _rotArrayX.Add(rotationX);
@@ -424,33 +331,18 @@ namespace FPS.Game.Logic.Player
                 rotAverageY = Mathf.Clamp(rotAverageY, minLookAngleY, maxLookAngleY);
                 rotAverageX = Mathf.Clamp(rotAverageX, minLookAngleX, maxLookAngleX);
 
-                Quaternion xRotation = new Quaternion(Vector3.Up, rotAverageX);
-                Quaternion headRotation = new Quaternion(Vector3.Left, rotAverageY);
-
-                var rot = this.Rotation;
-                rot.y = Mathf.Deg2Rad(rotAverageX);
-                this.Rotation = rot;
-
-                var headRot = this.head.Rotation;
-                headRot.x = Mathf.Deg2Rad(rotAverageY);
-                this.head.Rotation = headRot;
-
-                var tpsCamera = this._thirdPersonCamera.Rotation;
-                tpsCamera.x = Mathf.Deg2Rad(rotAverageY);
-                this._thirdPersonCamera.Rotation = tpsCamera;
-
+                this.playerChar.rotateFPS(rotAverageX, rotAverageY);
+                this.playerChar.rotateTPSCamera(rotAverageY);
 
                 mouseDelta = Vector2.Zero;
             }
-
         }
-
 
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
 
-            if (!activated)
+            if (!canHandleInput)
                 return;
 
             if (@event is InputEventMouseMotion)
@@ -458,35 +350,30 @@ namespace FPS.Game.Logic.Player
                 mouseDelta = (@event as InputEventMouseMotion).Relative;
             }
 
+            if (@event is InputEventMouseButton)
+            {
+                if ((@event as InputEventMouseButton).ButtonIndex == MouseButton.Right)
+                {
+                    rightMouseActivated = (@event as InputEventMouseButton).Pressed;
+                }
+            }
+
             @event.Dispose();
         }
+        bool rightMouseActivated = false;
 
         public void Activate()
         {
-            if (this.Camera != null)
-            {
-                Input.SetMouseMode(Input.MouseMode.Captured);
-                this.Camera.Current = true;
-                this.activated = true;
-            }
+            this.canHandleInput = true;
+            Input.SetMouseMode(Input.MouseMode.Captured);
+            this.playerChar.setCameraMode(PlayerCameraMode.FPS);
         }
 
         public void Dectivate()
         {
-            if (this.Camera != null)
-            {
-                Input.SetMouseMode(Input.MouseMode.Visible);
-                this.Camera.Current = false;
-                this.activated = false;
-            }
-        }
-
-        public Camera3D Camera
-        {
-            get
-            {
-                return _camera;
-            }
+            this.canHandleInput = false;
+            Input.SetMouseMode(Input.MouseMode.Visible);
+            this.playerChar.setCameraMode(PlayerCameraMode.NONE);
         }
     }
 }

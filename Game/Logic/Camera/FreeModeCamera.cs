@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using FPS.Game.Config;
 
 namespace FPS.Game.Logic.Camera
 {
@@ -11,6 +12,8 @@ namespace FPS.Game.Logic.Camera
 
         [Export]
         public bool activated = false;
+        public bool canHandleInput = false;
+
 
         Vector2 _mouse_position = new Vector2(0.0f, 0.0f);
         float _total_pitch = 0.0f;
@@ -23,10 +26,6 @@ namespace FPS.Game.Logic.Camera
         float _vel_multiplier = 4f;
 
         // Keyboard state
-        bool _w = false;
-        bool _s = false;
-        bool _a = false;
-        bool _d = false;
         bool _q = false;
         bool _e = false;
 
@@ -44,6 +43,8 @@ namespace FPS.Game.Logic.Camera
 
             if (!activated)
                 return;
+            if (!canHandleInput)
+                return;
 
             _update_mouselook();
             _update_movement(delta);
@@ -54,7 +55,7 @@ namespace FPS.Game.Logic.Camera
         {
             base._Input(@event);
 
-            if (!activated)
+            if (!activated || !canHandleInput)
             {
                 @event.Dispose();
                 return;
@@ -74,7 +75,6 @@ namespace FPS.Game.Logic.Camera
                     case MouseButton.Left:
                         _wasClicked = !_wasClicked;
                         Input.SetMouseMode(_wasClicked ? Input.MouseMode.Captured : Input.MouseMode.Visible);
-
                         break;
                     case MouseButton.WheelUp:
                         _vel_multiplier = Math.Clamp(_vel_multiplier * 1.1f, 0.2f, 20f); break;
@@ -88,20 +88,16 @@ namespace FPS.Game.Logic.Camera
             {
                 var ev = @event as InputEventKey;
 
+
                 switch (ev.Keycode)
                 {
-                    case Key.W:
-                        _w = ev.Pressed; break;
+
                     case Key.Escape:
+
                         _wasClicked = false;
                         Input.SetMouseMode(Input.MouseMode.Visible);
                         break;
-                    case Key.S:
-                        _s = ev.Pressed; break;
-                    case Key.A:
-                        _a = ev.Pressed; break;
-                    case Key.D:
-                        _d = ev.Pressed; break;
+
                     case Key.Q:
                         _q = ev.Pressed; break;
                     case Key.E:
@@ -111,15 +107,16 @@ namespace FPS.Game.Logic.Camera
 
             @event.Dispose();
         }
-    
+
 
         //Updates camera movement
         private void _update_movement(float delta)
         {
             // Computes desired direction from key states
-            _direction = new Vector3(Convert.ToSingle(_d) - Convert.ToSingle(_a),
+            _direction = new Vector3(Convert.ToSingle(Input.IsActionPressed("game_moveRight")) - Convert.ToSingle(Input.IsActionPressed("game_moveLeft")),
                                  Convert.ToSingle(_e) - Convert.ToSingle(_q),
-                                 Convert.ToSingle(_s) - Convert.ToSingle(_w));
+                                 Convert.ToSingle(Input.IsActionPressed("game_moveBackward")) - Convert.ToSingle(Input.IsActionPressed("game_moveForward")));
+
 
             // Computes the change in velocity due to desired direction and "drag"
             // The "drag" is a constant acceleration on the camera to bring it's velocity to 0
@@ -142,12 +139,13 @@ namespace FPS.Game.Logic.Camera
             }
         }
 
-        // Updates mouse look 
+        // Updates mouse look
         private void _update_mouselook()
         {
             //Only rotates mouse if the mouse is captured
             if (Input.GetMouseMode() == Input.MouseMode.Captured)
             {
+
                 _mouse_position *= sensitivity;
 
                 var yaw = _mouse_position.x;
@@ -160,6 +158,7 @@ namespace FPS.Game.Logic.Camera
 
                 RotateY(Mathf.Deg2Rad(-yaw));
                 RotateObjectLocal(new Vector3(1, 0, 0), Mathf.Deg2Rad(-pitch));
+
             }
         }
 

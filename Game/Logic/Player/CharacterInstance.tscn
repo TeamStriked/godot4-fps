@@ -1,12 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://bhd3q77ehj4sw"]
+[gd_scene load_steps=6 format=3 uid="uid://bhd3q77ehj4sw"]
 
-[ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_mv12o"]
-
-[sub_resource type="Curve3D" id="Curve3D_7kt0s"]
-_data = {
-"points": PackedVector3Array(),
-"tilts": PackedFloat32Array()
-}
+[ext_resource type="Script" path="res://Game/Logic/Player/CharacterInstance.cs" id="1_nwdc5"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
 radius = 0.7
@@ -21,15 +15,13 @@ albedo_color = Color(1, 0, 0.4, 1)
 size = Vector3(0.16, 0.16, 0.7)
 
 [node name="Node3D" type="CharacterBody3D"]
-script = ExtResource( "1_mv12o" )
-path = SubResource( "Curve3D_7kt0s" )
+script = ExtResource( "1_nwdc5" )
 cameraNodePath = NodePath("head/fps_camera")
 cameraThirdPersonPath = NodePath("tps_camera")
 tpsCharacterPath = NodePath("tps_character")
-jumpForce = 8.5
 
 [node name="collider" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0423045, 1.45783, -0.00527358)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
 shape = SubResource( "CapsuleShape3D_msvy1" )
 script = null
 
@@ -55,8 +47,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56593, -0.515204)
 script = null
 
 [node name="fps_camera" type="Camera3D" parent="head"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0176958)
-fov = 90.0
+fov = 65.0
 script = null
 
 [node name="WeaponHolder" type="Node3D" parent="head/fps_camera"]

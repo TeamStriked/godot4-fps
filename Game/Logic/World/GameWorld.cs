@@ -31,7 +31,6 @@ namespace FPS.Game.Logic.World
 
         public void setFreeMode(bool value)
         {
-
             if (freeModeCameraNodePath == null)
                 return;
 
@@ -63,7 +62,7 @@ namespace FPS.Game.Logic.World
                 var path = GetNode(playerNodePath);
                 if (path != null)
                 {
-                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/Player.tscn");
+                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/LocalPlayer.tscn");
                     this._localPlayer = (LocalPlayer)scene.Instantiate();
                     this._localPlayer.Name = id.ToString();
                     path.AddChild(this._localPlayer);
@@ -82,21 +81,14 @@ namespace FPS.Game.Logic.World
                 var path = GetNode(playerNodePath);
                 if (path != null)
                 {
-                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/Player.tscn");
-                    var off = scene.Instantiate();
-                    off.Name = id.ToString();
-                    path.AddChild(off);
-
-                    var serverSrcipt = GD.Load<Script>("res://Game/Logic/Player/ServerPlayer.cs");
-                    off.SetScript(serverSrcipt);
-
-                    var player = path.GetNode(id.ToString()) as ServerPlayer;
+                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/ServerPlayer.tscn");
+                    var player = (ServerPlayer)scene.Instantiate();
+                    player.Name = id.ToString();
                     player.networkId = id;
+                    path.AddChild(player);
 
                     this.players.Add(id, player);
-
                     player.DoTeleport(origin);
-
                 }
             }
         }

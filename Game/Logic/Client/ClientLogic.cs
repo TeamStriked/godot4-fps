@@ -1,10 +1,17 @@
 using Godot;
 using System;
+using FPS.Game.Config;
+using FPS.Game.UI;
 
 namespace FPS.Game.Logic.Client
 {
     public partial class ClientLogic : Game.Logic.Networking.NetworkLogic
     {
+        [Export]
+        NodePath settingsMenuPath = null;
+
+        GameSettings settingsMenu = null;
+
         [Export]
         public string hostname = "localhost";
 
@@ -19,6 +26,8 @@ namespace FPS.Game.Logic.Client
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
+            this.settingsMenu = GetNode(settingsMenuPath) as GameSettings;
+
             InitNetwork();
 
             CustomMultiplayer.Connect("connected_to_server", new Callable(this, "onConnected"));
@@ -29,6 +38,12 @@ namespace FPS.Game.Logic.Client
             {
                 this.doConnect();
             }
+
+            foreach (var id in DisplayServer.GetWindowList())
+            {
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled, id);
+            }
+
         }
 
         [Puppet]
@@ -83,6 +98,26 @@ namespace FPS.Game.Logic.Client
         {
             GD.Print("[Client] " + message);
         }
-    }
 
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+
+            if (Input.IsActionJustPressed("ui_cancel"))
+            {
+                if (Input.GetMouseMode() == Input.MouseMode.Visible)
+                {
+                    if (!this.settingsMenu.isOpen)
+                    {
+                        Input.SetMouseMode(Input.MouseMode.Captured);
+                    }
+                }
+                else
+                {
+                    Input.SetMouseMode(Input.MouseMode.Visible);
+                    this.settingsMenu.Show();
+                }
+            }
+        }
+    }
 }

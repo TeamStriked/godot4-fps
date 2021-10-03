@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://ceiqv32tj7q6k"]
 
-[ext_resource type="Script" path="res://Game/Logic/Player/ServerPlayer.cs" id="1_gyvrf"]
 [ext_resource type="PackedScene" uid="uid://bhd3q77ehj4sw" path="res://Game/Logic/Player/CharacterInstance.tscn" id="1_hqbwj"]
+[ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_qr1cl"]
 
 [node name="Node3D" type="Node3D"]
-script = ExtResource( "1_gyvrf" )
+script = ExtResource( "1_qr1cl" )
 charPath = NodePath("Node3D")
 
 [node name="Node3D" parent="." instance=ExtResource( "1_hqbwj" )]

@@ -52,9 +52,6 @@ namespace FPS.Game.Logic.Server
             this.World.setFreeMode(true);
         }
 
-
-
-
         public void onPlayerDisconnect(int id)
         {
             GD.Print("[Server] Client " + id.ToString() + " disconnected.");
@@ -62,7 +59,6 @@ namespace FPS.Game.Logic.Server
             var p = GetNode("world/players").GetNodeOrNull(id.ToString());
             if (p != null)
                 p.QueueFree();
-
         }
 
         public void onPlayerConnect(int id)
@@ -71,11 +67,10 @@ namespace FPS.Game.Logic.Server
             RpcId(id, "serverAuthSuccessfull", levelPath);
         }
 
-
         [Remote]
         public override void mapLoadedSuccessfull()
         {
-         var id = Multiplayer.GetRemoteSenderId();
+            var id = Multiplayer.GetRemoteSenderId();
             GD.Print("[Server] Client " + id.ToString() + " world loaded.");
 
             var spwanPoint = this.World.Level.findFreeSpwanPoint();
@@ -85,12 +80,12 @@ namespace FPS.Game.Logic.Server
                 this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
             }
         }
-      
+
         public void CreatePlayer(int id)
         {
 
         }
-      
+
         private void DisconnectClient(int id, string message = "")
         {
             GD.Print("[Server][Player][" + id + "] Disconnect Reason:" + message);
