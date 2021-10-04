@@ -8,14 +8,10 @@ public partial class Bootloader : Node
     int drawMode = 0;
     int currentActiveInstance = 0;
 
-    public Bootloader() : base()
-    {
-        GD.Print("Bootloading..");
-        ConfigValues.loadSettings();
-    }
-
     public override void _Ready()
     {
+        GD.Print("Bootloading..");
+
         base._Ready();
         handleDrawMode();
     }

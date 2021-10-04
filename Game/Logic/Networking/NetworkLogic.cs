@@ -14,11 +14,13 @@ namespace FPS.Game.Logic.Networking
             get { return this._world; }
         }
 
-        public NetworkLogic() : base()
+        public override void _Ready()
         {
+            base._Ready();
             RpcConfig("serverAuthSuccessfull", RPCMode.Auth, TransferMode.Reliable);
             RpcConfig("mapLoadedSuccessfull", RPCMode.Any, TransferMode.Reliable);
         }
+
 
         public void InitNetwork()
         {
@@ -107,9 +109,9 @@ namespace FPS.Game.Logic.Networking
         public virtual void mapLoadedSuccessfull()
         {
         }
-        
 
-  
+
+
 
     }
 }

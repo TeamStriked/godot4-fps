@@ -33,6 +33,9 @@ namespace FPS.Game.Logic.Player
 
 
         [Export]
+        NodePath animationTreeNodePath = null;
+
+        [Export]
         NodePath cameraNodePath = null;
 
         [Export]
@@ -44,6 +47,8 @@ namespace FPS.Game.Logic.Player
 
         private Node3D head = null;
         private Camera3D _camera;
+        private AnimationTree _tree;
+
         private Camera3D _thirdPersonCamera;
 
         private CollisionShape3D collider = null;
@@ -73,9 +78,22 @@ namespace FPS.Game.Logic.Player
             {
                 this._camera.Fov = Mathf.Lerp(this._camera.Fov, this.defaultFov, this.zoomOutSpeed * delta);
             }
+        }
+
+        public void setAnimationState(string name)
+        {
+            var obj = this._tree.Get("parameters/state/playback");
+            if (obj != null)
+            {
+                (obj as AnimationNodeStateMachinePlayback).Travel(name);
+            }
+        }
 
 
-            // this.setBobbing(delta);
+
+        public void setAnimationTimeScale(float timeScale)
+        {
+            this._tree.Set("parameters/scale/scale", timeScale);
         }
 
         public void setBobbing(float delta)
@@ -112,9 +130,6 @@ namespace FPS.Game.Logic.Player
 
             this.Camera.Transform = ot;
         }
-
-
-
 
 
         public void setCameraZoom(bool zoomIn)
@@ -192,6 +207,13 @@ namespace FPS.Game.Logic.Player
             this.head.Transform = gdHead;
         }
 
+        public float getSpeed()
+        {
+            var temp = LinearVelocity;
+            temp.y = 0;
+
+            return temp.Length();
+        }
 
         public void rotateTPSCamera(float rotAverageY)
         {
@@ -206,6 +228,7 @@ namespace FPS.Game.Logic.Player
             this._camera = GetNode(cameraNodePath) as Camera3D;
             this._thirdPersonCamera = GetNode(cameraThirdPersonPath) as Camera3D;
             this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
+            this._tree = GetNode(animationTreeNodePath) as AnimationTree;
 
             this.head = GetNode("head") as Node3D;
 
@@ -220,6 +243,7 @@ namespace FPS.Game.Logic.Player
             this._thirdPersonCamera.Current = false;
             this._tpsCharacter.Visible = false;
 
+            this.setAnimationState("idle");
         }
 
         public Camera3D Camera

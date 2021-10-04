@@ -30,6 +30,10 @@ namespace FPS.Game.Logic.Player
 
         private bool onCrouching = false;
         private bool onProne = false;
+        private bool onSprint = false;
+        private bool onShifting = false;
+
+        private Vector2 direction = Vector2.Zero;
 
         public bool canHandleInput = true;
 
@@ -76,6 +80,8 @@ namespace FPS.Game.Logic.Player
             if (Input.IsActionPressed("game_moveRight"))
                 input.x += 1f;
 
+            this.direction = input;
+
             if (Input.IsActionPressed("game_crouching"))
                 onCrouching = true;
             else
@@ -86,7 +92,7 @@ namespace FPS.Game.Logic.Player
             else
                 onProne = false;
 
-            if (Input.IsActionPressed("game_camera_switch"))
+            if (Input.IsActionJustPressed("game_camera_switch"))
             {
                 isThirdPerson = !isThirdPerson;
 
@@ -106,14 +112,15 @@ namespace FPS.Game.Logic.Player
             var forward = this.playerChar.Transform.basis.z;
             var right = this.playerChar.Transform.basis.x;
             var relativeDir = (forward * input.y + right * input.x);
+            float wishSpeed = relativeDir.Length();
 
             // apply gravity
             if (!playerChar.IsOnFloor())
             {
                 onCrouching = false;
                 onProne = false;
+                onShifting = false;
 
-                float wishSpeed = relativeDir.Length();
                 Vector3 prevMove = new Vector3(playerChar.LinearVelocity.x, 0, playerChar.LinearVelocity.z);
                 Vector3 nextMove = AirAccelerate(relativeDir, prevMove, wishSpeed, Accel, delta);
                 nextMove.y = playerChar.LinearVelocity.y;
@@ -138,13 +145,18 @@ namespace FPS.Game.Logic.Player
                     if (Input.IsActionPressed("game_shifting") || onCrouching)
                     {
                         moveSpeed = walkSpeed;
+                        onShifting = true;
+
                     }
                     else
                     {
+                        onShifting = false;
+
                         if (Input.IsActionPressed("game_sprinting") && this.currentSpeedAmount > 0.1 && input.y != 0)
                         {
                             onCrouching = false;
                             onProne = false;
+                            onSprint = true;
 
                             currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * delta), 0, 1.0f);
                             var offset = sprintSpeed - defaultSpeed;
@@ -152,6 +164,7 @@ namespace FPS.Game.Logic.Player
                         }
                         else if (!Input.IsActionPressed("game_sprinting"))
                         {
+                            onSprint = false;
                             currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * delta), 0.0f, 1.0f);
                         }
                     }
@@ -175,6 +188,9 @@ namespace FPS.Game.Logic.Player
                     }
 
                     onCrouching = false;
+                    onShifting = false;
+                    onSprint = false;
+
                     jumpLocked = true;
                 }
                 else if (!Input.IsActionPressed("game_jumpUp"))
@@ -187,10 +203,54 @@ namespace FPS.Game.Logic.Player
             }
 
             playerChar.LinearVelocity = vel;
+
+
+
             playerChar.MoveAndSlide();
 
             //fix godot issue
             currentJumpTime = Mathf.Clamp(currentJumpTime - delta, 0, jumpCoolDown);
+
+            handleAnimation();
+        }
+
+        private void handleAnimation()
+        {
+            if (this.playerChar.getSpeed() > this.defaultSpeed)
+            {
+                var scale = this.playerChar.getSpeed() / this.sprintSpeed;
+
+                this.playerChar.setAnimationState((this.direction.y < 0) ? "run" : "run_back");
+                this.playerChar.setAnimationTimeScale(scale);
+            }
+            else if (this.playerChar.getSpeed() > 1.0f)
+            {
+                var scale = this.playerChar.getSpeed() / this.walkSpeed;
+
+                if (this.onCrouching)
+                {
+                    this.playerChar.setAnimationState((this.direction.y < 0) ? "shift_crouch" : "shift_crouch_back");
+                }
+                else
+                {
+                    this.playerChar.setAnimationState((this.direction.y < 0) ? "shift" : "shift_back");
+                }
+
+                this.playerChar.setAnimationTimeScale(scale);
+            }
+            else
+            {
+                this.playerChar.setAnimationTimeScale(1.0f);
+
+                if (this.onCrouching)
+                {
+                    this.playerChar.setAnimationState("crouch_idle");
+                }
+                else
+                {
+                    this.playerChar.setAnimationState("idle");
+                }
+            }
         }
 
         private void Accelerate(ref Vector3 playerVelocity, Vector3 direction, float accel, float deaccel, float dt)
@@ -300,6 +360,8 @@ namespace FPS.Game.Logic.Player
                 // rotate the camera along the x axis
                 rotationX += -mouseDelta.x * ConfigValues.sensitivityX * delta;
                 rotationY += -mouseDelta.y * ConfigValues.sensitivityY * delta;
+                float rotAverageX = 0f;
+                float rotAverageY = 0f;
 
                 // Add current rot to array, at end
                 _rotArrayX.Add(rotationX);
@@ -312,8 +374,6 @@ namespace FPS.Game.Logic.Player
                     _rotArrayY.RemoveAt(0);
 
                 //Add all of these rotations together
-                float rotAverageX = 0f;
-                float rotAverageY = 0f;
                 for (int i_counterX = 0; i_counterX < _rotArrayX.Count; i_counterX++)
                 {
                     rotAverageX += _rotArrayX[i_counterX];
@@ -328,8 +388,14 @@ namespace FPS.Game.Logic.Player
                 rotAverageX /= _rotArrayX.Count;
                 rotAverageY /= _rotArrayY.Count;
 
-                rotAverageY = Mathf.Clamp(rotAverageY, minLookAngleY, maxLookAngleY);
-                rotAverageX = Mathf.Clamp(rotAverageX, minLookAngleX, maxLookAngleX);
+                if (rotationX > maxLookAngleX)
+                    rotationX -= maxLookAngleX;
+
+                if (rotationX < minLookAngleX)
+                    rotationX -= minLookAngleX;
+
+                rotAverageY = Mathf.Clamp(rotationY, minLookAngleY, maxLookAngleY);
+                rotAverageX = Mathf.Clamp(rotationX, minLookAngleX, maxLookAngleX);
 
                 this.playerChar.rotateFPS(rotAverageX, rotAverageY);
                 this.playerChar.rotateTPSCamera(rotAverageY);

@@ -7,6 +7,7 @@ namespace FPS.Game.Logic.Player
 
         public override void _Ready()
         {
+            RpcConfig("onNetworkTeleport", RPCMode.Any, TransferMode.Reliable);
             this.playerChar = GetNode(charPath) as CharacterInstance;
         }
 
@@ -92,10 +93,6 @@ namespace FPS.Game.Logic.Player
 
         public int networkId = 0;
 
-        public NetworkPlayer() : base()
-        {
-            RpcConfig("onNetworkTeleport", RPCMode.Any, TransferMode.Reliable);
-        }
 
         [Puppet]
         public virtual void onNetworkTeleport(Vector3 origin)

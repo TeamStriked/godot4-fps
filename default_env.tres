@@ -1,7 +1,3 @@
-[gd_resource type="Environment" load_steps=2 format=3 uid="uid://dmqyewxvbg626"]
-
-[sub_resource type="Sky" id="1"]
-
-[resource]
-background_mode = 2
-sky = SubResource( "1" )
+version https://git-lfs.github.com/spec/v1
+oid sha256:a8653b3514de28906671ceb246850a16a4516de1dbc665e81558fc544e085a84
+size 172

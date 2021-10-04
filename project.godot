@@ -72,6 +72,10 @@ config/name="FPS"
 run/main_scene="res://bootloader/bootloader.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Autoload="*res://bootloader/Autoload.cs"
+
 [display]
 
 window/vsync/vsync_mode=0
