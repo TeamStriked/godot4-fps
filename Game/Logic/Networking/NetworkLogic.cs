@@ -17,8 +17,11 @@ namespace FPS.Game.Logic.Networking
         public override void _Ready()
         {
             base._Ready();
-            RpcConfig("serverAuthSuccessfull", RPCMode.Auth, TransferMode.Reliable);
-            RpcConfig("mapLoadedSuccessfull", RPCMode.Any, TransferMode.Reliable);
+
+            RpcConfig("spwanPlayer", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("serverAuthSuccessfull", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("serverNotReady", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("mapLoadedSuccessfull", RPCMode.AnyPeer, false, TransferMode.Reliable);
         }
 
 
@@ -88,6 +91,7 @@ namespace FPS.Game.Logic.Networking
             GD.Print("Loading game world.");
 
             var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/World/GameWorld.tscn");
+            scene.ResourceLocalToScene = true;
 
             this._world = (GameWorld)scene.Instantiate();
             this._world.Name = "World";
@@ -100,14 +104,25 @@ namespace FPS.Game.Logic.Networking
         }
 
 
-        [Puppet]
+        [Authority]
         public virtual void serverAuthSuccessfull(string levelName)
         {
         }
 
-        [Remote]
+        [AnyPeer]
+        public virtual void serverNotReady()
+        {
+        }
+
+        [AnyPeer]
         public virtual void mapLoadedSuccessfull()
         {
+        }
+
+        [Authority]
+        public virtual void spwanPlayer(int id, Vector3 origin)
+        {
+
         }
 
 

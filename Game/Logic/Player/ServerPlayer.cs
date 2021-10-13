@@ -1,21 +1,54 @@
 using Godot;
 using System;
+using FPS.Game.Logic.Player.Handler;
+using System.Collections.Generic;
 
 namespace FPS.Game.Logic.Player
 {
     public partial class ServerPlayer : NetworkPlayer
     {
+        bool calculated = false;
 
-        public override void _Ready()
+        public override void _EnterTree()
         {
-            base._Ready();
+            base._EnterTree();
         }
 
-        public override void DoTeleport(Vector3 origin)
+        Queue<InputFrame> inputQueue = new Queue<InputFrame>();
+
+        public override void _PhysicsProcess(float delta)
         {
-            base.DoTeleport(origin);
-            GD.Print("Server -> Client -> do teleport to " + origin);
-            Rpc("onNetworkTeleport", origin);
+            base._PhysicsProcess(delta);
+
+            while (inputQueue.Count > 0)
+            {
+                var lastInput = inputQueue.Dequeue();
+                this.playerChar.SetCharRotation(lastInput.mouseMotion.x);
+                this.playerChar.SetHeadRotation(lastInput.mouseMotion.y);
+
+                var newFrame = this.calulcateFrame(lastInput, delta);
+                this.execFrame(newFrame);
+                lastFrame = newFrame;
+
+                handleAnimation();
+            }
+
+            var puppetFrame = new CalculatedPuppetFrame();
+            puppetFrame.origin = this.playerChar.GlobalTransform.origin;
+            puppetFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
+            puppetFrame.velocity = this.playerChar.MotionVelocity;
+            puppetFrame.currentAnimation = this.playerChar.getAnimationState();
+            puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
+
+            var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
+            Rpc("onPuppetUpdate", sendMessage);
+        }
+
+        [AnyPeer]
+        public override void onClientInput(string inputMessage)
+        {
+            var lastInput = FPS.Game.Utils.NetworkCompressor.Decompress<InputFrame>(inputMessage);
+            inputQueue.Enqueue(lastInput);
         }
     }
 }

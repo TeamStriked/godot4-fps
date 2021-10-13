@@ -5,34 +5,66 @@ using FPS.Game.Logic.Player;
 using FPS.Game.Logic.Camera;
 public partial class Bootloader : Node
 {
-    int drawMode = 0;
+    int drawMode = 2;
     int currentActiveInstance = 0;
+
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+        GetTree().Connect("node_added", new Callable(this, "onNodeUpdate"));
+    }
 
     public override void _Ready()
     {
-        GD.Print("Bootloading..");
+        GD.Print("Bootloading.." + Godot.OS.GetName());
 
         base._Ready();
         handleDrawMode();
+    }
+
+    private void onNodeUpdate(Node node)
+    {
+        if (!node.IsInsideTree())
+            return;
+
+        var childsAmount = GetNode("vbox").GetChildCount();
+        bool activated = false;
+
+        if (currentActiveInstance < childsAmount)
+        {
+            var childs = GetNode("vbox").GetChildren();
+            var activeChild = childs[currentActiveInstance] as Node;
+
+            var path = node.GetPath().ToString();
+            var mypath = activeChild.GetPath().ToString();
+
+            if (path.Contains(mypath))
+            {
+                activated = true;
+            }
+        }
+
+        setDisableOrEnableTree(node, activated);
     }
 
     private void handleDrawMode()
     {
         var childs = GetNode("vbox").GetChildren();
         var amount = 0;
-        GD.Print(currentActiveInstance);
+
         foreach (var item in childs)
         {
             var childItem = (item as SubViewportContainer);
             bool canHandle = (amount == currentActiveInstance);
             childItem.Visible = (amount <= drawMode);
             setDisableOrEnableTree(childItem, canHandle);
+            GD.Print(amount + " handle: " + canHandle);
 
             amount++;
         }
     }
 
-    public void setDisableOrEnableTree(Node item, bool canHandle)
+    public void setDisableOrEnableTree(Node item, bool canHandle, bool withSubs = true)
     {
         if (item is Node)
         {
@@ -56,17 +88,28 @@ public partial class Bootloader : Node
             (item as FreeModeCamera).canHandleInput = canHandle;
         }
 
-        foreach (var subItem in item.GetChildren())
+        if (item is MeshInstance3D)
         {
-            if (subItem is Node)
+            (item as MeshInstance3D).Visible = canHandle;
+        }
+
+        if (withSubs)
+        {
+            foreach (var subItem in item.GetChildren())
             {
-                setDisableOrEnableTree(subItem as Node, canHandle);
+                if (subItem is Node)
+                {
+                    setDisableOrEnableTree(subItem as Node, canHandle);
+                }
             }
         }
+
+
     }
 
     public override void _Process(float delta)
     {
+        //fix godot 4 gc bug
         GC.Collect(GC.MaxGeneration);
         GC.WaitForPendingFinalizers();
 

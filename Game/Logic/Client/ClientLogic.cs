@@ -23,6 +23,7 @@ namespace FPS.Game.Logic.Client
 
         private int ownNetworkId = 0;
 
+
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
@@ -45,17 +46,21 @@ namespace FPS.Game.Logic.Client
             }
 
         }
-
-        [Puppet]
+        [Authority]
         public override void serverAuthSuccessfull(string levelName)
         {
             loadWorld();
 
             this.World.loadLevel(levelName);
             this.World.setFreeMode(false);
-            this.World.spwanLocalPlayer(this.ownNetworkId, Vector3.Zero);
 
             RpcId(0, "mapLoadedSuccessfull");
+        }
+
+        [AnyPeer]
+        public override void serverNotReady()
+        {
+            GD.Print("Server not read");
         }
 
         public void doConnect()
@@ -103,7 +108,7 @@ namespace FPS.Game.Logic.Client
         {
             base._Process(delta);
 
-            if (Input.IsActionJustPressed("ui_cancel"))
+            if (Input.IsActionJustPressed("ui_cancel") && this.IsProcessingInput())
             {
                 if (Input.GetMouseMode() == Input.MouseMode.Visible)
                 {
@@ -117,6 +122,22 @@ namespace FPS.Game.Logic.Client
                     Input.SetMouseMode(Input.MouseMode.Visible);
                     this.settingsMenu.Show();
                 }
+            }
+        }
+
+
+        [Authority]
+        public override void spwanPlayer(int id, Vector3 origin)
+        {
+            GD.Print("player spwaned with id " + id + " on " + this.ownNetworkId + " on location " + origin);
+
+            if (id == this.ownNetworkId)
+            {
+                this.World.spwanLocalPlayer(id, origin);
+            }
+            else
+            {
+                this.World.spwanPuppetPlayer(id, origin);
             }
         }
     }

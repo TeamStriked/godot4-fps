@@ -119,7 +119,6 @@ namespace FPS.Game.UI
         private void onKeyChangeStart(string keyName)
         {
             this.keyChangeDialog.openChanger(keyName);
-            GD.Print("change key for" + keyName);
         }
     }
 }

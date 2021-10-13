@@ -7,5 +7,8 @@ namespace FPS.Game.Logic.Level
     {
         [Export]
         public TeamTypes teamType;
+
+        [Export]
+        public bool inUsage;
     }
 }

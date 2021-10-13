@@ -10,9 +10,10 @@ namespace FPS.Game.Logic.Level
         [Export]
         public NodePath spwanPointsPath = null;
 
-        public GameSpwanPoint findFreeSpwanPoint(){
+        public GameSpwanPoint findFreeSpwanPoint()
+        {
 
-            return this.SpwanPoints[0];
+            return this.SpwanPoints.First(df => !df.inUsage);
         }
 
         public List<GameSpwanPoint> SpwanPoints

@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://kl8v0pfdenvq"]
+[gd_scene load_steps=8 format=3 uid="uid://kl8v0pfdenvq"]
 
 [ext_resource type="Script" path="res://Game/Logic/Server/ServerLogic.cs" id="1_pxgnw"]
 [ext_resource type="Script" path="res://bootloader/Bootloader.cs" id="1_q4ynn"]
 [ext_resource type="Script" path="res://Game/Logic/Client/ClientLogic.cs" id="2_73ane"]
+[ext_resource type="Script" path="res://bootloader/ServerWindow.cs" id="5_b7hg6"]
 [ext_resource type="PackedScene" uid="uid://dow0pu0j22ngt" path="res://Game/UI/GameGraph.tscn" id="5_dodmd"]
 [ext_resource type="PackedScene" uid="uid://5uldritt75w3" path="res://Game/UI/GameSettings.tscn" id="6_26ir5"]
+
+[sub_resource type="World3D" id="World3D_866it"]
 
 [node name="Base" type="Node"]
 script = ExtResource( "1_q4ynn" )
@@ -19,9 +22,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ClientWindow" type="SubViewportContainer" parent="vbox"]
+[node name="ClientWindow1" type="SubViewportContainer" parent="vbox"]
 process_mode = 3
-offset_right = 510.0
+offset_right = 338.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -31,35 +34,80 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="viewport" type="SubViewport" parent="vbox/ClientWindow"]
+[node name="viewport" type="SubViewport" parent="vbox/ClientWindow1"]
 own_world_3d = true
-size = Vector2i(510, 600)
+world_3d = SubResource( "World3D_866it" )
+handle_input_locally = false
+msaa = 1
+screen_space_aa = 1
+physics_object_picking = true
+size = Vector2i(338, 600)
 script = null
 
-[node name="Root" type="Node" parent="vbox/ClientWindow/viewport"]
+[node name="Root" type="Node" parent="vbox/ClientWindow1/viewport"]
 script = ExtResource( "2_73ane" )
 settingsMenuPath = NodePath("GameSettings")
 
-[node name="GameGraph" parent="vbox/ClientWindow/viewport/Root" instance=ExtResource( "5_dodmd" )]
+[node name="GameGraph" parent="vbox/ClientWindow1/viewport/Root" instance=ExtResource( "5_dodmd" )]
 
-[node name="GameSettings" parent="vbox/ClientWindow/viewport/Root" instance=ExtResource( "6_26ir5" )]
+[node name="GameSettings" parent="vbox/ClientWindow1/viewport/Root" instance=ExtResource( "6_26ir5" )]
+
+[node name="ClientWindow2" type="SubViewportContainer" parent="vbox"]
+process_mode = 3
+offset_left = 342.0
+offset_right = 681.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="viewport" type="SubViewport" parent="vbox/ClientWindow2"]
+own_world_3d = true
+handle_input_locally = false
+physics_object_picking = true
+shadow_atlas_16_bits = false
+shadow_atlas_quad_0 = 0
+shadow_atlas_quad_1 = 0
+shadow_atlas_quad_2 = 0
+size = Vector2i(339, 600)
+render_target_update_mode = 4
+script = null
+
+[node name="Root" type="Node" parent="vbox/ClientWindow2/viewport"]
+script = ExtResource( "2_73ane" )
+settingsMenuPath = NodePath("GameSettings")
+
+[node name="GameGraph" parent="vbox/ClientWindow2/viewport/Root" instance=ExtResource( "5_dodmd" )]
+
+[node name="GameSettings" parent="vbox/ClientWindow2/viewport/Root" instance=ExtResource( "6_26ir5" )]
 
 [node name="ServerWindow" type="SubViewportContainer" parent="vbox"]
-offset_left = 514.0
+offset_left = 685.0
 offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
-script = null
+script = ExtResource( "5_b7hg6" )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="viewport" type="SubViewport" parent="vbox/ServerWindow"]
-process_mode = 3
 own_world_3d = true
-size = Vector2i(800, 600)
+handle_input_locally = false
+physics_object_picking = true
+shadow_atlas_16_bits = false
+shadow_atlas_quad_0 = 0
+shadow_atlas_quad_1 = 0
+shadow_atlas_quad_2 = 0
+shadow_atlas_quad_3 = 0
+size = Vector2i(339, 600)
+render_target_update_mode = 4
 script = null
 
 [node name="Root" type="Node" parent="vbox/ServerWindow/viewport"]

@@ -38,6 +38,7 @@ namespace FPS.Game.Logic.World
 
             if (freeNode != null)
             {
+                (freeNode as FreeModeCamera).Visible = value;
                 (freeNode as FreeModeCamera).activated = value;
                 (freeNode as FreeModeCamera).Current = value;
             }
@@ -48,8 +49,11 @@ namespace FPS.Game.Logic.World
             GD.Print("Loading game level.. " + levelName);
 
             var scene = (PackedScene)ResourceLoader.Load("res://" + levelName);
+            scene.ResourceLocalToScene = true;
+
             this._level = (GameLevel)scene.Instantiate();
             this._level.Name = "Level";
+
             AddChild(this._level);
 
             return Error.Ok;
@@ -57,12 +61,16 @@ namespace FPS.Game.Logic.World
 
         public void spwanLocalPlayer(int id, Vector3 origin)
         {
+            if (this._level == null)
+                return;
+
             if (playerNodePath != null)
             {
                 var path = GetNode(playerNodePath);
                 if (path != null)
                 {
                     var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/LocalPlayer.tscn");
+                    scene.ResourceLocalToScene = true;
                     this._localPlayer = (LocalPlayer)scene.Instantiate();
                     this._localPlayer.Name = id.ToString();
                     path.AddChild(this._localPlayer);
@@ -74,15 +82,23 @@ namespace FPS.Game.Logic.World
             }
         }
 
-        public void spwanServerPlayer(int id, Vector3 origin)
+        public void spwanPuppetPlayer(int id, Vector3 origin)
         {
+            if (this._level == null)
+                return;
+
+            if (this.players.ContainsKey(id))
+                return;
+
             if (playerNodePath != null)
             {
                 var path = GetNode(playerNodePath);
                 if (path != null)
                 {
-                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/ServerPlayer.tscn");
-                    var player = (ServerPlayer)scene.Instantiate();
+                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/PuppetPlayer.tscn");
+                    scene.ResourceLocalToScene = true;
+                    var player = (PuppetPlayer)scene.Instantiate();
+
                     player.Name = id.ToString();
                     player.networkId = id;
                     path.AddChild(player);
@@ -91,6 +107,34 @@ namespace FPS.Game.Logic.World
                     player.DoTeleport(origin);
                 }
             }
+        }
+
+        public ServerPlayer spwanServerPlayer(int id, Vector3 origin)
+        {
+            if (this._level == null)
+                return null;
+
+            if (playerNodePath != null)
+            {
+                var path = GetNode(playerNodePath);
+                if (path != null)
+                {
+                    var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/ServerPlayer.tscn");
+                    scene.ResourceLocalToScene = true;
+                    var player = (ServerPlayer)scene.Instantiate();
+
+                    player.Name = id.ToString();
+                    player.networkId = id;
+                    path.AddChild(player);
+
+                    this.players.Add(id, player);
+                    player.DoTeleport(origin);
+
+                    return player;
+                }
+            }
+
+            return null;
         }
     }
 }

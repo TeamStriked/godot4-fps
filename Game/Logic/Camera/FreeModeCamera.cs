@@ -4,7 +4,6 @@ using FPS.Game.Config;
 
 namespace FPS.Game.Logic.Camera
 {
-    [Tool]
     public partial class FreeModeCamera : Camera3D
     {
         [Export]
@@ -57,7 +56,6 @@ namespace FPS.Game.Logic.Camera
 
             if (!activated || !canHandleInput)
             {
-                @event.Dispose();
                 return;
             }
 

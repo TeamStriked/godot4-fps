@@ -1,35 +1,30 @@
-[gd_scene load_steps=18 format=3 uid="uid://cpmfpjvrlo3l5"]
+[gd_scene load_steps=24 format=3 uid="uid://cpmfpjvrlo3l5"]
 
 [ext_resource type="Script" path="res://Game/Logic/Level/GameLevel.cs" id="1_er0od"]
 [ext_resource type="Script" path="res://Game/Logic/Level/GameSpwanPoint.cs" id="2_gs0dn"]
-[ext_resource type="Texture2D" uid="uid://cu07punkq4gqw" path="res://assets/level/512x512 Texel Density Texture 1.png" id="3_aefhr"]
+[ext_resource type="Texture2D" uid="uid://cgjuuyk5gvxgr" path="res://assets/level/Tuscan_overview.png" id="3_m2thn"]
+[ext_resource type="PackedScene" uid="uid://bp7gul1k8sgu5" path="res://assets/level/buildings/untitled.glb" id="4_mqyks"]
+[ext_resource type="PackedScene" uid="uid://b6pipd1nx1dt4" path="res://assets/level/buildings/house02.glb" id="5_2rdcl"]
+[ext_resource type="PackedScene" uid="uid://by6jdxolpmpa1" path="res://assets/level/buildings/garage.glb" id="6_al68b"]
+[ext_resource type="Texture2D" uid="uid://cbn5kixyrtjij" path="res://assets/level/road/Sci-fi_Floor_003_basecolor.jpg" id="9_dpoe4"]
+[ext_resource type="Texture2D" uid="uid://dkmvm5ewwgvfo" path="res://assets/level/road/Sci-fi_Floor_003_ambientOcclusion.jpg" id="10_2ck1w"]
+[ext_resource type="Texture2D" uid="uid://5sar3l8xlxxu" path="res://assets/level/road/Sci-fi_Floor_003_height.png" id="11_pgauh"]
+[ext_resource type="Texture2D" uid="uid://tqnx8kh1lvhj" path="res://assets/level/road/Sci-fi_Floor_003_metallic.jpg" id="12_vbtrl"]
+[ext_resource type="Texture2D" uid="uid://cdr51x5gggbka" path="res://assets/level/road/Sci-fi_Floor_003_normal.jpg" id="13_hqbie"]
+[ext_resource type="Texture2D" uid="uid://dsqvlu2rnx64m" path="res://assets/level/road/Sci-fi_Floor_003_roughness.jpg" id="14_w7soa"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tj5eh"]
-vertex_color_use_as_albedo = true
-albedo_color = Color(0.913725, 1, 0.952941, 1)
-albedo_texture = ExtResource( "3_aefhr" )
-uv1_scale = Vector3(15, 15, 15)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w4pi1"]
+transparency = 1
+disable_ambient_light = true
+albedo_color = Color(1, 1, 1, 0.133333)
+albedo_texture = ExtResource( "3_m2thn" )
+texture_repeat = false
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_dmnbe"]
-size = Vector2(140, 140)
+size = Vector2(300, 300)
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_i0ocm"]
-data = PackedVector3Array(70, 0, 70, -70, 0, 70, 70, 0, -70, -70, 0, 70, -70, 0, -70, 70, 0, -70)
-
-[sub_resource type="BoxMesh" id="BoxMesh_esxhw"]
-size = Vector3(140, 10, 1)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ph51x"]
-data = PackedVector3Array(-70, 5, 0.5, 70, 5, 0.5, -70, -5, 0.5, 70, 5, 0.5, 70, -5, 0.5, -70, -5, 0.5, 70, 5, -0.5, -70, 5, -0.5, 70, -5, -0.5, -70, 5, -0.5, -70, -5, -0.5, 70, -5, -0.5, 70, 5, 0.5, 70, 5, -0.5, 70, -5, 0.5, 70, 5, -0.5, 70, -5, -0.5, 70, -5, 0.5, -70, 5, -0.5, -70, 5, 0.5, -70, -5, -0.5, -70, 5, 0.5, -70, -5, 0.5, -70, -5, -0.5, 70, 5, 0.5, -70, 5, 0.5, 70, 5, -0.5, -70, 5, 0.5, -70, 5, -0.5, 70, 5, -0.5, -70, -5, 0.5, 70, -5, 0.5, -70, -5, -0.5, 70, -5, 0.5, 70, -5, -0.5, -70, -5, -0.5)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_jo772"]
-data = PackedVector3Array(-70, 5, 0.5, 70, 5, 0.5, -70, -5, 0.5, 70, 5, 0.5, 70, -5, 0.5, -70, -5, 0.5, 70, 5, -0.5, -70, 5, -0.5, 70, -5, -0.5, -70, 5, -0.5, -70, -5, -0.5, 70, -5, -0.5, 70, 5, 0.5, 70, 5, -0.5, 70, -5, 0.5, 70, 5, -0.5, 70, -5, -0.5, 70, -5, 0.5, -70, 5, -0.5, -70, 5, 0.5, -70, -5, -0.5, -70, 5, 0.5, -70, -5, 0.5, -70, -5, -0.5, 70, 5, 0.5, -70, 5, 0.5, 70, 5, -0.5, -70, 5, 0.5, -70, 5, -0.5, 70, 5, -0.5, -70, -5, 0.5, 70, -5, 0.5, -70, -5, -0.5, 70, -5, 0.5, 70, -5, -0.5, -70, -5, -0.5)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m6c47"]
-data = PackedVector3Array(-70, 5, 0.5, 70, 5, 0.5, -70, -5, 0.5, 70, 5, 0.5, 70, -5, 0.5, -70, -5, 0.5, 70, 5, -0.5, -70, 5, -0.5, 70, -5, -0.5, -70, 5, -0.5, -70, -5, -0.5, 70, -5, -0.5, 70, 5, 0.5, 70, 5, -0.5, 70, -5, 0.5, 70, 5, -0.5, 70, -5, -0.5, 70, -5, 0.5, -70, 5, -0.5, -70, 5, 0.5, -70, -5, -0.5, -70, 5, 0.5, -70, -5, 0.5, -70, -5, -0.5, 70, 5, 0.5, -70, 5, 0.5, 70, 5, -0.5, -70, 5, 0.5, -70, 5, -0.5, 70, 5, -0.5, -70, -5, 0.5, 70, -5, 0.5, -70, -5, -0.5, 70, -5, 0.5, 70, -5, -0.5, -70, -5, -0.5)
-
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ohr22"]
-data = PackedVector3Array(-70, 5, 0.5, 70, 5, 0.5, -70, -5, 0.5, 70, 5, 0.5, 70, -5, 0.5, -70, -5, 0.5, 70, 5, -0.5, -70, 5, -0.5, 70, -5, -0.5, -70, 5, -0.5, -70, -5, -0.5, 70, -5, -0.5, 70, 5, 0.5, 70, 5, -0.5, 70, -5, 0.5, 70, 5, -0.5, 70, -5, -0.5, 70, -5, 0.5, -70, 5, -0.5, -70, 5, 0.5, -70, -5, -0.5, -70, 5, 0.5, -70, -5, 0.5, -70, -5, -0.5, 70, 5, 0.5, -70, 5, 0.5, 70, 5, -0.5, -70, 5, 0.5, -70, 5, -0.5, 70, 5, -0.5, -70, -5, 0.5, 70, -5, 0.5, -70, -5, -0.5, 70, -5, 0.5, 70, -5, -0.5, -70, -5, -0.5)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_b50wl"]
+data = PackedVector3Array(150, 0, 150, -150, 0, 150, 150, 0, -150, -150, 0, 150, -150, 0, -150, 150, 0, -150)
 
 [sub_resource type="BoxMesh" id="BoxMesh_ibtpn"]
 
@@ -39,14 +34,59 @@ data = PackedVector3Array(-1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_8gp1x"]
 data = PackedVector3Array(-1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1)
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_7tv41"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f7lje"]
 
-[sub_resource type="Sky" id="Sky_k2ng5"]
-sky_material = SubResource( "ProceduralSkyMaterial_7tv41" )
+[sub_resource type="Sky" id="Sky_74of5"]
+sky_material = SubResource( "ProceduralSkyMaterial_f7lje" )
 
 [sub_resource type="Environment" id="Environment_eu07x"]
-background_mode = 2
-sky = SubResource( "Sky_k2ng5" )
+background_mode = 1
+background_energy = 2.68
+sky = SubResource( "Sky_74of5" )
+tonemap_mode = 2
+tonemap_white = 6.0
+ssao_intensity = 3.0
+ssao_light_affect = 0.59
+ssao_ao_channel_affect = 1.0
+glow_enabled = true
+glow_levels/3 = 0.0
+glow_levels/4 = 1.0
+glow_levels/7 = 1.0
+glow_normalized = true
+glow_intensity = 0.1
+glow_blend_mode = 1
+glow_hdr_threshold = 3.0
+fog_light_color = Color(0.403922, 0.25098, 0.105882, 1)
+fog_light_energy = 0.41
+fog_sun_scatter = 0.06
+fog_density = 0.0043
+fog_height = -200.0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0012
+volumetric_fog_temporal_reprojection_enabled = false
+adjustment_enabled = true
+adjustment_brightness = 1.24
+adjustment_contrast = 1.05
+adjustment_saturation = 1.61
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g8w6u"]
+size = Vector2(8, 90)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pg8ey"]
+albedo_texture = ExtResource( "9_dpoe4" )
+metallic = 1.0
+metallic_texture = ExtResource( "12_vbtrl" )
+roughness_texture = ExtResource( "14_w7soa" )
+normal_enabled = true
+normal_texture = ExtResource( "13_hqbie" )
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = ExtResource( "10_2ck1w" )
+heightmap_enabled = true
+heightmap_texture = ExtResource( "11_pgauh" )
+uv1_scale = Vector3(0.3, 0.3, 0.3)
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_er0od" )
@@ -56,15 +96,19 @@ spwanPointsPath = NodePath("spwanPoints")
 script = null
 
 [node name="Position3D" type="Position3D" parent="spwanPoints"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.7628, 10, -102.066)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -51.5247, 6.04415, 14.911)
+script = ExtResource( "2_gs0dn" )
+
+[node name="Position3D2" type="Position3D" parent="spwanPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50.3813, 6.04415, 16.6623)
 script = ExtResource( "2_gs0dn" )
 
 [node name="design" type="Node" parent="."]
 script = null
 
 [node name="ground" type="MeshInstance3D" parent="design"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 0, -70)
-material_override = SubResource( "StandardMaterial3D_tj5eh" )
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -82.6808, 0, -98.6737)
+material_override = SubResource( "StandardMaterial3D_w4pi1" )
 mesh = SubResource( "PlaneMesh_dmnbe" )
 surface_material_override/0 = null
 script = null
@@ -73,73 +117,14 @@ script = null
 script = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="design/ground/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_i0ocm" )
-script = null
-
-[node name="walls" type="Node" parent="design"]
-script = null
-
-[node name="Wall1" type="MeshInstance3D" parent="design/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 5, 0)
-mesh = SubResource( "BoxMesh_esxhw" )
-skeleton = NodePath("../..")
-surface_material_override/0 = null
-script = null
-
-[node name="StaticBody3D" type="StaticBody3D" parent="design/walls/Wall1"]
-script = null
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="design/walls/Wall1/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_ph51x" )
-script = null
-
-[node name="Wall2" type="MeshInstance3D" parent="design/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -70, 5, -140)
-mesh = SubResource( "BoxMesh_esxhw" )
-skeleton = NodePath("../..")
-surface_material_override/0 = null
-script = null
-
-[node name="StaticBody3D" type="StaticBody3D" parent="design/walls/Wall2"]
-script = null
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="design/walls/Wall2/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_jo772" )
-script = null
-
-[node name="Wall3" type="MeshInstance3D" parent="design/walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 5, -70)
-mesh = SubResource( "BoxMesh_esxhw" )
-skeleton = NodePath("../..")
-surface_material_override/0 = null
-script = null
-
-[node name="StaticBody3D" type="StaticBody3D" parent="design/walls/Wall3"]
-script = null
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="design/walls/Wall3/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_m6c47" )
-script = null
-
-[node name="Wall4" type="MeshInstance3D" parent="design/walls"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -140, 5, -70)
-mesh = SubResource( "BoxMesh_esxhw" )
-skeleton = NodePath("../..")
-surface_material_override/0 = null
-script = null
-
-[node name="StaticBody3D" type="StaticBody3D" parent="design/walls/Wall4"]
-script = null
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="design/walls/Wall4/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_ohr22" )
+shape = SubResource( "ConcavePolygonShape3D_b50wl" )
 script = null
 
 [node name="objects" type="Node" parent="design"]
 script = null
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="design/objects"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -40.7804, 0.947703, -98.3847)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.6954, 0.947703, -102.365)
 mesh = SubResource( "BoxMesh_ibtpn" )
 skeleton = NodePath("../..")
 surface_material_override/0 = null
@@ -194,10 +179,585 @@ script = null
 shape = SubResource( "ConcavePolygonShape3D_3kyle" )
 script = null
 
+[node name="buildings" type="Node" parent="design"]
+script = null
+
+[node name="untitled" parent="design/buildings" instance=ExtResource( "4_mqyks" )]
+transform = Transform3D(-6.11959e-08, 0, -1.4, 0, 1.4, 0, 1.4, 0, -6.11959e-08, 26.3, 0, 1.07516)
+
+[node name="Tower_08_Base_ACs" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="0"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Awning_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="1"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Awning_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="2"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Billboard_Construction" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="3"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Billboard_Lettering" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="4"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Doors" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="5"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Frames_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="6"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Frames_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="7"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Glass" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="8"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Rollup_Doors" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="9"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Base_Wall_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="10"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_ACs" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="11"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Awnings_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="12"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Awnings_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="13"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Billboard_Construction" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="14"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Billboard_Lettering" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="15"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Clothes" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="16"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_ClothesRack" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="17"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Curtains" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="18"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Frames_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="19"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Frames_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="20"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Glass" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="21"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Piping" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="22"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Wall_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="23"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Low_Wall_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="24"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_ACs" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="25"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Awnings_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="26"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Awnings_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="27"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Billboard_Construction" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="28"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Billboard_Lettering" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="29"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Clothes" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="30"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_ClothesRack" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="31"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Curtains" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="32"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Frames_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="33"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Frames_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="34"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Glass" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="35"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Piping" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="36"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Wall_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="37"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Mid_Wall_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="38"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 47.4558, -29.9998, -18.2041)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Scaffolding_Bamboo" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="39"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Scaffolding_Carriers" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="40"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Scaffolding_Plastic" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="41"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Scaffolding_Rope" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="42"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_ACs" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="43"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Awnings_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="44"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Awnings_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="45"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Billboard_Construction" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="46"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Billboard_Lettering" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="47"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Billboard_Spotlight" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="48"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Billboard_Spotlight_Light" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="49"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Clothes" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="50"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_ClothesRack" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="51"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Curtains" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="52"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Frames_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="53"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Frames_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="54"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Glass" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="55"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Piping" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="56"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="57"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="58"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_03" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="59"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_Assets_003" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="60"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_Assets_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="61"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Roof_Assets_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="62"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Wall_01" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="63"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_08_Top_Wall_02" parent="design/buildings/untitled/FutureSlums_TOWER08_grp" index="64"]
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="house02" parent="design/buildings" instance=ExtResource( "5_2rdcl" )]
+transform = Transform3D(-6.11959e-08, 0, -1.4, 0, 1.4, 0, 1.4, 0, -6.11959e-08, 31.2192, 0, -19.886)
+
+[node name="Tower_03_Base_Awning_003" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Awning_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Awning_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Billboard_Spotlight" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Billboard_Spotlight_Light" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Billboards_Construction" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Billboards_Lettering" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Billboards_Lettering002" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Frames" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Glass" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Rollup_Doors" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Roof" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Wall" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="12"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Base_Wall002" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="13"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_ACs" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="14"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_ClothesRack" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="15"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Curtain" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="16"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Frames_003" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="17"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Frames_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="18"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Frames_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="19"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Glass" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="20"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Level_Separators" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="21"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Piping" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="22"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Wall_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="23"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Low_Wall_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="24"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_ACs" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="25"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Billboard_Construction" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="26"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Billboard_Lettering" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="27"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Clothes" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="28"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_ClothesRack" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="29"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Curtain" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="30"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Frames_003" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="31"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Frames_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="32"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Frames_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="33"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Glass" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="34"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Level_Separators" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="35"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Piping" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="36"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Wall_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="37"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Mid_Wall_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="38"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_ACs" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="39"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Clothes" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="40"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_ClothesRacks" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="41"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Curtain" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="42"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Frames_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="43"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Frames_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="44"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Glass" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="45"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Level_Separators" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="46"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Piping" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="47"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Roof" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="48"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Roof_Assets_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="49"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Roof_Assets_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="50"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Wall_004" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="51"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Wall_01" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="52"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Wall_02" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="53"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="Tower_03_Top_Wall_03" parent="design/buildings/house02/FutureSlums_TOWER03_grp" index="54"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -88.0227, -30.1994, -17.4385)
+lod_bias = 15.0
+visibility_range_end = 200.0
+
+[node name="garage" parent="design/buildings" instance=ExtResource( "6_al68b" )]
+transform = Transform3D(0.0965926, 0.0258819, 0, -0.0258819, 0.0965926, 0, 0, 0, 0.1, 19.8659, -5.65426, -100.65)
+
+[node name="Node" type="Node" parent="design/buildings"]
+script = null
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_eu07x" )
 script = null
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.569394, 0.822065, 0, -0.822065, 0.569394, 0, 3.60044, 2.53768)
+transform = Transform3D(1, 0, 0, 0, 0.575005, 0.81815, 0, -0.81815, 0.575005, -42.8948, 22.5923, 162.383)
 script = null
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.24396, 0.239005, -58.175)
+mesh = SubResource( "PlaneMesh_g8w6u" )
+surface_material_override/0 = SubResource( "StandardMaterial3D_pg8ey" )
+script = null
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1326, 6.33218, -38.0206)
+light_color = Color(0.839216, 0.803922, 1, 1)
+light_energy = 20.0
+omni_range = 40.0
+script = null
+
+[node name="OmniLight3D2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.1326, 6.33218, -70.2388)
+light_color = Color(0.603922, 0.854902, 1, 1)
+light_energy = 20.0
+omni_range = 40.0
+script = null
+
+[editable path="design/buildings/untitled"]
+[editable path="design/buildings/house02"]
+[editable path="design/buildings/garage"]

@@ -32,6 +32,8 @@ namespace FPS.Game.Logic.Server
         [Export]
         public string levelPath = "Levels/ExampleLevel.tscn";
 
+        public Error levelState = Error.Failed;
+
         public override void _Ready()
         {
             InitNetwork();
@@ -48,7 +50,8 @@ namespace FPS.Game.Logic.Server
             CustomMultiplayer.Connect("peer_disconnected", new Callable(this, "onPlayerDisconnect"));
 
             this.loadWorld();
-            this.World.loadLevel(this.levelPath);
+
+            levelState = this.World.loadLevel(this.levelPath);
             this.World.setFreeMode(true);
         }
 
@@ -64,20 +67,32 @@ namespace FPS.Game.Logic.Server
         public void onPlayerConnect(int id)
         {
             GD.Print("[Server] Client " + id.ToString() + " connected.");
-            RpcId(id, "serverAuthSuccessfull", levelPath);
+
+            if (levelState != Error.Ok)
+            {
+                GD.Print("Server not ready now");
+            }
+            else
+            {
+                RpcId(id, "serverAuthSuccessfull", levelPath);
+            }
         }
 
-        [Remote]
+        [AnyPeer]
         public override void mapLoadedSuccessfull()
         {
             var id = Multiplayer.GetRemoteSenderId();
-            GD.Print("[Server] Client " + id.ToString() + " world loaded.");
 
             var spwanPoint = this.World.Level.findFreeSpwanPoint();
-
             if (spwanPoint != null)
             {
-                this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
+                spwanPoint.inUsage = true;
+                GD.Print("[Server] Client " + id.ToString() + " world loaded.");
+
+                var player = this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
+
+                Rpc("spwanPlayer", id, spwanPoint.GlobalTransform.origin);
+
             }
         }
 
