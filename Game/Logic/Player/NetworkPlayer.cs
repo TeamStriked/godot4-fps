@@ -10,6 +10,7 @@ namespace FPS.Game.Logic.Player
 
         private float currentJumpTime = 0.0f;
 
+        public abstract bool isServerPlayer();
 
         public override void _PhysicsProcess(float delta)
         {
@@ -59,6 +60,8 @@ namespace FPS.Game.Logic.Player
                 calculatedFrame.shifting = false;
 
                 Vector3 prevMove = new Vector3(playerChar.MotionVelocity.x, 0, playerChar.MotionVelocity.z);
+
+
                 Vector3 nextMove = AirAccelerate(relativeDir, prevMove, wishSpeed, Accel, delta);
                 nextMove.y = playerChar.MotionVelocity.y;
                 nextMove.y -= gravity * delta;
@@ -141,11 +144,27 @@ namespace FPS.Game.Logic.Player
                 this.setPlayerCollider(calculatedFrame, delta);
 
                 ApplyFriction(ref relativeDir, delta);
-                Accelerate(ref calculatedFrame.velocity, relativeDir, Accel, Deaccel, delta);
+                var _accel = Accel;
+                var _deaccel = Deaccel;
+
+
+                if (input.y == 0 && input.x != 0)
+                {
+                    accel = sideStrafeAcceleration;
+                    deaccel = sideStrafeAcceleration;
+                }
+
+                Accelerate(ref calculatedFrame.velocity, relativeDir, _accel, _deaccel, delta);
             }
 
             currentJumpTime = Mathf.Clamp(currentJumpTime - delta, 0, jumpCoolDown);
             return calculatedFrame;
+        }
+
+
+        [AnyPeer]
+        public virtual void onClientInput(string inputMessage)
+        {
         }
 
         public override void _EnterTree()
@@ -154,23 +173,14 @@ namespace FPS.Game.Logic.Player
 
             RpcConfig("onNetworkTeleport", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("onPuppetUpdate", RPCMode.Auth, false, TransferMode.Reliable);
-
-            RpcConfig("onClientInput", RPCMode.AnyPeer, false, TransferMode.Unreliable);
             RpcConfig("onClientInput", RPCMode.AnyPeer, false, TransferMode.Unreliable);
 
             var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/CharacterInstance.tscn");
             scene.ResourceLocalToScene = true;
             var character = (CharacterInstance)scene.Instantiate();
-
             this.AddChild(character);
             this.playerChar = character;
         }
-
-        [AnyPeer]
-        public virtual void onClientInput(string inputMessage)
-        {
-        }
-
 
         protected void handleAnimation()
         {
@@ -315,7 +325,7 @@ namespace FPS.Game.Logic.Player
 
 
         [Export]
-        protected float Friction = 15;
+        protected float Friction = 6;
 
         [Export] protected float FrictionSpeedThreshold = 0.5f;
 
@@ -334,6 +344,8 @@ namespace FPS.Game.Logic.Player
         [Export]
         protected float currentSpeedAmount = 1.0f;
 
+        protected float sideStrafeAcceleration = 50.0f;
+
         [Export]
         protected float walkSpeed = 2.6f;
 
@@ -344,13 +356,15 @@ namespace FPS.Game.Logic.Player
         protected float defaultSpeed = 6.5f;
 
         [Export]
-        protected float Accel = 6;
+        protected float Accel = 14.0f;
 
         [Export]
-        protected float Deaccel = 8; //start speed
+        protected float Deaccel = 10.0f; //start speed
 
         [Export]
-        protected float FlyAccel = 4; // stop speed
+        protected float FlyAccel = 2.0f; // stop speed
+
+        public float sideStrafeSpeed = 1.0f;
 
         [Export]
         protected float jumpForce = 8.5f;

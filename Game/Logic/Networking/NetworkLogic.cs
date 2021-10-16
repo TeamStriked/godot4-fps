@@ -6,6 +6,8 @@ namespace FPS.Game.Logic.Networking
 {
     public abstract partial class NetworkLogic : Node
     {
+        protected abstract void OnGameWorldResourceLoaded();
+
         protected ENetMultiplayerPeer network = null;
         protected GameWorld _world = null;
 
@@ -34,7 +36,6 @@ namespace FPS.Game.Logic.Networking
 
             network = new ENetMultiplayerPeer();
 
-
             GetTree().Connect("node_added", new Callable(this, "onNodeUpdate"));
             attachNodesToNetwork(this);
         }
@@ -46,6 +47,8 @@ namespace FPS.Game.Logic.Networking
             {
                 CustomMultiplayer.Poll();
             }
+
+
         }
 
         private void onNodeUpdate(Node node)
@@ -85,24 +88,24 @@ namespace FPS.Game.Logic.Networking
             }
         }
 
-
-        protected void loadWorld()
+        protected void loadWorldThreaded()
         {
-            GD.Print("Loading game world.");
+            var scene = ResourceLoader.Load("res://Game/Logic/World/GameWorld.tscn") as PackedScene;
 
-            var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/World/GameWorld.tscn");
+            GD.Print("Add game world..");
             scene.ResourceLocalToScene = true;
-
             this._world = (GameWorld)scene.Instantiate();
             this._world.Name = "World";
+
             AddChild(this._world);
+            OnGameWorldResourceLoaded();
         }
 
         protected void destroyWorld()
         {
-
+            RemoveChild(this._world);
+            this._world = null;
         }
-
 
         [Authority]
         public virtual void serverAuthSuccessfull(string levelName)

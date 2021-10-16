@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FPS.Game.Logic.Server
 {
@@ -49,19 +51,26 @@ namespace FPS.Game.Logic.Server
             CustomMultiplayer.Connect("peer_connected", new Callable(this, "onPlayerConnect"));
             CustomMultiplayer.Connect("peer_disconnected", new Callable(this, "onPlayerDisconnect"));
 
-            this.loadWorld();
+            this.loadWorldThreaded();
+        }
 
-            levelState = this.World.loadLevel(this.levelPath);
-            this.World.setFreeMode(true);
+        protected override void OnGameWorldResourceLoaded()
+        {
+            GD.Print("Game world loaded successfull");
+            this.World.OnGameLevelLoadedSuccessfull += this.OnLevelLoadedSuccesfull;
+            this.World.loadLevelThreaded(this.levelPath);
+        }
+
+        protected void OnLevelLoadedSuccesfull()
+        {
+            this.World.setFreeMode(false);
+            this.levelState = Error.Ok;
         }
 
         public void onPlayerDisconnect(int id)
         {
             GD.Print("[Server] Client " + id.ToString() + " disconnected.");
-
-            var p = GetNode("world/players").GetNodeOrNull(id.ToString());
-            if (p != null)
-                p.QueueFree();
+            this.World.removePlayer(id);
         }
 
         public void onPlayerConnect(int id)
@@ -92,7 +101,6 @@ namespace FPS.Game.Logic.Server
                 var player = this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
 
                 Rpc("spwanPlayer", id, spwanPoint.GlobalTransform.origin);
-
             }
         }
 

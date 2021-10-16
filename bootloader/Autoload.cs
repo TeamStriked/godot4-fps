@@ -9,8 +9,5 @@ namespace Game.bootloader
         {
             ConfigValues.loadSettings();
         }
-
-
-
     }
 }

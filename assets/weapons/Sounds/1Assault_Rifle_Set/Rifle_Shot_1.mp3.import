@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://byhp51a3kxm37"
+path="res://.godot/imported/Rifle_Shot_1.mp3-d574194f784f01bc0a4c8ebe4fdb21b0.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/1Assault_Rifle_Set/Rifle_Shot_1.mp3"
+dest_files=["res://.godot/imported/Rifle_Shot_1.mp3-d574194f784f01bc0a4c8ebe4fdb21b0.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

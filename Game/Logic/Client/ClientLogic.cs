@@ -5,12 +5,17 @@ using FPS.Game.UI;
 
 namespace FPS.Game.Logic.Client
 {
-    public partial class ClientLogic : Game.Logic.Networking.NetworkLogic
+    public partial class ClientLogic : FPS.Game.Logic.Networking.NetworkLogic
     {
         [Export]
         NodePath settingsMenuPath = null;
 
+        [Export]
+        NodePath mainMenuPath = null;
+
         GameSettings settingsMenu = null;
+
+        MainMenu mainMenu = null;
 
         [Export]
         public string hostname = "localhost";
@@ -19,15 +24,19 @@ namespace FPS.Game.Logic.Client
         public int port = 27015;
 
         [Export]
-        public bool autoLogin = true;
+        public bool autoLogin = false;
 
         private int ownNetworkId = 0;
 
+        public static int serverId = 1;
+
+        private string currentLevelName = "";
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
             this.settingsMenu = GetNode(settingsMenuPath) as GameSettings;
+            this.mainMenu = GetNode(mainMenuPath) as MainMenu;
 
             InitNetwork();
 
@@ -35,9 +44,11 @@ namespace FPS.Game.Logic.Client
             CustomMultiplayer.Connect("connection_failed", new Callable(this, "onConnectionFailed"));
             CustomMultiplayer.Connect("server_disconnected", new Callable(this, "onDisconnect"));
 
+            this.mainMenu.onUpdateConnectEvent += this.doConnect;
+
             if (autoLogin)
             {
-                this.doConnect();
+                this.doConnect(hostname, port);
             }
 
             foreach (var id in DisplayServer.GetWindowList())
@@ -49,12 +60,22 @@ namespace FPS.Game.Logic.Client
         [Authority]
         public override void serverAuthSuccessfull(string levelName)
         {
-            loadWorld();
+            serverId = Multiplayer.GetRemoteSenderId();
+            this.currentLevelName = levelName;
+            loadWorldThreaded();
+        }
 
-            this.World.loadLevel(levelName);
+        protected override void OnGameWorldResourceLoaded()
+        {
+            this.World.OnGameLevelLoadedSuccessfull += this.OnLevelLoadedSuccesfull;
+            this.World.loadLevelThreaded(this.currentLevelName);
+        }
+
+        protected void OnLevelLoadedSuccesfull()
+        {
+            GD.Print("Level loaded successfull");
             this.World.setFreeMode(false);
-
-            RpcId(0, "mapLoadedSuccessfull");
+            RpcId(serverId, "mapLoadedSuccessfull");
         }
 
         [AnyPeer]
@@ -63,8 +84,9 @@ namespace FPS.Game.Logic.Client
             GD.Print("Server not read");
         }
 
-        public void doConnect()
+        public void doConnect(string hostname, int port)
         {
+            this.mainMenu.Hide();
             var realIP = IP.ResolveHostname(hostname, IP.Type.Ipv4);
             if (realIP.IsValidIPAddress())
             {
@@ -74,6 +96,8 @@ namespace FPS.Game.Logic.Client
                 if (error != Error.Ok)
                 {
                     drawSystemMessage("Network error:" + error.ToString());
+                    this.mainMenu.ProcessMode = ProcessModeEnum.Disabled;
+                    this.mainMenu.Show();
                 }
 
                 CustomMultiplayer.MultiplayerPeer = network;
@@ -92,6 +116,7 @@ namespace FPS.Game.Logic.Client
         public void onDisconnect()
         {
             drawSystemMessage("Server disconnected.");
+            this.destroyWorld();
         }
 
         public void onConnected()
@@ -129,7 +154,7 @@ namespace FPS.Game.Logic.Client
         [Authority]
         public override void spwanPlayer(int id, Vector3 origin)
         {
-            GD.Print("player spwaned with id " + id + " on " + this.ownNetworkId + " on location " + origin);
+            GD.Print("player spwaned with id " + id + " on " + this.ownNetworkId + " on location " + origin + " serverID " + serverId);
 
             if (id == this.ownNetworkId)
             {

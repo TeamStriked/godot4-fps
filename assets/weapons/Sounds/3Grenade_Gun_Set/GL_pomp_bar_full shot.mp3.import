@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://da5uphhwc533n"
+path="res://.godot/imported/GL_pomp_bar_full shot.mp3-e8cfcba469c7dd1ecf014a81f2ac1d04.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/3Grenade_Gun_Set/GL_pomp_bar_full shot.mp3"
+dest_files=["res://.godot/imported/GL_pomp_bar_full shot.mp3-e8cfcba469c7dd1ecf014a81f2ac1d04.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

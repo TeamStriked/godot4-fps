@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://boc4txym058ty"
+path="res://.godot/imported/Flashlight_Hit 2.mp3-f2463c4473f0faf47300c925ee0777b1.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/2Flashlight_Set/Flashlight_Hit 2.mp3"
+dest_files=["res://.godot/imported/Flashlight_Hit 2.mp3-f2463c4473f0faf47300c925ee0777b1.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

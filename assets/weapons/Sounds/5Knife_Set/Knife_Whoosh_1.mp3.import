@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://do4hsx4fpedrt"
+path="res://.godot/imported/Knife_Whoosh_1.mp3-cef73cdf0c575f6596059b553d89db57.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/5Knife_Set/Knife_Whoosh_1.mp3"
+dest_files=["res://.godot/imported/Knife_Whoosh_1.mp3-cef73cdf0c575f6596059b553d89db57.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

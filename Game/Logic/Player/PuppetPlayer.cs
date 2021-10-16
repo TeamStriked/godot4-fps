@@ -5,6 +5,11 @@ namespace FPS.Game.Logic.Player
 {
     public partial class PuppetPlayer : NetworkPlayer
     {
+        public override bool isServerPlayer()
+        {
+            return false;
+        }
+
         // Declare member variables here. Examples:
         // private int a = 2;
         // private string b = "text";

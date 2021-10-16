@@ -9,9 +9,9 @@ namespace FPS.Game.Logic.Player
     {
         bool calculated = false;
 
-        public override void _EnterTree()
+        public override bool isServerPlayer()
         {
-            base._EnterTree();
+            return true;
         }
 
         Queue<InputFrame> inputQueue = new Queue<InputFrame>();
@@ -41,7 +41,7 @@ namespace FPS.Game.Logic.Player
             puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
 
             var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
-            Rpc("onPuppetUpdate", sendMessage);
+            //    Rpc("onPuppetUpdate", sendMessage);
         }
 
         [AnyPeer]

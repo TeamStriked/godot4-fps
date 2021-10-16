@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bcyn0bdh2wu5r"
+path="res://.godot/imported/Shot_4.mp3-47ac152bf2da6cee54488e43f836c5b4.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/9Run_Set/Shot_4.mp3"
+dest_files=["res://.godot/imported/Shot_4.mp3-47ac152bf2da6cee54488e43f836c5b4.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1kwltirt34k1"]
+
+[ext_resource type="Script" path="res://Game/UI/MainMenu.cs" id="1_yotma"]
+
+[node name="MeinMenu" type="CanvasLayer"]
+script = ExtResource( "1_yotma" )
+hostNodePath = NodePath("VBoxContainer/Hostname")
+portNodePath = NodePath("VBoxContainer/Port")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hostname" type="LineEdit" parent="VBoxContainer"]
+offset_right = 1024.0
+offset_bottom = 33.0
+text = "localhost"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="Port" type="LineEdit" parent="VBoxContainer"]
+offset_top = 37.0
+offset_right = 1024.0
+offset_bottom = 70.0
+text = "27015"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+offset_top = 74.0
+offset_right = 1024.0
+offset_bottom = 103.0
+text = "Connect"
+script = null
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="onConnectButtonPressed"]

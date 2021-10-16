@@ -1,0 +1,82 @@
+[gd_scene load_steps=8 format=3 uid="uid://dxv64j8sckyun"]
+
+[ext_resource type="PackedScene" uid="uid://davgka064e23s" path="res://assets/weapons/Weapons_New/Rifle.glb" id="1_w27dx"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m4de1"]
+filters = []
+animation = &"Hands_Automatic_rifle006"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8v7wu"]
+filters = []
+animation = &"Hands_Automatic_rifle006"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2i7g8"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_187ox"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_selep"]
+states/Hands_Automatic_rifle006/node = SubResource( "AnimationNodeAnimation_8v7wu" )
+states/Hands_Automatic_rifle006/position = Vector2(701, 51)
+"states/Hands_Automatic_rifle006 2/node" = SubResource( "AnimationNodeAnimation_m4de1" )
+"states/Hands_Automatic_rifle006 2/position" = Vector2(1178, 91)
+transitions = [&"Hands_Automatic_rifle006", &"Hands_Automatic_rifle006 2", SubResource( "AnimationNodeStateMachineTransition_2i7g8" ), &"Hands_Automatic_rifle006 2", &"Hands_Automatic_rifle006", SubResource( "AnimationNodeStateMachineTransition_187ox" )]
+start_node = "Hands_Automatic_rifle006"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_lad3q"]
+
+[node name="rifle" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0799415, -0.85216, -0.0557529)
+script = null
+
+[node name="Rifle" parent="." instance=ExtResource( "1_w27dx" )]
+
+[node name="Character001" parent="Rifle/Hands_Automatic_rifle" index="1"]
+transform = Transform3D(1.23323e-14, -2.8213e-07, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -2.8213e-07, 4.0829e-06, 0, -0.0159189)
+
+[node name="Character001Hub001" parent="Rifle/Hands_Automatic_rifle" index="2"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
+
+[node name="Skeleton3D" parent="Rifle/Hands_Automatic_rifle/Character001Hub001" index="0"]
+bones/1/rotation = Quaternion(-0.11092, -0.322492, -0.142313, 0.929214)
+bones/2/rotation = Quaternion(0.798934, -1.21098e-05, 5.21312e-06, 0.601416)
+bones/3/rotation = Quaternion(-3.5405e-08, -0.29056, 6.68986e-09, 0.956857)
+bones/4/rotation = Quaternion(-0.167647, -0.819751, 0.328867, 0.437892)
+bones/21/rotation = Quaternion(0.353853, -0.310703, 0.371038, 0.800364)
+bones/22/rotation = Quaternion(0.923598, -1.5145e-05, 1.03098e-05, 0.383362)
+bones/23/rotation = Quaternion(-9.34111e-08, 0.0512924, -5.32966e-08, 0.998683)
+bones/24/rotation = Quaternion(0.0771317, 0.582103, -0.616167, 0.524924)
+
+[node name="Character001LArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="3"]
+transform = Transform3D(0.480843, -0.842654, -0.242335, -0.091627, -0.323163, 0.941897, -0.872006, -0.430702, -0.2326, -0.033002, 1.48092, -0.571992)
+
+[node name="Character001RArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="4"]
+transform = Transform3D(-0.117026, 0.979915, 0.161424, -0.0764939, 0.153163, -0.98524, -0.990181, -0.127645, 0.057034, 0.0418623, 1.42904, -0.247041)
+
+[node name="Hp_Scar_Base" parent="Rifle/Hands_Automatic_rifle" index="6"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.46579, -0.246684)
+
+[node name="Hp_Scar_Magazine" parent="Rifle/Hands_Automatic_rifle" index="7"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.53674e-09, 1.44654, -0.391578)
+
+[node name="Skeleton3D3" parent="Rifle/Hands_Automatic_rifle/Hp_Scar_Magazine" index="0"]
+bones/0/position = Vector3(6.52295e-10, 0.00249775, -0.0369196)
+
+[node name="Skeleton3D4" parent="Rifle/Hands_Automatic_rifle" index="9"]
+bones/0/position = Vector3(0.0082091, 1.56589, -0.370117)
+bones/0/rotation = Quaternion(0.49959, -0.49959, 0.50041, 0.50041)
+
+[node name="AnimationPlayer" parent="Rifle" index="1"]
+blend_times = []
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( "AnimationNodeStateMachine_selep" )
+anim_player = NodePath("../Rifle/AnimationPlayer")
+active = true
+parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_lad3q" )
+script = null
+
+[editable path="Rifle"]

@@ -4,11 +4,16 @@ using FPS.Game.Utils;
 using System.Collections.Generic;
 using FPS.Game.Config;
 using FPS.Game.Logic.Player.Handler;
+using FPS.Game.Logic.Client;
 
 namespace FPS.Game.Logic.Player
 {
     public partial class LocalPlayer : NetworkPlayer
     {
+        public override bool isServerPlayer()
+        {
+            return false;
+        }
 
         const int _averageFromThisManySteps = 3;
 
@@ -71,9 +76,8 @@ namespace FPS.Game.Logic.Player
 
             //send input frame to server
             var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(inputFrame);
-            RpcId(0, "onClientInput", sendMessage);
 
-
+            RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
 
             //fix godot issue
             handleAnimation();

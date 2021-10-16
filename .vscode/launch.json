@@ -1,0 +1,51 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Client",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "C:\\godot4\\godot\\bin\\godot.windows.opt.tools.64.mono.exe",
+      // Change the arguments below for the project you want to test with.
+      // To run the project instead of editing it, remove the "--editor" argument.
+      "args": [
+        "--path",
+        "C:\\Game",
+        "-client"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole"
+    },
+    {
+      "name": "Server",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "C:\\godot4\\godot\\bin\\godot.windows.opt.tools.64.mono.exe",
+      // Change the arguments below for the project you want to test with.
+      // To run the project instead of editing it, remove the "--editor" argument.
+      "args": [
+        "--path",
+        "C:\\Game",
+        "-server"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Server/Client",
+      "configurations": [
+        "Server",
+        "Client"
+      ]
+    }
+  ]
+}

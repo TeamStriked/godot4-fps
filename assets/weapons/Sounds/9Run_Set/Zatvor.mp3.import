@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bvoddmxh7od7a"
+path="res://.godot/imported/Zatvor.mp3-40785f01e89b81a5e1423423629ca2df.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/9Run_Set/Zatvor.mp3"
+dest_files=["res://.godot/imported/Zatvor.mp3-40785f01e89b81a5e1423423629ca2df.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

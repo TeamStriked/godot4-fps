@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpmheu61nrn80"]
+
+[ext_resource type="PackedScene" uid="uid://c46uskf5jbvna" path="res://Levels/sci_fi_level_design/scene.gltf" id="1_ksuuh"]
+
+[node name="scene" instance=ExtResource( "1_ksuuh" )]

@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://db6iichax0bo3"
+path="res://.godot/imported/Grenade_PullPin 3.mp3-024727b87e002b03316bd6a79fd8bdea.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/4Grenade_Set/Grenade_PullPin 3.mp3"
+dest_files=["res://.godot/imported/Grenade_PullPin 3.mp3-024727b87e002b03316bd6a79fd8bdea.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

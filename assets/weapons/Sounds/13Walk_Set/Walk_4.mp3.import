@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://di1ab0l72l0uo"
+path="res://.godot/imported/Walk_4.mp3-14549299de20ec6ad3649829abebb8d3.mp3str"
+
+[deps]
+
+source_file="res://assets/weapons/Sounds/13Walk_Set/Walk_4.mp3"
+dest_files=["res://.godot/imported/Walk_4.mp3-14549299de20ec6ad3649829abebb8d3.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

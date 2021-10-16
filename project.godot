@@ -84,6 +84,10 @@ settings/stdout/verbose_stdout=true
 
 window/vsync/vsync_mode=0
 
+[editor]
+
+run/main_run_args="-serverclient"
+
 [input]
 
 game_moveForward={
@@ -157,11 +161,17 @@ game_reset_tp={
 export/include_scripts_content=true
 export/aot/enabled=true
 
+[network]
+
+limits/tcp/connect_timeout_seconds=320
+
 [physics]
 
+2d/run_on_thread=true
 3d/run_on_thread=true
 
 [rendering]
 
+driver/threads/thread_model=2
 textures/lossless_compression/force_png=true
 environment/defaults/default_environment="res://default_env.tres"
