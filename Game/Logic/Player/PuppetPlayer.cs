@@ -41,5 +41,10 @@ namespace FPS.Game.Logic.Player
             this.playerChar.setAnimationTimeScale(puppetFrame.currentAnimationTime);
         }
 
+        public override void Activate()
+        {
+
+        }
+
     }
 }

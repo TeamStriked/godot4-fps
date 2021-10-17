@@ -11,6 +11,8 @@ namespace FPS.Game.Logic.Player
         private float currentJumpTime = 0.0f;
 
         public abstract bool isServerPlayer();
+        public abstract void Activate();
+
 
         public override void _PhysicsProcess(float delta)
         {

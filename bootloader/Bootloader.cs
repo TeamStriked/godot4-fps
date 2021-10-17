@@ -39,9 +39,6 @@ public partial class Bootloader : Node
     {
         GD.Print("Bootloading..");
 
-        //load to cache
-        ResourceLoader.Load("res://Game/Logic/Player/CharacterInstance.tscn");
-
         if (OS.GetCmdlineArgs().Contains("-server"))
         {
             this.createServerWindow();
@@ -50,13 +47,9 @@ public partial class Bootloader : Node
         {
             this.createClientWindow();
         }
-        else if (OS.GetCmdlineArgs().Contains("-serverclient") || OS.GetCmdlineArgs().Contains("-clientserver"))
-        {
-            this.createServerWindow("ServerWindow");
-            this.createClientWindow("ClientWindow");
-        }
         else
         {
+            this.createServerWindow("ServerWindow");
             this.createClientWindow("ClientWindow");
         }
 

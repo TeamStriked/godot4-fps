@@ -16,32 +16,38 @@
         "C:\\Game",
         "-client"
       ],
+      "noDebug": true,
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "console": "internalConsole"
+      "console": "internalConsole",
+      "preLaunchTask": "build"
     },
     {
       "name": "Server",
       "type": "cppvsdbg",
       "request": "launch",
+      "noDebug": true,
       "program": "C:\\godot4\\godot\\bin\\godot.windows.opt.tools.64.mono.exe",
       // Change the arguments below for the project you want to test with.
       // To run the project instead of editing it, remove the "--editor" argument.
       "args": [
         "--path",
+        "--headless",
         "C:\\Game",
         "-server"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "console": "internalConsole"
+      "console": "internalConsole",
+      "preLaunchTask": "build"
     },
     {
       "name": "ServerWithClient",
       "type": "cppvsdbg",
       "request": "launch",
+      "noDebug": true,
       "program": "C:\\godot4\\godot\\bin\\godot.windows.opt.tools.64.mono.exe",
       // Change the arguments below for the project you want to test with.
       // To run the project instead of editing it, remove the "--editor" argument.
@@ -53,7 +59,8 @@
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],
-      "console": "internalConsole"
+      "console": "internalConsole",
+      "preLaunchTask": "build"
     },
   ],
   "compounds": [
@@ -61,6 +68,14 @@
       "name": "Server/Client",
       "configurations": [
         "Server",
+        "Client"
+      ]
+    },
+    {
+      "name": "Server/Client/Client",
+      "configurations": [
+        "Server",
+        "Client",
         "Client"
       ]
     }

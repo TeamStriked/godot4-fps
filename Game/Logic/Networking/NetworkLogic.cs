@@ -16,9 +16,9 @@ namespace FPS.Game.Logic.Networking
             get { return this._world; }
         }
 
-        public override void _Ready()
+        public override void _EnterTree()
         {
-            base._Ready();
+            base._EnterTree();
 
             RpcConfig("spwanPlayer", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("serverAuthSuccessfull", RPCMode.Auth, false, TransferMode.Reliable);
@@ -36,7 +36,7 @@ namespace FPS.Game.Logic.Networking
 
             network = new ENetMultiplayerPeer();
 
-            GetTree().Connect("node_added", new Callable(this, "onNodeUpdate"));
+            GetTree().NodeAdded += onNodeUpdate;
             attachNodesToNetwork(this);
         }
 
@@ -103,8 +103,10 @@ namespace FPS.Game.Logic.Networking
 
         protected void destroyWorld()
         {
-            RemoveChild(this._world);
-            this._world = null;
+            if (this._world != null)
+            {
+                this._world.QueueFree();
+            }
         }
 
         [Authority]

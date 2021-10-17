@@ -35,12 +35,13 @@ namespace FPS.Game.UI
 
         public void Hide()
         {
-            (GetNode("VBoxContainer") as VBoxContainer).Visible = false;
+            (GetNode("AspectRatioContainer") as AspectRatioContainer).Visible = false;
         }
 
         public void Show()
         {
-            (GetNode("VBoxContainer") as VBoxContainer).Visible = false;
+            Input.SetMouseMode(Input.MouseMode.Visible);
+            (GetNode("AspectRatioContainer") as AspectRatioContainer).Visible = true;
         }
 
     }

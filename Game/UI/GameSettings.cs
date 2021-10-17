@@ -8,6 +8,9 @@ namespace FPS.Game.UI
 {
     public partial class GameSettings : CanvasLayer
     {
+        public delegate void DisconnectEvent();
+        public event DisconnectEvent OnDisconnect;
+
         [Export]
         NodePath sensPathX = null;
 
@@ -17,6 +20,9 @@ namespace FPS.Game.UI
         SpinBox sensX = null;
         SpinBox sensY = null;
 
+
+        [Export]
+        NodePath disconnectPath = null;
 
         [Export]
         NodePath containerPath = null;
@@ -42,6 +48,7 @@ namespace FPS.Game.UI
         Control rootContainer = null;
 
         Button closeButton = null;
+        Button disconnectButton = null;
         VBoxContainer keyListContainer = null;
         KeyConfirmationDialog keyChangeDialog = null;
 
@@ -86,6 +93,7 @@ namespace FPS.Game.UI
 
             this.container = GetNode(containerPath) as TabContainer;
             this.closeButton = GetNode(closeButtonPath) as Button;
+            this.disconnectButton = GetNode(disconnectPath) as Button;
             this.rootContainer = GetNode(rootContainerPath) as Control;
             this.resChanger = GetNode(resChangerPath) as OptionButton;
             this.windowModeChanger = GetNode(windowModeChangerPath) as OptionButton;
@@ -98,6 +106,11 @@ namespace FPS.Game.UI
             this.getCurentList();
 
             this.rootContainer.Visible = false;
+
+            this.disconnectButton.PressedSignal += () =>
+            {
+                OnDisconnect();
+            };
 
             this.closeButton.PressedSignal += () =>
             {

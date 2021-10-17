@@ -76,6 +76,8 @@ namespace FPS.Game.Logic.Player
 
         public override void _Process(float delta)
         {
+            base._Process(delta);
+
             if (zoomIn)
             {
                 this._camera.Fov = Mathf.Lerp(this._camera.Fov, this.zoomFov, this.zoomInSpeed * delta);

@@ -89,6 +89,8 @@ namespace FPS.Game.Logic.Player
          */
         public override void _Process(float delta)
         {
+            base._Process(delta);
+
             if (!canHandleInput)
                 return;
 
@@ -142,7 +144,7 @@ namespace FPS.Game.Logic.Player
         }
         bool rightMouseActivated = false;
 
-        public void Activate()
+        public override void Activate()
         {
             this.canHandleInput = true;
             Input.SetMouseMode(Input.MouseMode.Captured);

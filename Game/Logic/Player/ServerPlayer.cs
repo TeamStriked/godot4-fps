@@ -50,5 +50,10 @@ namespace FPS.Game.Logic.Player
             var lastInput = FPS.Game.Utils.NetworkCompressor.Decompress<InputFrame>(inputMessage);
             inputQueue.Enqueue(lastInput);
         }
+
+        public override void Activate()
+        {
+
+        }
     }
 }

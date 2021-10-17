@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbl04vs22n25t"]
+[gd_scene load_steps=8 format=3 uid="uid://cbl04vs22n25t"]
 
 [ext_resource type="Script" path="res://Game/Logic/Client/ClientLogic.cs" id="1_dkyj0"]
 [ext_resource type="PackedScene" uid="uid://dow0pu0j22ngt" path="res://Game/UI/GameGraph.tscn" id="2_5u5hg"]
 [ext_resource type="PackedScene" uid="uid://deynymxhg7n2j" path="res://Game/UI/Hud.tscn" id="2_jf8mw"]
 [ext_resource type="PackedScene" uid="uid://d1kwltirt34k1" path="res://Game/UI/MainMenu.tscn" id="2_jkewe"]
 [ext_resource type="PackedScene" uid="uid://bavql442hmhry" path="res://Game/UI/GameSettings.tscn" id="3_03v1k"]
+[ext_resource type="Script" path="res://Game/UI/Hud.cs" id="3_bj33j"]
 
 [sub_resource type="World3D" id="World3D_866it"]
 
@@ -42,6 +43,7 @@ settingsMenuPath = NodePath("GameSettings")
 mainMenuPath = NodePath("MainMenu")
 
 [node name="Hud" parent="viewport/Root" instance=ExtResource( "2_jf8mw" )]
+script = ExtResource( "3_bj33j" )
 
 [node name="GameGraph" parent="viewport/Root" instance=ExtResource( "2_5u5hg" )]
 

@@ -36,7 +36,7 @@ namespace FPS.Game.Logic.Server
 
         public Error levelState = Error.Failed;
 
-        public override void _Ready()
+        public override void _EnterTree()
         {
             InitNetwork();
 
@@ -48,8 +48,8 @@ namespace FPS.Game.Logic.Server
 
             GD.Print("[Server] started at port " + port);
 
-            CustomMultiplayer.Connect("peer_connected", new Callable(this, "onPlayerConnect"));
-            CustomMultiplayer.Connect("peer_disconnected", new Callable(this, "onPlayerDisconnect"));
+            CustomMultiplayer.PeerConnected += onPlayerConnect;
+            CustomMultiplayer.PeerDisconnected += onPlayerDisconnect;
 
             this.loadWorldThreaded();
         }
@@ -98,8 +98,7 @@ namespace FPS.Game.Logic.Server
                 spwanPoint.inUsage = true;
                 GD.Print("[Server] Client " + id.ToString() + " world loaded.");
 
-                var player = this.World.spwanServerPlayer(id, spwanPoint.GlobalTransform.origin);
-
+                this.World.spwanPlayer(id, spwanPoint.GlobalTransform.origin, Player.PlayerType.Server);
                 Rpc("spwanPlayer", id, spwanPoint.GlobalTransform.origin);
             }
         }
@@ -114,6 +113,8 @@ namespace FPS.Game.Logic.Server
             GD.Print("[Server][Player][" + id + "] Disconnect Reason:" + message);
             //RpcId(id, "forceDisconnect", message);
             network.GetPeer(id).PeerDisconnect();
+
+            this.World.removePlayer(id);
         }
     }
 

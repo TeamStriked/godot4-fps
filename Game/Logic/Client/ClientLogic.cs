@@ -33,17 +33,15 @@ namespace FPS.Game.Logic.Client
         private string currentLevelName = "";
 
         // Called when the node enters the scene tree for the first time.
-        public override void _Ready()
+        public override void _EnterTree()
         {
             this.settingsMenu = GetNode(settingsMenuPath) as GameSettings;
             this.mainMenu = GetNode(mainMenuPath) as MainMenu;
 
             InitNetwork();
-
-            CustomMultiplayer.Connect("connected_to_server", new Callable(this, "onConnected"));
-            CustomMultiplayer.Connect("connection_failed", new Callable(this, "onConnectionFailed"));
-            CustomMultiplayer.Connect("server_disconnected", new Callable(this, "onDisconnect"));
-
+            CustomMultiplayer.ConnectedToServer += onConnected;
+            CustomMultiplayer.ConnectionFailed += onConnectionFailed;
+            CustomMultiplayer.ServerDisconnected += onDisconnect;
             this.mainMenu.onUpdateConnectEvent += this.doConnect;
 
             if (autoLogin)
@@ -56,6 +54,11 @@ namespace FPS.Game.Logic.Client
                 DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled, id);
             }
 
+            this.settingsMenu.OnDisconnect += () =>
+            {
+                network.CloseConnection();
+                this.handleDisconnect();
+            };
         }
         [Authority]
         public override void serverAuthSuccessfull(string levelName)
@@ -73,7 +76,8 @@ namespace FPS.Game.Logic.Client
 
         protected void OnLevelLoadedSuccesfull()
         {
-            GD.Print("Level loaded successfull");
+            GD.Print("[Client] Level loaded successfull");
+
             this.World.setFreeMode(false);
             RpcId(serverId, "mapLoadedSuccessfull");
         }
@@ -81,7 +85,7 @@ namespace FPS.Game.Logic.Client
         [AnyPeer]
         public override void serverNotReady()
         {
-            GD.Print("Server not read");
+            GD.PrintErr("[Client] Server is not ready");
         }
 
         public void doConnect(string hostname, int port)
@@ -96,7 +100,6 @@ namespace FPS.Game.Logic.Client
                 if (error != Error.Ok)
                 {
                     drawSystemMessage("Network error:" + error.ToString());
-                    this.mainMenu.ProcessMode = ProcessModeEnum.Disabled;
                     this.mainMenu.Show();
                 }
 
@@ -116,13 +119,22 @@ namespace FPS.Game.Logic.Client
         public void onDisconnect()
         {
             drawSystemMessage("Server disconnected.");
+            this.handleDisconnect();
+        }
+
+        private void handleDisconnect()
+        {
+            ownNetworkId = 0;
+            drawSystemMessage("Client is disconnected.");
             this.destroyWorld();
+            this.settingsMenu.Hide();
+            this.mainMenu.Show();
         }
 
         public void onConnected()
         {
             ownNetworkId = CustomMultiplayer.GetUniqueId();
-            drawSystemMessage("Connection established. Your id is " + ownNetworkId.ToString());
+            drawSystemMessage("[Client] Connection established. Your id is " + ownNetworkId.ToString());
         }
         private void drawSystemMessage(string message)
         {
@@ -135,7 +147,6 @@ namespace FPS.Game.Logic.Client
 
             if (Input.IsActionJustPressed("ui_cancel"))
             {
-                GD.Print("PRESSED");
                 if (Input.GetMouseMode() == Input.MouseMode.Visible)
                 {
                     if (!this.settingsMenu.isOpen)
@@ -155,15 +166,15 @@ namespace FPS.Game.Logic.Client
         [Authority]
         public override void spwanPlayer(int id, Vector3 origin)
         {
-            GD.Print("player spwaned with id " + id + " on " + this.ownNetworkId + " on location " + origin + " serverID " + serverId);
+            GD.Print("[Client][Player] Spwan " + id + " on location " + origin);
 
             if (id == this.ownNetworkId)
             {
-                this.World.spwanLocalPlayer(id, origin);
+                this.World.spwanPlayer(id, origin, Player.PlayerType.Local);
             }
             else
             {
-                this.World.spwanPuppetPlayer(id, origin);
+                this.World.spwanPlayer(id, origin, Player.PlayerType.Puppet);
             }
         }
     }

@@ -1,11 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://kl8v0pfdenvq"]
+[gd_scene load_steps=2 format=3 uid="uid://kl8v0pfdenvq"]
 
 [ext_resource type="Script" path="res://bootloader/Bootloader.cs" id="1_q4ynn"]
-[ext_resource type="Script" path="res://Game/Logic/World/Loader.cs" id="2_qn2hv"]
 
 [node name="Base" type="Node"]
 script = ExtResource( "1_q4ynn" )
-
-[node name="Timer" type="Timer" parent="."]
-autostart = true
-script = ExtResource( "2_qn2hv" )
