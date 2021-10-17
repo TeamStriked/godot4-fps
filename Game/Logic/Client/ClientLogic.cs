@@ -91,24 +91,18 @@ namespace FPS.Game.Logic.Client
         public void doConnect(string hostname, int port)
         {
             this.mainMenu.Hide();
-            var realIP = IP.ResolveHostname(hostname, IP.Type.Ipv4);
-            if (realIP.IsValidIPAddress())
-            {
 
-                drawSystemMessage("Try to connect to " + realIP + ":" + port);
-                var error = network.CreateClient(realIP, port);
-                if (error != Error.Ok)
-                {
-                    drawSystemMessage("Network error:" + error.ToString());
-                    this.mainMenu.Show();
-                }
-
-                CustomMultiplayer.MultiplayerPeer = network;
-            }
-            else
+            var realIP = IP.ResolveHostname(hostname, IP.Type.Any);
+            drawSystemMessage("Try to connect to " + realIP + ":" + port);
+            var error = network.CreateClient(realIP, port);
+            if (error != Error.Ok)
             {
-                drawSystemMessage("Hostname not arreachable.");
+                drawSystemMessage("Network error:" + error.ToString());
+                this.mainMenu.Show();
             }
+
+            CustomMultiplayer.MultiplayerPeer = network;
+
         }
 
         public void onConnectionFailed()
