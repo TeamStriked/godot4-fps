@@ -133,8 +133,9 @@ namespace FPS.Game.Logic.Client
         {
             base._Process(delta);
 
-            if (Input.IsActionJustPressed("ui_cancel") && this.IsProcessingInput())
+            if (Input.IsActionJustPressed("ui_cancel"))
             {
+                GD.Print("PRESSED");
                 if (Input.GetMouseMode() == Input.MouseMode.Visible)
                 {
                     if (!this.settingsMenu.isOpen)

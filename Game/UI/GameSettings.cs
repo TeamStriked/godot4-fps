@@ -28,18 +28,25 @@ namespace FPS.Game.UI
         NodePath rootContainerPath = null;
 
         [Export]
+        NodePath resChangerPath = null;
+        [Export]
+        NodePath windowModeChangerPath = null;
+
+        [Export]
         NodePath keyChangeDialogPath = null;
 
         [Export]
         NodePath closeButtonPath = null;
 
         TabContainer container = null;
-        MarginContainer rootContainer = null;
+        Control rootContainer = null;
 
         Button closeButton = null;
         VBoxContainer keyListContainer = null;
         KeyConfirmationDialog keyChangeDialog = null;
 
+        OptionButton resChanger = null;
+        OptionButton windowModeChanger = null;
         public bool isOpen = false;
 
         public void Hide()
@@ -79,7 +86,12 @@ namespace FPS.Game.UI
 
             this.container = GetNode(containerPath) as TabContainer;
             this.closeButton = GetNode(closeButtonPath) as Button;
-            this.rootContainer = GetNode(rootContainerPath) as MarginContainer;
+            this.rootContainer = GetNode(rootContainerPath) as Control;
+            this.resChanger = GetNode(resChangerPath) as OptionButton;
+            this.windowModeChanger = GetNode(windowModeChangerPath) as OptionButton;
+
+            this.resChanger.ItemSelected += onResChanged;
+            this.windowModeChanger.ItemSelected += onFullScreenChanged;
 
             this.keyListContainer = GetNode(keyContainerPath) as VBoxContainer;
             this.keyChangeDialog = GetNode(keyChangeDialogPath) as KeyConfirmationDialog;
@@ -101,6 +113,32 @@ namespace FPS.Game.UI
 
             this.SetProcess(false);
         }
+
+        public void onResChanged(int index)
+        {
+            var values = this.resChanger.Text.Split("x");
+            var res = new Vector2i(int.Parse(values[0]), int.Parse(values[1]));
+            GetTree().Paused = true;
+            GetViewport().Disable3d = true;
+
+            DisplayServer.WindowSetSize(res);
+            DisplayServer.WindowSetPosition(Vector2i.Zero);
+
+            GetTree().Paused = false;
+            GetViewport().Disable3d = false;
+        }
+        public void onFullScreenChanged(int index)
+        {
+            GetTree().Paused = true;
+            GetViewport().Disable3d = true;
+            GetTree().Root.Mode = index == 0 ? Window.ModeEnum.Windowed : Window.ModeEnum.Fullscreen;
+
+            GetTree().Paused = false;
+            GetViewport().Disable3d = false;
+
+        }
+
+
 
         private void getCurentList()
         {

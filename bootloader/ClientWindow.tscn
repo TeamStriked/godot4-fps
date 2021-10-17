@@ -1,29 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbl04vs22n25t"]
+[gd_scene load_steps=7 format=3 uid="uid://cbl04vs22n25t"]
 
 [ext_resource type="Script" path="res://Game/Logic/Client/ClientLogic.cs" id="1_dkyj0"]
 [ext_resource type="PackedScene" uid="uid://dow0pu0j22ngt" path="res://Game/UI/GameGraph.tscn" id="2_5u5hg"]
+[ext_resource type="PackedScene" uid="uid://deynymxhg7n2j" path="res://Game/UI/Hud.tscn" id="2_jf8mw"]
 [ext_resource type="PackedScene" uid="uid://d1kwltirt34k1" path="res://Game/UI/MainMenu.tscn" id="2_jkewe"]
-[ext_resource type="PackedScene" uid="uid://5uldritt75w3" path="res://Game/UI/GameSettings.tscn" id="3_03v1k"]
-[ext_resource type="Shader" path="res://bootloader/bootloader.gdshader" id="4_k824q"]
+[ext_resource type="PackedScene" uid="uid://bavql442hmhry" path="res://Game/UI/GameSettings.tscn" id="3_03v1k"]
 
 [sub_resource type="World3D" id="World3D_866it"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qke4"]
-shader = ExtResource( "4_k824q" )
-shader_param/center_enabled = true
-shader_param/legs_enabled = true
-shader_param/inverted = false
-shader_param/color_0 = Plane(0, 1, 0, 1)
-shader_param/center_radius = 0.002
-shader_param/width = 0.002
-shader_param/len = 0.02
-shader_param/spacing = 0.01
-shader_param/spread = 1.0
-
 [node name="ClientWindow" type="SubViewportContainer"]
-process_mode = 3
-offset_right = 510.0
-offset_bottom = 600.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 stretch = true
@@ -33,13 +20,19 @@ __meta__ = {
 }
 
 [node name="viewport" type="SubViewport" parent="."]
+audio_listener_enable_3d = true
 own_world_3d = true
 world_3d = SubResource( "World3D_866it" )
 handle_input_locally = false
-msaa = 1
+msaa = 2
 screen_space_aa = 1
+use_occlusion_culling = true
 physics_object_picking = true
-size = Vector2i(510, 600)
+shadow_atlas_size = 4048
+shadow_atlas_quad_1 = 3
+shadow_atlas_quad_2 = 4
+shadow_atlas_quad_3 = 5
+size = Vector2i(1024, 768)
 render_target_update_mode = 4
 script = null
 
@@ -48,19 +41,12 @@ script = ExtResource( "1_dkyj0" )
 settingsMenuPath = NodePath("GameSettings")
 mainMenuPath = NodePath("MainMenu")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="viewport/Root"]
-script = null
-
-[node name="ColorRect" type="ColorRect" parent="viewport/Root/CanvasLayer"]
-material = SubResource( "ShaderMaterial_4qke4" )
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 40.0
-offset_bottom = 40.0
-script = null
+[node name="Hud" parent="viewport/Root" instance=ExtResource( "2_jf8mw" )]
 
 [node name="GameGraph" parent="viewport/Root" instance=ExtResource( "2_5u5hg" )]
 
 [node name="MainMenu" parent="viewport/Root" instance=ExtResource( "2_jkewe" )]
+layer = 2
 
 [node name="GameSettings" parent="viewport/Root" instance=ExtResource( "3_03v1k" )]
+layer = 3

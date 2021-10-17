@@ -38,6 +38,23 @@
       "environment": [],
       "console": "internalConsole"
     },
+    {
+      "name": "ServerWithClient",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "C:\\godot4\\godot\\bin\\godot.windows.opt.tools.64.mono.exe",
+      // Change the arguments below for the project you want to test with.
+      // To run the project instead of editing it, remove the "--editor" argument.
+      "args": [
+        "--path",
+        "C:\\Game",
+        "-serverclient"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "console": "internalConsole"
+    },
   ],
   "compounds": [
     {

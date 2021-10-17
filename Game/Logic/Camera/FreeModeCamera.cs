@@ -56,6 +56,7 @@ namespace FPS.Game.Logic.Camera
 
             if (!activated || !canHandleInput)
             {
+                @event.Dispose();
                 return;
             }
 

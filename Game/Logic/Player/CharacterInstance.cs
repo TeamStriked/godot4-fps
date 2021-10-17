@@ -181,18 +181,36 @@ namespace FPS.Game.Logic.Player
             {
                 this._camera.Visible = false;
                 this._tpsCharacter.Visible = true;
+                enableShadowing(this._tpsCharacter, false);
             }
             else if (mode == PlayerDrawMode.FPS)
             {
 
                 this._camera.Visible = true;
-                this._tpsCharacter.Visible = false;
+                this._tpsCharacter.Visible = true;
+                enableShadowing(this._tpsCharacter, true);
             }
             else
             {
                 this._camera.Visible = false;
                 this._tpsCharacter.Visible = false;
             }
+        }
+
+        private void enableShadowing(Node node, bool enableShadows)
+        {
+            if (node is MeshInstance3D)
+            {
+                (node as MeshInstance3D).CastShadow = (enableShadows) ? GeometryInstance3D.ShadowCastingSetting.ShadowsOnly : GeometryInstance3D.ShadowCastingSetting.On;
+                (node as MeshInstance3D).GiMode = (enableShadows) ? GeometryInstance3D.GIMode.Dynamic : GeometryInstance3D.GIMode.Baked;
+            }
+
+            foreach (var child in node.GetChildren())
+            {
+                if (child is Node)
+                    this.enableShadowing(child as Node, enableShadows);
+            }
+
         }
 
 
@@ -210,14 +228,11 @@ namespace FPS.Game.Logic.Player
 
         public void rotateFPS(float charRotation, float headRotation)
         {
-            var rot = this.Rotation;
-            rot.y -= Mathf.Deg2Rad(charRotation);
-            this.Rotation = rot;
+            this.RotateY(-Mathf.Deg2Rad(charRotation));
+            this.head.RotateX(-Mathf.Deg2Rad(headRotation));
 
             var headRot = this.head.Rotation;
-            headRot.x -= Mathf.Deg2Rad(headRotation);
             headRot.x = Mathf.Deg2Rad(Mathf.Clamp(Mathf.Rad2Deg(headRot.x), minLookAngleY, maxLookAngleY));
-
             this.head.Rotation = headRot;
         }
 

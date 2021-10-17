@@ -346,11 +346,9 @@ namespace FPS.Game.Logic.Player
 
         protected float sideStrafeAcceleration = 50.0f;
 
-        [Export]
-        protected float walkSpeed = 2.6f;
+        protected float walkSpeed = 3.6f;
 
-        [Export]
-        protected float proneSpeed = 0.6f;
+        protected float proneSpeed = 1.4f;
 
         [Export]
         protected float defaultSpeed = 6.5f;

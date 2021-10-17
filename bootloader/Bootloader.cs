@@ -15,7 +15,14 @@ public partial class Bootloader : Node
         var serverWindow = (ServerWindow)scene.Instantiate();
         serverWindow.Name = name;
         serverWindow.Visible = false;
-        GetNode("vbox").AddChild(serverWindow);
+        AddChild(serverWindow);
+    }
+
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+        GC.Collect(GC.MaxGeneration);
+        GC.WaitForPendingFinalizers();
     }
 
     private void createClientWindow(string name = "window")
@@ -25,7 +32,7 @@ public partial class Bootloader : Node
         var scene = (PackedScene)ResourceLoader.Load("res://bootloader/ClientWindow.tscn");
         var clientWindow = scene.Instantiate();
         clientWindow.Name = name;
-        GetNode("vbox").AddChild(clientWindow);
+        AddChild(clientWindow);
     }
 
     public override void _Ready()

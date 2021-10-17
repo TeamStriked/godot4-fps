@@ -44,8 +44,6 @@ namespace FPS.Game.Logic.Player
         // Called when the node enters the scene tree for the first time.
         public override void _PhysicsProcess(float delta)
         {
-            base._PhysicsProcess(delta);
-
             if (!canHandleInput)
                 return;
 
@@ -122,7 +120,10 @@ namespace FPS.Game.Logic.Player
             base._Input(@event);
 
             if (!canHandleInput)
+            {
+                @event.Dispose();
                 return;
+            }
 
             if (@event is InputEventMouseMotion)
             {

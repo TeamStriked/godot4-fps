@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=3 uid="uid://deynymxhg7n2j"]
+
+[ext_resource type="Shader" path="res://bootloader/bootloader.gdshader" id="1_0uy1y"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qke4"]
+shader = ExtResource( "1_0uy1y" )
+shader_param/center_enabled = true
+shader_param/legs_enabled = true
+shader_param/inverted = false
+shader_param/color_0 = Plane(0, 1, 0, 1)
+shader_param/center_radius = 0.002
+shader_param/width = 0.001
+shader_param/len = 0.01
+shader_param/spacing = 0.01
+shader_param/spread = 1.0
+
+[node name="Hud" type="CanvasLayer"]
+layer = 0
+script = null
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource( "ShaderMaterial_4qke4" )
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}

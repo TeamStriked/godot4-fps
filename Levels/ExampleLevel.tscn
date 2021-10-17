@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cpmfpjvrlo3l5"]
+[gd_scene load_steps=10 format=3 uid="uid://cpmfpjvrlo3l5"]
 
 [ext_resource type="Script" path="res://Game/Logic/Level/GameLevel.cs" id="1_er0od"]
 [ext_resource type="Script" path="res://Game/Logic/Level/GameSpwanPoint.cs" id="2_gs0dn"]
@@ -7,35 +7,26 @@
 
 [sub_resource type="Sky" id="Sky_gq3gl"]
 sky_material = SubResource( "ProceduralSkyMaterial_irrjj" )
+process_mode = 1
 
 [sub_resource type="Environment" id="Environment_5nrih"]
 background_mode = 2
 background_energy = 0.8
 sky = SubResource( "Sky_gq3gl" )
+ambient_light_source = 3
 tonemap_mode = 2
 tonemap_white = 6.0
 auto_exposure_enabled = true
 auto_exposure_scale = 0.7
 ssao_enabled = true
-ssao_radius = 0.41
-ssao_intensity = 9.58
-ssao_sharpness = 1.0
-ssao_light_affect = 0.59
-ssao_ao_channel_affect = 0.7
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = true
-sdfgi_min_cell_size = 0.27
-sdfgi_cascade0_distance = 17.28
-sdfgi_max_distance = 1105.92
 sdfgi_y_scale = 2
-sdfgi_normal_bias = 0.9
-glow_enabled = true
+sdfgi_normal_bias = 0.5
 glow_normalized = true
+glow_intensity = 1.0
+volumetric_fog_density = 0.005
 adjustment_brightness = 1.1
-
-[sub_resource type="CameraEffects" id="CameraEffects_s7oia"]
-dof_blur_near_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_826ko"]
 resource_name = "Scene_-_Root"
@@ -83,13 +74,13 @@ spwanPointsPath = NodePath("spwanPoints")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_5nrih" )
-camera_effects = SubResource( "CameraEffects_s7oia" )
 script = null
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.495871, 0.752054, -0.434196, -1.49013e-08, 0.499998, 0.866027, 0.868396, 0.429438, -0.247935, -17.8905, 25.1582, 0)
 light_color = Color(0.6, 0.6, 0.6, 1)
 shadow_enabled = true
+directional_shadow_blend_splits = true
 directional_shadow_max_distance = 250.0
 script = null
 

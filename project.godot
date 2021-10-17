@@ -82,6 +82,10 @@ settings/stdout/verbose_stdout=true
 
 [display]
 
+window/size/height=768
+window/size/always_on_top=true
+window/dpi/allow_hidpi=true
+window/handheld/orientation=1
 window/vsync/vsync_mode=0
 
 [editor]
@@ -174,4 +178,5 @@ limits/tcp/connect_timeout_seconds=320
 
 driver/threads/thread_model=2
 textures/lossless_compression/force_png=true
+reflections/sky_reflections/fast_filter_high_quality=true
 environment/defaults/default_environment="res://default_env.tres"

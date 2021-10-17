@@ -41,7 +41,7 @@ namespace FPS.Game.Logic.Player
             puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
 
             var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
-            //    Rpc("onPuppetUpdate", sendMessage);
+            Rpc("onPuppetUpdate", sendMessage);
         }
 
         [AnyPeer]

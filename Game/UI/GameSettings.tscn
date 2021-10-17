@@ -1,9 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://5uldritt75w3"]
+[gd_scene load_steps=6 format=3 uid="uid://bavql442hmhry"]
 
 [ext_resource type="Script" path="res://Game/UI/GameSettings.cs" id="1_vd727"]
 [ext_resource type="Script" path="res://Game/UI/KeyConfirmationDialog.cs" id="2_wyy1p"]
 
-[sub_resource type="Image" id="Image_68e0s"]
+[sub_resource type="Image" id="Image_llebr"]
 data = {
 "data": PackedByteArray(64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 62, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 64, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 72, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 61, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 63, 60, 71, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 62, 60, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 70, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 59, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 61, 58, 69, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 60, 58, 68, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 59, 57, 67, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 56, 66, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 58, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 65, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 57, 55, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 64, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 54, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 56, 53, 63, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 53, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 55, 52, 62, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 54, 52, 61, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255, 53, 51, 60, 255),
 "format": "RGBA8",
@@ -13,7 +13,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_qtuk7"]
-image = SubResource( "Image_68e0s" )
+image = SubResource( "Image_llebr" )
 size = Vector2(22, 38)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_1xxk7"]
@@ -22,44 +22,39 @@ region_rect = Rect2(0, 0, 22, 38)
 
 [node name="GameSettings" type="CanvasLayer"]
 script = ExtResource( "1_vd727" )
-sensPathX = NodePath("RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensXContainer/SpinBoxSensX")
-sensPathY = NodePath("RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensYContainer/SpinBoxSensY")
-containerPath = NodePath("RootContainer/VBoxContainer/Tabs")
-keyContainerPath = NodePath("RootContainer/VBoxContainer/Tabs/TabContainer/Keyboard/ScrollContainer/KeyListContainer")
+sensPathX = NodePath("RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer/SpinBoxSensX")
+sensPathY = NodePath("RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer/SpinBoxSensY")
+containerPath = NodePath("RootContainer/VBoxContainer/TabContainer")
+keyContainerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Keyboard/ScrollContainer/KeyListContainer")
 rootContainerPath = NodePath("RootContainer")
+resChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/ResChanger")
+windowModeChangerPath = NodePath("RootContainer/VBoxContainer/TabContainer/Video/WindowModeChanger")
 keyChangeDialogPath = NodePath("ConfirmationDialog")
 closeButtonPath = NodePath("RootContainer/VBoxContainer/CloseButton")
 
-[node name="RootContainer" type="MarginContainer" parent="."]
+[node name="RootContainer" type="AspectRatioContainer" parent="."]
 anchor_left = 0.1
 anchor_top = 0.1
-anchor_right = 0.8
-anchor_bottom = 0.8
-offset_right = 40.0
-offset_bottom = 40.0
+anchor_right = 0.9
+anchor_bottom = 0.9
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = null
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="RootContainer"]
-offset_right = 756.0
-offset_bottom = 460.0
+offset_left = 102.4
+offset_right = 716.8
+offset_bottom = 614.4
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
 
-[node name="Tabs" type="Tabs" parent="RootContainer/VBoxContainer"]
-offset_right = 756.0
-offset_bottom = 427.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-tab_align = 0
-script = null
-
-[node name="TabContainer" type="TabContainer" parent="RootContainer/VBoxContainer/Tabs"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="TabContainer" type="TabContainer" parent="RootContainer/VBoxContainer"]
+offset_right = 614.0
+offset_bottom = 581.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
@@ -67,7 +62,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Keyboard" type="VBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer"]
+[node name="Keyboard" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
@@ -78,21 +74,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
 
-[node name="ScrollContainer" type="ScrollContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Keyboard"]
-offset_right = 748.0
-offset_bottom = 382.0
+[node name="ScrollContainer" type="ScrollContainer" parent="RootContainer/VBoxContainer/TabContainer/Keyboard"]
+offset_right = 606.0
+offset_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 scroll_horizontal_visible = false
 script = null
 
-[node name="KeyListContainer" type="VBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Keyboard/ScrollContainer"]
-offset_right = 748.0
+[node name="KeyListContainer" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Keyboard/ScrollContainer"]
+offset_right = 606.0
 size_flags_horizontal = 3
 script = null
 
-[node name="Mouse" type="VBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer"]
+[node name="Mouse" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
@@ -102,53 +99,56 @@ offset_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="SensXContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse"]
-offset_right = 748.0
+[node name="SensXContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Mouse"]
+offset_right = 472.0
 offset_bottom = 33.0
 script = null
 
-[node name="SensX" type="Label" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensXContainer"]
+[node name="SensX" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer"]
 offset_top = 3.0
-offset_right = 372.0
+offset_right = 234.0
 offset_bottom = 29.0
 size_flags_horizontal = 3
 text = "Sens X"
 structured_text_bidi_override_options = []
 script = null
 
-[node name="SpinBoxSensX" type="SpinBox" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensXContainer"]
-offset_left = 376.0
-offset_right = 748.0
+[node name="SpinBoxSensX" type="SpinBox" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensXContainer"]
+offset_left = 238.0
+offset_right = 472.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
 step = 0.1
 script = null
 
-[node name="SensYContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse"]
+[node name="SensYContainer" type="HBoxContainer" parent="RootContainer/VBoxContainer/TabContainer/Mouse"]
 offset_top = 37.0
-offset_right = 748.0
+offset_right = 472.0
 offset_bottom = 70.0
 script = null
 
-[node name="SensY" type="Label" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensYContainer"]
+[node name="SensY" type="Label" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer"]
 offset_top = 3.0
-offset_right = 372.0
+offset_right = 234.0
 offset_bottom = 29.0
 size_flags_horizontal = 3
 text = "Sens Y"
 structured_text_bidi_override_options = []
 script = null
 
-[node name="SpinBoxSensY" type="SpinBox" parent="RootContainer/VBoxContainer/Tabs/TabContainer/Mouse/SensYContainer"]
-offset_left = 376.0
-offset_right = 748.0
+[node name="SpinBoxSensY" type="SpinBox" parent="RootContainer/VBoxContainer/TabContainer/Mouse/SensYContainer"]
+offset_left = 238.0
+offset_right = 472.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
 step = 0.1
 script = null
 
-[node name="Video" type="VBoxContainer" parent="RootContainer/VBoxContainer/Tabs/TabContainer"]
+[node name="Video" type="VBoxContainer" parent="RootContainer/VBoxContainer/TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 4.0
@@ -159,10 +159,27 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = null
 
+[node name="ResChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_right = 606.0
+offset_bottom = 29.0
+text = "640x360"
+items = ["640x360", null, false, 0, null, "1280x720", null, false, 1, null, "1920x1080", null, false, 2, null, "3840x1080", null, false, 3, null]
+selected = 0
+script = null
+
+[node name="WindowModeChanger" type="OptionButton" parent="RootContainer/VBoxContainer/TabContainer/Video"]
+offset_top = 33.0
+offset_right = 606.0
+offset_bottom = 62.0
+text = "Window Mode"
+items = ["Window Mode", null, false, 0, null, "Fullscreen Mode", null, false, 1, null]
+selected = 0
+script = null
+
 [node name="CloseButton" type="Button" parent="RootContainer/VBoxContainer"]
-offset_top = 431.0
-offset_right = 756.0
-offset_bottom = 460.0
+offset_top = 585.0
+offset_right = 614.0
+offset_bottom = 614.0
 text = "Close"
 script = null
 __meta__ = {
