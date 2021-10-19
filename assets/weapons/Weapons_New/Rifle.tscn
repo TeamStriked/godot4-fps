@@ -1,6 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://dxv64j8sckyun"]
+[gd_scene load_steps=18 format=3 uid="uid://das3d81a6v1oo"]
 
+[ext_resource type="Script" path="res://Game/Logic/Weapon/Weapon.cs" id="1_cly8b"]
 [ext_resource type="PackedScene" uid="uid://davgka064e23s" path="res://assets/weapons/Weapons_New/Rifle.glb" id="1_w27dx"]
+[ext_resource type="Material" uid="uid://bwcgnli12ctr" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
+[ext_resource type="Texture2D" uid="uid://cjcsk0pp2ypoj" path="res://assets/weapons/smoke.png" id="3_jumv0"]
+[ext_resource type="Texture2D" uid="uid://d1p610n15apdh" path="res://assets/weapons/fire.png" id="5_muqrv"]
+[ext_resource type="AudioStream" uid="uid://bmlql5g7inwd1" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m4de1"]
 filters = []
@@ -28,9 +33,56 @@ start_node = "Hands_Automatic_rifle006"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_lad3q"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24seq"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.54902)
+albedo_texture = ExtResource( "3_jumv0" )
+texture_filter = 1
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_e6hti"]
+material = SubResource( "StandardMaterial3D_24seq" )
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="ParticlesMaterial" id="ParticlesMaterial_pp7l4"]
+emission_shape = 1
+emission_sphere_radius = 0.02
+direction = Vector3(1, 1, 1)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+angle_min = 720.0
+angle_max = 720.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vb8k5"]
+transparency = 1
+blend_mode = 1
+depth_draw_mode = 1
+albedo_color = Color(1, 1, 1, 0.392157)
+albedo_texture = ExtResource( "5_muqrv" )
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color(1, 0.490196, 0, 1)
+emission_energy = 3.0
+texture_filter = 1
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_bt00b"]
+material = SubResource( "StandardMaterial3D_vb8k5" )
+size = Vector2(0.2, 0.2)
+
 [node name="rifle" type="Node3D"]
 transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0799415, -0.85216, -0.0557529)
-script = null
+script = ExtResource( "1_cly8b" )
+smokeEffectPath = NodePath("Effects/smoke")
+muzzleEffectPath = NodePath("Effects/fire")
+shotLightPath = NodePath("Effects/shoot")
+audioShotPlayerPath = NodePath("Audio/Shot")
 
 [node name="Rifle" parent="." instance=ExtResource( "1_w27dx" )]
 
@@ -41,33 +93,33 @@ transform = Transform3D(1.23323e-14, -2.8213e-07, 1, -1, -4.37114e-08, 0, 4.3711
 transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
 
 [node name="Skeleton3D" parent="Rifle/Hands_Automatic_rifle/Character001Hub001" index="0"]
-bones/1/rotation = Quaternion(-0.112815, -0.321556, -0.143496, 0.92913)
-bones/2/rotation = Quaternion(0.800474, -1.47027e-05, -1.71072e-07, 0.599367)
-bones/3/rotation = Quaternion(-3.47828e-08, -0.290257, 3.12235e-09, 0.956949)
-bones/4/rotation = Quaternion(-0.166861, -0.819856, 0.328546, 0.438236)
-bones/21/rotation = Quaternion(0.353233, -0.314308, 0.370785, 0.799347)
-bones/22/rotation = Quaternion(0.92381, 2.261e-05, -8.53801e-06, 0.382851)
-bones/23/rotation = Quaternion(-9.27582e-08, 0.0500694, -6.70084e-08, 0.998746)
-bones/24/rotation = Quaternion(0.0803115, 0.581418, -0.615404, 0.5261)
+bones/1/rotation = Quaternion(-0.110325, -0.322962, -0.1418, 0.929201)
+bones/2/rotation = Quaternion(0.798838, -1.76888e-06, 3.48909e-06, 0.601545)
+bones/3/rotation = Quaternion(-1.35876e-08, -0.290333, 5.30607e-09, 0.956926)
+bones/4/rotation = Quaternion(-0.167563, -0.819874, 0.328224, 0.438177)
+bones/21/rotation = Quaternion(0.353814, -0.310889, 0.371029, 0.800313)
+bones/22/rotation = Quaternion(0.923501, -3.45393e-06, 2.13361e-06, 0.383595)
+bones/23/rotation = Quaternion(-8.2844e-08, 0.0508813, -6.86419e-08, 0.998704)
+bones/24/rotation = Quaternion(0.0783385, 0.582301, -0.614964, 0.525935)
 
 [node name="Character001LArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="3"]
-transform = Transform3D(0.480843, -0.842654, -0.242335, -0.0906551, -0.322683, 0.942156, -0.872107, -0.431062, -0.23155, -0.033002, 1.48041, -0.570408)
+transform = Transform3D(0.480842, -0.842655, -0.242335, -0.0891379, -0.321932, 0.942556, -0.872262, -0.431622, -0.229911, -0.033002, 1.48194, -0.571898)
 
 [node name="Character001RArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="4"]
-transform = Transform3D(-0.117025, 0.979915, 0.161425, -0.0751069, 0.153342, -0.985319, -0.990287, -0.127429, 0.055654, 0.0418623, 1.42797, -0.245574)
+transform = Transform3D(-0.117026, 0.979915, 0.161425, -0.0737773, 0.153512, -0.985393, -0.990387, -0.127224, 0.0543311, 0.0418623, 1.42903, -0.247139)
 
 [node name="Hp_Scar_Base" parent="Rifle/Hands_Automatic_rifle" index="6"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.46484, -0.245328)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.46574, -0.246618)
 
 [node name="Hp_Scar_Magazine" parent="Rifle/Hands_Automatic_rifle" index="7"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.53674e-09, 1.4457, -0.390062)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.53674e-09, 1.44697, -0.391602)
 
 [node name="Skeleton3D3" parent="Rifle/Hands_Automatic_rifle/Hp_Scar_Magazine" index="0"]
 bones/0/position = Vector3(6.52295e-10, 0.00249775, -0.0369196)
 
 [node name="Skeleton3D4" parent="Rifle/Hands_Automatic_rifle" index="9"]
-bones/0/position = Vector3(0.0082091, 1.56502, -0.368387)
-bones/0/rotation = Quaternion(0.499832, -0.499833, 0.500167, 0.500167)
+bones/0/position = Vector3(0.0082091, 1.56625, -0.369753)
+bones/0/rotation = Quaternion(0.500216, -0.500216, 0.499784, 0.499784)
 
 [node name="AnimationPlayer" parent="Rifle" index="1"]
 blend_times = []
@@ -77,6 +129,60 @@ tree_root = SubResource( "AnimationNodeStateMachine_selep" )
 anim_player = NodePath("../Rifle/AnimationPlayer")
 active = true
 parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_lad3q" )
+script = null
+
+[node name="Effects" type="Node3D" parent="."]
+script = null
+
+[node name="smoke" type="GPUParticles3D" parent="Effects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.57859, -0.874406)
+layers = 524288
+cast_shadow = 0
+ignore_occlusion_culling = true
+emitting = false
+amount = 5
+one_shot = true
+fixed_fps = 0
+local_coords = false
+process_material = ExtResource( "3_67hug" )
+draw_pass_1 = SubResource( "QuadMesh_e6hti" )
+script = null
+
+[node name="fire" type="GPUParticles3D" parent="Effects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61282, -0.855395)
+layers = 524288
+cast_shadow = 0
+emitting = false
+amount = 5
+lifetime = 0.05
+one_shot = true
+fixed_fps = 0
+interpolate = false
+local_coords = false
+process_material = SubResource( "ParticlesMaterial_pp7l4" )
+draw_pass_1 = SubResource( "QuadMesh_bt00b" )
+script = null
+
+[node name="shoot" type="OmniLight3D" parent="Effects"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.73117, -0.832655)
+layers = 3
+light_color = Color(0.94902, 0.490196, 0.0470588, 1)
+light_energy = 0.0
+light_cull_mask = 4294443007
+shadow_enabled = true
+shadow_bias = 0.15
+omni_range = 10.0
+script = null
+
+[node name="Audio" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.59697, -1.08276)
+script = null
+
+[node name="Shot" type="AudioStreamPlayer3D" parent="Audio"]
+transform = Transform3D(2, 0, -9.23706e-14, 0, 2, 1.11022e-16, -7.10543e-15, -1.11022e-16, 2, 0, 0, 0)
+stream = ExtResource( "6_mft8l" )
+max_distance = 100.0
+bus = &"Weapon Sound"
 script = null
 
 [editable path="Rifle"]

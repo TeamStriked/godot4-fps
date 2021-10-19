@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using FPS.Game.Config;
 using FPS.Game.Logic.Player.Handler;
 using FPS.Game.Logic.Client;
+using FPS.Game.Logic.Weapon;
 
 namespace FPS.Game.Logic.Player
 {
@@ -39,6 +40,43 @@ namespace FPS.Game.Logic.Player
         {
             GD.Print("Cliend receive teleport on " + origin);
             base.DoTeleport(origin);
+        }
+
+        public bool isRecoling = false;
+
+        public float recoilSpeed = 25.0f;
+        public float recoilAmount = 0.5f;
+
+        public float ROF = 0.12f;
+
+        public RecoilModes mode = RecoilModes.AUTO;
+
+
+        public async void startRecoil()
+        {
+            isRecoling = true;
+            var timer = GetTree().CreateTimer(ROF);
+            await ToSignal(timer, "timeout");
+            this.isRecoling = false;
+        }
+
+        public void recoiling(float delta)
+        {
+            if (isRecoling)
+            {
+                var headRotation = Mathf.Rad2Deg(this.playerChar.GetHeadRotation());
+                var headLerped = Mathf.Lerp(headRotation, headRotation + recoilAmount, recoilSpeed * delta);
+
+                //set head rotation
+
+                var random = new RandomNumberGenerator();
+                random.Randomize();
+
+                var charRotation = Mathf.Rad2Deg(this.playerChar.GetCharRotation());
+                var lerped = Mathf.Lerp(charRotation, charRotation + random.RandfRange(-0.5f, 0.5f), recoilSpeed * delta);
+
+                this.playerChar.rotateFPSAfterRecoil(lerped, headLerped);
+            }
         }
 
         // Called when the node enters the scene tree for the first time.
@@ -79,14 +117,31 @@ namespace FPS.Game.Logic.Player
 
             //fix godot issue
             handleAnimation();
+
+            //do recoil
+            if (Input.IsActionPressed("fire") && !isRecoling && mode == RecoilModes.AUTO)
+                startRecoil();
+
+            else if (Input.IsActionJustPressed("fire") && !isRecoling && mode == RecoilModes.SINGLE)
+                startRecoil();
+
+            //handle recoil
+            recoiling(delta);
+
+            //send shot to weapons
+
+            if (Input.IsActionPressed("fire"))
+                this.DoFire();
+        }
+
+
+        public override void DoFire()
+        {
+            base.DoFire();
         }
 
         Vector2 mouseMotion = Vector2.Zero;
 
-        /**
-         * TODO: REPLACE WITH https://github.com/joelpt/onclick5/blob/master/Assets/SimpleSmoothMouseLook.cs*
-         *
-         */
         public override void _Process(float delta)
         {
             base._Process(delta);
@@ -99,8 +154,8 @@ namespace FPS.Game.Logic.Player
 
             if (mouseDelta.Length() > 0)
             {
-                var charRotation = mouseDelta.x * ConfigValues.sensitivityX * delta;
-                var headRotation = mouseDelta.y * ConfigValues.sensitivityY * delta;
+                var charRotation = mouseDelta.x * ConfigValues.sensitivityX;
+                var headRotation = mouseDelta.y * ConfigValues.sensitivityY;
 
                 ApplyMouse(new Vector2(charRotation, headRotation));
             }
@@ -115,6 +170,7 @@ namespace FPS.Game.Logic.Player
             {
                 this.playerChar.setCameraZoom(rightMouseActivated);
             }
+
         }
 
         public override void _Input(InputEvent @event)
@@ -142,6 +198,8 @@ namespace FPS.Game.Logic.Player
 
             @event.Dispose();
         }
+
+
         bool rightMouseActivated = false;
 
         public override void Activate()
@@ -151,6 +209,7 @@ namespace FPS.Game.Logic.Player
 
             this.playerChar.setCameraMode(PlayerCameraMode.FPS);
             this.playerChar.setDrawMode(PlayerDrawMode.FPS);
+            this.playerChar.DisableHitboxes();
         }
 
         public void Dectivate()

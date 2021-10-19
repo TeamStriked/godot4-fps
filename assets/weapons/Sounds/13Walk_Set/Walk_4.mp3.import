@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/Walk_4.mp3-14549299de20ec6ad3649829abebb8d3.m
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

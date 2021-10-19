@@ -7,6 +7,7 @@
 script = ExtResource( "1_h75sj" )
 freeModeCameraNodePath = NodePath("FreeModeCamera")
 playerNodePath = NodePath("players")
+decalNodePath = NodePath("Decals")
 
 [node name="players" type="Node" parent="."]
 script = null
@@ -15,3 +16,6 @@ script = null
 transform = Transform3D(1, 0, 0, 0, 0.954532, 0.298108, 0, -0.298108, 0.954532, 0, 0.800264, 1.33477)
 script = ExtResource( "2_j3j1x" )
 sensitivity = 0.25
+
+[node name="Decals" type="Node3D" parent="."]
+script = null

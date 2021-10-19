@@ -13,7 +13,10 @@ namespace FPS.Game.Logic.World
 
         [Export]
         NodePath playerNodePath = null;
+        [Export]
+        NodePath decalNodePath = null;
 
+        protected Node3D _decalNode = null;
         protected GameLevel _level = null;
         protected LocalPlayer _localPlayer = null;
 
@@ -54,7 +57,10 @@ namespace FPS.Game.Logic.World
         public override void _EnterTree()
         {
             base._EnterTree();
+            this._decalNode = GetNode<Node3D>(decalNodePath);
             _gameMapLoader.OnLoaderComplete += LoadCompleteGameLevel;
+
+            OnNewDecal += AddDecal;
         }
 
         public void loadLevelThreaded(string levelName)
@@ -63,6 +69,32 @@ namespace FPS.Game.Logic.World
 
             GD.Print("Loading game level.. " + this.gameLevelName);
             this._gameMapLoader.Load(this.gameLevelName);
+        }
+
+
+        public delegate void NewDecal(Vector3 point, Vector3 normal, StaticBody3D collider);
+        public static event NewDecal OnNewDecal;
+
+        public static void TriggerNewDecal(Vector3 point, Vector3 normal, StaticBody3D collider)
+        {
+            OnNewDecal(point, normal, collider);
+        }
+
+        public void AddDecal(Vector3 point, Vector3 normal, StaticBody3D collider)
+        {
+            var resource = GD.Load("res://Game/Logic/World/WallDecal.tscn") as PackedScene;
+            var decal = resource.Instantiate() as Decal;
+
+            this._decalNode.AddChild(decal);
+
+            var gt = decal.GlobalTransform;
+            gt.origin = point;
+            decal.GlobalTransform = gt;
+
+            decal.LookAt(point + normal, new Vector3(1, 1, 0));
+            var rot = decal.Rotation;
+            rot.x -= Mathf.Deg2Rad(90);
+            decal.Rotation = rot;
         }
 
         public void LoadCompleteGameLevel(PackedScene scene)

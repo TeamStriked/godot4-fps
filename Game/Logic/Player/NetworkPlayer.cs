@@ -149,7 +149,6 @@ namespace FPS.Game.Logic.Player
                 var _accel = Accel;
                 var _deaccel = Deaccel;
 
-
                 if (input.y == 0 && input.x != 0)
                 {
                     accel = sideStrafeAcceleration;
@@ -194,6 +193,9 @@ namespace FPS.Game.Logic.Player
 
                 this.playerChar.setAnimationState((calculatedFrame.direction.y < 0) ? "run" : "run_back");
                 this.playerChar.setAnimationTimeScale(scale);
+
+                this.playerChar.doFootstep();
+
             }
             else if (this.playerChar.getSpeed() > 1.0f)
             {
@@ -209,6 +211,7 @@ namespace FPS.Game.Logic.Player
                 }
 
                 this.playerChar.setAnimationTimeScale(scale);
+                this.playerChar.doFootstep();
             }
             else
             {
@@ -280,43 +283,25 @@ namespace FPS.Game.Logic.Player
 
         protected void setPlayerCollider(CalculatedFrame calculatedFrame, float delta)
         {
-            //change prone to steps by collider shape height (> 0.6, > 0.3)
-            var upSpeed = crouchUpSpeed;
-            var downSpeed = crouchDownSpeed;
-
-            if (this.playerChar.getShapeDivider() < this.crouchColliderMultiplier)
-            {
-                upSpeed = proneUpSpeed;
-                downSpeed = proneDownSpeed;
-            }
 
             if (calculatedFrame.prone)
             {
-                this.playerChar.setBodyHeight(delta, upSpeed, downSpeed, proneColliderMultiplier, calculatedFrame.prone);
+                this.playerChar.setBodyHeight(delta, crouchDownSpeed, proneColliderMultiplier, calculatedFrame.prone);
             }
             else
             {
-                this.playerChar.setBodyHeight(delta, upSpeed, downSpeed, crouchColliderMultiplier, calculatedFrame.crouching);
+                this.playerChar.setBodyHeight(delta, calculatedFrame.crouching ? crouchDownSpeed : crouchUpSpeed, crouchColliderMultiplier, calculatedFrame.crouching);
             }
         }
 
-        public override void _Ready()
-        {
-        }
+
+        protected float crouchDownSpeed = 8;
+        protected float crouchUpSpeed = 20;
 
 
-        [Export]
-        protected float crouchUpSpeed = 12;
+        protected float crouchColliderMultiplier = 1.5f;
 
-        [Export]
-        protected float crouchDownSpeed = 6;
-
-
-        [Export]
-        protected float crouchColliderMultiplier = 0.6f;
-
-        [Export]
-        protected float proneColliderMultiplier = 0.3f;
+        protected float proneColliderMultiplier = 1.3f;
 
 
         [Export]
@@ -366,24 +351,24 @@ namespace FPS.Game.Logic.Player
 
         public float sideStrafeSpeed = 1.0f;
 
-        [Export]
-        protected float jumpForce = 8.5f;
+        protected float jumpForce = 15.0f;
 
-        [Export]
-        protected float jumpCrouchForce = 10.0f;
+        protected float jumpCrouchForce = 17.5f;
 
         [Export]
         protected float jumpCoolDown = 0.65f;
 
-        [Export]
-        protected float gravity = 21.0f;
-
-
+        protected float gravity = 36.0f;
 
 
         protected CharacterInstance playerChar = null;
 
         public int networkId = 0;
+
+        public virtual void DoFire()
+        {
+            this.playerChar.DoFire();
+        }
 
 
         [Authority]
@@ -414,5 +399,6 @@ namespace FPS.Game.Logic.Player
             gf.basis = new Basis(origin);
             this.playerChar.GlobalTransform = gf;
         }
+
     }
 }

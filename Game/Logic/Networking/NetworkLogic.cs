@@ -73,7 +73,7 @@ namespace FPS.Game.Logic.Networking
         {
             if (what == NotificationExitTree)
             {
-                GetTree().Disconnect("node_added", new Callable(this, "onNodeUpdate"));
+                GetTree().NodeAdded -= onNodeUpdate;
             }
         }
 
