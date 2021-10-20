@@ -13,10 +13,16 @@ namespace FPS.Game.Logic.Player
         public abstract bool isServerPlayer();
         public abstract void Activate();
 
+        public bool isActivated = false;
+
 
         public override void _PhysicsProcess(float delta)
         {
             base._PhysicsProcess(delta);
+
+            if (!isActivated)
+                return;
+
 
             if (Input.IsActionJustPressed("game_reset_tp") && this.IsProcessingInput())
             {
@@ -168,6 +174,10 @@ namespace FPS.Game.Logic.Player
         {
         }
 
+        [Export]
+        NodePath placerChatPath;
+
+
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -176,11 +186,7 @@ namespace FPS.Game.Logic.Player
             RpcConfig("onPuppetUpdate", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("onClientInput", RPCMode.AnyPeer, false, TransferMode.Unreliable);
 
-            var scene = (PackedScene)ResourceLoader.Load("res://Game/Logic/Player/CharacterInstance.tscn");
-            scene.ResourceLocalToScene = true;
-            var character = (CharacterInstance)scene.Instantiate();
-            this.AddChild(character);
-            this.playerChar = character;
+            this.playerChar = GetNode<CharacterInstance>(placerChatPath);
         }
 
         protected void handleAnimation()

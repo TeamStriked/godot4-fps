@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 namespace FPS.Game.Logic.Weapon
 {
 
@@ -27,8 +28,16 @@ namespace FPS.Game.Logic.Weapon
 
         private float fireTimeout = 0f;
 
+        public override void _EnterTree()
+        {
+            base._EnterTree();
+            Console.WriteLine("enter weapon");
+
+        }
         public override void _Ready()
         {
+            base._Ready();
+
             this.smokeEffect = GetNode<GPUParticles3D>(smokeEffectPath);
             this.muzzleEffect = GetNode<GPUParticles3D>(muzzleEffectPath);
             this.shotLight = GetNode<OmniLight3D>(shotLightPath);
@@ -45,7 +54,6 @@ namespace FPS.Game.Logic.Weapon
             if (!this.CanShoot())
                 return;
 
-            GD.Print("Shooting");
             this.shotLight.LightEnergy = 2.0f;
             this.smokeEffect.Emitting = true;
             this.muzzleEffect.Emitting = true;
@@ -67,5 +75,6 @@ namespace FPS.Game.Logic.Weapon
                 this.fireTimeout -= delta;
             }
         }
+
     }
 }

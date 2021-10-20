@@ -92,6 +92,10 @@ window/dpi/allow_hidpi=true
 window/handheld/orientation=1
 window/vsync/vsync_mode=0
 
+[editor]
+
+import/use_multiple_threads=false
+
 [input]
 
 game_moveForward={
@@ -186,7 +190,7 @@ export/aot/enabled=true
 
 [network]
 
-limits/tcp/connect_timeout_seconds=320
+limits/tcp/connect_timeout_seconds=120
 
 [physics]
 

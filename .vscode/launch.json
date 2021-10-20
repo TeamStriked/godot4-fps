@@ -33,9 +33,11 @@
       // To run the project instead of editing it, remove the "--editor" argument.
       "args": [
         "--path",
-        "--headless",
         "C:\\Game",
-        "-server"
+        "--debug-collisions",
+        "--debug-navigation",
+        "--fixed-fps 60",
+        "-server",
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

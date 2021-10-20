@@ -109,7 +109,7 @@ namespace FPS.Game.Config
                         }
                         catch
                         {
-                            GD.PrintErr("Cant parse " + key);
+                            FPS.Game.Utils.Logger.LogError("Cant parse " + key);
                         }
                     }
                 }
@@ -134,7 +134,7 @@ namespace FPS.Game.Config
                     }
                     catch
                     {
-                        GD.PrintErr("Cant parse  sensitivity");
+                        FPS.Game.Utils.Logger.LogError("Cant parse  sensitivity");
                     }
                 }
 
@@ -147,7 +147,7 @@ namespace FPS.Game.Config
                     }
                     catch
                     {
-                        GD.PrintErr("Cant parse sensitivityY");
+                        FPS.Game.Utils.Logger.LogError("Cant parse sensitivityY");
                     }
                 }
             }

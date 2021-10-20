@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 using System;
 using FPS.Game.Logic.Camera;
@@ -13,6 +14,7 @@ namespace FPS.Game.Logic.World
 
         [Export]
         NodePath playerNodePath = null;
+
         [Export]
         NodePath decalNodePath = null;
 
@@ -30,6 +32,16 @@ namespace FPS.Game.Logic.World
         public NetworkPlayer getPlayer(int id)
         {
             return this.players[id];
+        }
+
+        public Dictionary<int, Vector3> GetPlayers()
+        {
+            var dic = new Dictionary<int, Vector3>();
+            foreach (KeyValuePair<int, NetworkPlayer> item in this.players)
+            {
+                dic.Add(item.Key, item.Value.GlobalTransform.origin);
+            }
+            return dic;
         }
 
         public GameLevel Level
@@ -58,7 +70,6 @@ namespace FPS.Game.Logic.World
         {
             base._EnterTree();
             this._decalNode = GetNode<Node3D>(decalNodePath);
-            _gameMapLoader.OnLoaderComplete += LoadCompleteGameLevel;
 
             OnNewDecal += AddDecal;
         }
@@ -67,8 +78,9 @@ namespace FPS.Game.Logic.World
         {
             this.gameLevelName = "res://" + levelName;
 
-            GD.Print("Loading game level.. " + this.gameLevelName);
-            this._gameMapLoader.Load(this.gameLevelName);
+            FPS.Game.Utils.Logger.InfoDraw("Loading game level.." + this.gameLevelName);
+            this._gameMapLoader.LoadInstancedScene(this.gameLevelName);
+            _gameMapLoader.OnLoaderComplete += LoadCompleteGameLevel;
         }
 
 
@@ -97,86 +109,101 @@ namespace FPS.Game.Logic.World
             decal.Rotation = rot;
         }
 
-        public void LoadCompleteGameLevel(PackedScene scene)
+        public void LoadCompleteGameLevel(Node instanced)
         {
-            scene.ResourceLocalToScene = true;
+            FPS.Game.Utils.Logger.InfoDraw("Game level loaded");
 
-            this._level = (GameLevel)scene.Instantiate();
+            this._level = (GameLevel)instanced.Duplicate();
             this._level.Name = "Level";
+            this._level.Ready += () =>
+            {
+                OnGameLevelLoadedSuccessfull();
+            };
+
+            //  this.AddChild(this._level);
 
             this.CallDeferred("add_child", this._level);
-            OnGameLevelLoadedSuccessfull();
         }
 
-        public override void _Process(float delta)
-        {
-            base._Process(delta);
-            _gameMapLoader.Tick();
-        }
-
-        private void AddPlayerAfterThreadLoading(int id, NetworkPlayer player, Vector3 origin)
+        private void AddPlayerAfterThreadLoading(int id, NetworkPlayer player, Vector3 origin, CallBackFunction callback = null)
         {
             this.players.Add(id, player);
+
             var path = GetNode(playerNodePath);
             if (path != null)
             {
                 player.Name = id.ToString();
                 player.networkId = id;
-                path.AddChild(player);
+                player.Visible = true;
+                player.Ready += () =>
+                {
+                    player.DoTeleport(origin);
+                    player.Activate();
+                    if (callback != null)
+                        callback();
+                };
 
-                player.DoTeleport(origin);
-                player.Activate();
+                path.CallDeferred("add_child", player);
             }
         }
+        public delegate void CallBackFunction();
+        ResourceBackgroundLoader loader = new ResourceBackgroundLoader();
 
-        public void addLocalPlayerThreaded(Godot.Collections.Array info)
+        public void AddPlayerInstance(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
         {
-            int id = int.Parse(info[0].ToString());
-            Vector3 origin = (Vector3)info[1];
-            PlayerType type = (PlayerType)Enum.ToObject(typeof(PlayerType), info[2]);
-
-            PackedScene packedScene;
 
             if (type == PlayerType.Local)
             {
-                packedScene = ResourceLoader.Load("res://Game/Logic/Player/LocalPlayer.tscn") as PackedScene;
-                packedScene.ResourceLocalToScene = true;
+                FPS.Game.Utils.Logger.InfoDraw("Try to load local player");
+                loader.LoadInstancedScene("res://Game/Logic/Player/LocalPlayer.tscn");
 
-                this._localPlayer = (LocalPlayer)packedScene.Instantiate();
-                this.CallDeferred("AddPlayerAfterThreadLoading", id, this._localPlayer, origin);
+                loader.OnLoaderComplete += (Node instanced) =>
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("Local player Loaded");
+
+                    this._localPlayer = (LocalPlayer)instanced;
+                    this.AddPlayerAfterThreadLoading(id, this._localPlayer, origin, callback);
+                };
+
             }
             else if (type == PlayerType.Server)
             {
-                packedScene = ResourceLoader.Load("res://Game/Logic/Player/ServerPlayer.tscn") as PackedScene;
-                packedScene.ResourceLocalToScene = true;
+                FPS.Game.Utils.Logger.InfoDraw("Try to load server player");
+                loader.LoadInstancedScene("res://Game/Logic/Player/ServerPlayer.tscn");
 
-                var player = (ServerPlayer)packedScene.Instantiate();
-                this.CallDeferred("AddPlayerAfterThreadLoading", id, player, origin);
+                loader.OnLoaderComplete += (Node instanced) =>
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("Server player Loaded");
 
+                    var player = (ServerPlayer)instanced;
+                    this.AddPlayerAfterThreadLoading(id, player, origin, callback);
+                };
             }
             else if (type == PlayerType.Puppet)
             {
-                packedScene = ResourceLoader.Load("res://Game/Logic/Player/PuppetPlayer.tscn") as PackedScene;
-                packedScene.ResourceLocalToScene = true;
+                FPS.Game.Utils.Logger.InfoDraw("Try to load puppet player");
+                loader.LoadInstancedScene("res://Game/Logic/Player/PuppetPlayer.tscn");
 
-                var player = (PuppetPlayer)packedScene.Instantiate();
-                this.CallDeferred("AddPlayerAfterThreadLoading", id, player, origin);
+                loader.OnLoaderComplete += (Node instanced) =>
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("Puppet puppet Loaded");
+
+                    var player = (PuppetPlayer)instanced;
+                    this.AddPlayerAfterThreadLoading(id, player, origin, callback);
+                };
             }
         }
 
-
-        public void spwanPlayer(int id, Vector3 origin, PlayerType type)
+        public void spwanPlayer(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
         {
+            FPS.Game.Utils.Logger.InfoDraw("[Client][Player] Spwan " + id + " on location " + origin + " type " + type);
+
             if (this._level == null)
                 return;
 
             if (playerNodePath != null)
             {
-                var thread = new Godot.Thread();
-                var attributes = new object();
-
-                var col = new Godot.Collections.Array(id, origin, type);
-                thread.Start(new Callable(this, "addLocalPlayerThreaded"), col);
+                this.AddPlayerInstance(id, origin, type, callback);
             }
         }
 

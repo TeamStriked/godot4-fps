@@ -1,53 +1,37 @@
+using System.Threading.Tasks;
 using Godot;
+using System;
+using System.Threading;
 
 namespace FPS.Game.Logic.World
 {
-    public partial class ResourceBackgroundLoader
+    public class ResourceBackgroundLoader
     {
         private string resourceName = null;
         private bool inProgress = false;
 
-        public delegate void LoaderComplete(PackedScene scene);
+        readonly static AutoResetEvent _signal = new AutoResetEvent(true);
+
+        public delegate void LoaderComplete(Node scene);
         public event LoaderComplete OnLoaderComplete;
 
-        public void Load(string resourceName)
+        public void LoadInstancedScene(string res)
         {
-            if (this.inProgress)
+            //Starts a new Task that will NOT block the UI thread.
+            Task.Run(() =>
             {
-                GD.PrintErr("In progress");
-                return;
-            }
+                _signal.WaitOne();
 
-            this.inProgress = false;
-            this.resourceName = resourceName;
-
-            var result = ResourceLoader.LoadThreadedRequest(this.resourceName, "", true);
-            if (result == Error.Ok)
-            {
-                this.inProgress = true;
-            }
+                //This simulates the heavy task.
+                var scene = ResourceLoader.Load(res) as PackedScene;
+                scene.ResourceLocalToScene = true;
+                Console.WriteLine("Start instancing.");
+                var obj = scene.Instantiate();
+                OnLoaderComplete(obj);
+                Console.WriteLine("Instanced thread loaded complete.");
+                _signal.Set();
+            });
         }
 
-        public void Tick()
-        {
-            if (this.inProgress)
-            {
-                var status = ResourceLoader.LoadThreadedGetStatus(this.resourceName);
-                if (status == ResourceLoader.ThreadLoadStatus.Loaded)
-                {
-                    GD.Print("Loading game level successfull.");
-
-                    var scene = ResourceLoader.LoadThreadedGet(this.resourceName) as PackedScene;
-                    GD.Print("[ResourceManager] Load resource completed " + resourceName);
-                    OnLoaderComplete(scene);
-                    this.inProgress = false;
-                }
-                else if (status == ResourceLoader.ThreadLoadStatus.InvalidResource || status == ResourceLoader.ThreadLoadStatus.Failed)
-                {
-                    GD.PrintErr("[ResourceManager]  Cant load resource " + resourceName);
-                    this.inProgress = false;
-                }
-            }
-        }
     }
 }

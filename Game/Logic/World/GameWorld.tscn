@@ -9,11 +9,12 @@ freeModeCameraNodePath = NodePath("FreeModeCamera")
 playerNodePath = NodePath("players")
 decalNodePath = NodePath("Decals")
 
-[node name="players" type="Node" parent="."]
+[node name="players" type="Node3D" parent="."]
 script = null
 
 [node name="FreeModeCamera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.954532, 0.298108, 0, -0.298108, 0.954532, 0, 0.800264, 1.33477)
+current = true
 script = ExtResource( "2_j3j1x" )
 sensitivity = 0.25
 

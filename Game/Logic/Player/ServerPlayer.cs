@@ -18,6 +18,9 @@ namespace FPS.Game.Logic.Player
 
         public override void _PhysicsProcess(float delta)
         {
+            if (!isActivated)
+                return;
+
             base._PhysicsProcess(delta);
 
             while (inputQueue.Count > 0)
@@ -53,7 +56,10 @@ namespace FPS.Game.Logic.Player
 
         public override void Activate()
         {
-
+            this.playerChar.setCameraMode(PlayerCameraMode.NONE);
+            this.playerChar.setDrawMode(PlayerDrawMode.NONE);
+            this.isActivated = true;
         }
+
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using System;
 using FPS.Game.Config;
@@ -12,8 +13,12 @@ namespace FPS.Game.Logic.Client
 
         [Export]
         NodePath mainMenuPath = null;
+        [Export]
+        NodePath gameGraphPath = null;
 
         GameSettings settingsMenu = null;
+
+        GameGraph graphMenu = null;
 
         MainMenu mainMenu = null;
 
@@ -32,11 +37,18 @@ namespace FPS.Game.Logic.Client
 
         private string currentLevelName = "";
 
+        public override void logNetPackage(int id, byte[] packet)
+        {
+            GD.Print("Client receveid package from " + id + " with" + packet.Length);
+        }
+
+
         // Called when the node enters the scene tree for the first time.
         public override void _EnterTree()
         {
             this.settingsMenu = GetNode(settingsMenuPath) as GameSettings;
             this.mainMenu = GetNode(mainMenuPath) as MainMenu;
+            this.graphMenu = GetNode(gameGraphPath) as GameGraph;
 
             InitNetwork();
             CustomMultiplayer.ConnectedToServer += onConnected;
@@ -76,7 +88,7 @@ namespace FPS.Game.Logic.Client
 
         protected void OnLevelLoadedSuccesfull()
         {
-            GD.Print("[Client] Level loaded successfull");
+            FPS.Game.Utils.Logger.InfoDraw("[Client] Level loaded successfull");
 
             this.World.setFreeMode(false);
             RpcId(serverId, "mapLoadedSuccessfull");
@@ -85,41 +97,45 @@ namespace FPS.Game.Logic.Client
         [AnyPeer]
         public override void serverNotReady()
         {
-            GD.PrintErr("[Client] Server is not ready");
+            FPS.Game.Utils.Logger.LogError("[Client] Server is not ready");
         }
+
+        bool isConnected = false;
 
         public void doConnect(string hostname, int port)
         {
             this.mainMenu.Hide();
 
             var realIP = IP.ResolveHostname(hostname, IP.Type.Any);
-            drawSystemMessage("Try to connect to " + realIP + ":" + port);
+            FPS.Game.Utils.Logger.InfoDraw("Try to connect to " + realIP + ":" + port);
             var error = network.CreateClient(realIP, port);
             if (error != Error.Ok)
             {
-                drawSystemMessage("Network error:" + error.ToString());
+                isConnected = true;
+                FPS.Game.Utils.Logger.InfoDraw("Network error: " + error.ToString());
                 this.mainMenu.Show();
             }
 
             CustomMultiplayer.MultiplayerPeer = network;
-
         }
 
         public void onConnectionFailed()
         {
-            drawSystemMessage("Error cant connect.");
+            FPS.Game.Utils.Logger.InfoDraw("Error cant connect.");
+            isConnected = false;
         }
 
         public void onDisconnect()
         {
-            drawSystemMessage("Server disconnected.");
+            FPS.Game.Utils.Logger.InfoDraw("Server disconnected.");
             this.handleDisconnect();
+            isConnected = false;
         }
 
         private void handleDisconnect()
         {
             ownNetworkId = 0;
-            drawSystemMessage("Client is disconnected.");
+            FPS.Game.Utils.Logger.InfoDraw("Client is disconnected.");
             this.destroyWorld();
             this.settingsMenu.Hide();
             this.mainMenu.Show();
@@ -128,11 +144,30 @@ namespace FPS.Game.Logic.Client
         public void onConnected()
         {
             ownNetworkId = CustomMultiplayer.GetUniqueId();
-            drawSystemMessage("[Client] Connection established. Your id is " + ownNetworkId.ToString());
+            FPS.Game.Utils.Logger.InfoDraw("[Client] Connection established.Your id is " + ownNetworkId.ToString());
+            isConnected = true;
         }
-        private void drawSystemMessage(string message)
+
+        public Timer timer = new Timer();
+
+        public override void _Ready()
         {
-            GD.Print("[Client] " + message);
+            base._Ready();
+
+            this.AddChild(timer);
+            timer.Autostart = true;
+            timer.Start();
+            timer.WaitTime = 1.0f;
+            timer.Connect("timeout", new Callable(this, "StatNetworkTraffic"));
+        }
+
+        public void StatNetworkTraffic()
+        {
+            if (isConnected)
+            {
+                this.graphMenu.inTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.ReceivedData);
+                this.graphMenu.outTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.SentData);
+            }
         }
 
         public override void _Process(float delta)
@@ -160,15 +195,27 @@ namespace FPS.Game.Logic.Client
         [Authority]
         public override void spwanPlayer(int id, Vector3 origin)
         {
-            GD.Print("[Client][Player] Spwan " + id + " on location " + origin);
-
-            if (id == this.ownNetworkId)
-            {
-                this.World.spwanPlayer(id, origin, Player.PlayerType.Local);
-            }
-            else
+            if (id != this.ownNetworkId)
             {
                 this.World.spwanPlayer(id, origin, Player.PlayerType.Puppet);
+            }
+        }
+
+        [Authority]
+        public override void spwanPlayers(string message)
+        {
+            var uncompress = FPS.Game.Utils.NetworkCompressor.Decompress<Dictionary<int, Vector3>>(message);
+
+            foreach (var item in uncompress)
+            {
+                if (item.Key == this.ownNetworkId)
+                {
+                    this.World.spwanPlayer(item.Key, item.Value, Player.PlayerType.Local);
+                }
+                else
+                {
+                    this.World.spwanPlayer(item.Key, item.Value, Player.PlayerType.Puppet);
+                }
             }
         }
     }

@@ -7,6 +7,9 @@ namespace FPS.Game.UI
     public partial class GameGraph : CanvasLayer
     {
         Label _label = null;
+
+        public double inTraffic = 0;
+        public double outTraffic = 0;
         public override void _Ready()
         {
             this._label = GetNode("Content") as Label;
@@ -15,9 +18,9 @@ namespace FPS.Game.UI
         public override void _Process(float delta)
         {
             var memBytes = OS.GetStaticMemoryUsage();
-            var vidMemBytes = (float) Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed);
+            var vidMemBytes = (float)Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed);
 
-            this._label.Text = "Mem: " + Convert(memBytes) + " VMem: " + Convert(vidMemBytes) + " Delta: " + delta + " " + " FPS: " + Performance.GetMonitor(Performance.Monitor.TimeFps) + " Objects:" + Performance.GetMonitor(Performance.Monitor.ObjectCount) + " Resources:" + Performance.GetMonitor(Performance.Monitor.ObjectResourceCount) + " Nodes:" + Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
+            this._label.Text = "Mem: " + Convert(memBytes) + " NetIN: " + Convert((float)inTraffic) + "/s NetOut: " + Convert((float)outTraffic) + "/s VMem: " + Convert(vidMemBytes) + " FPS: " + Performance.GetMonitor(Performance.Monitor.TimeFps) + " Objects:" + Performance.GetMonitor(Performance.Monitor.ObjectCount) + " Resources:" + Performance.GetMonitor(Performance.Monitor.ObjectResourceCount) + " Nodes:" + Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
         }
 
         string Convert(float bytes)

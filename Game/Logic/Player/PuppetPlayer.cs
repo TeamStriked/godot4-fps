@@ -10,19 +10,12 @@ namespace FPS.Game.Logic.Player
             return false;
         }
 
-        // Declare member variables here. Examples:
-        // private int a = 2;
-        // private string b = "text";
-
-        // Called when the node enters the scene tree for the first time.
-        public override void _Ready()
-        {
-            this.playerChar.setCameraMode(PlayerCameraMode.NONE);
-            this.playerChar.setDrawMode(PlayerDrawMode.TPS);
-        }
 
         public override void _PhysicsProcess(float delta)
         {
+            if (!isActivated)
+                return;
+
             base._PhysicsProcess(delta);
 
             var newFrame = this.calulcateFrame(new InputFrame(), delta);
@@ -33,6 +26,7 @@ namespace FPS.Game.Logic.Player
         [Authority]
         public override void onPuppetUpdate(string message)
         {
+
             var puppetFrame = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(message);
             this.DoTeleport(puppetFrame.origin);
             this.DoRotate(puppetFrame.rotation);
@@ -43,7 +37,8 @@ namespace FPS.Game.Logic.Player
 
         public override void Activate()
         {
-
+            this.playerChar.setCameraMode(PlayerCameraMode.NONE);
+            this.playerChar.setDrawMode(PlayerDrawMode.TPS);
         }
 
     }

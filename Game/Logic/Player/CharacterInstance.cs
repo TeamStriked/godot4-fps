@@ -73,7 +73,7 @@ namespace FPS.Game.Logic.Player
         private FPSCamera _FPSCamera;
         private AnimationTree _tree;
 
-        private Camera3D _thirdPersonCamera;
+        private Camera3D _TPSCamera;
 
         private CollisionShape3D collider = null;
         private CapsuleShape3D colliderShape = null;
@@ -111,12 +111,16 @@ namespace FPS.Game.Logic.Player
 
         public void setAnimationState(string name)
         {
-            var obj = this._tree.Get("parameters/state/playback");
-            if (obj != null)
+            if (_tree != null)
             {
-                (obj as AnimationNodeStateMachinePlayback).Travel(name);
-                currentAnimationName = name;
+                var obj = this._tree.Get("parameters/state/playback");
+                if (obj != null)
+                {
+                    (obj as AnimationNodeStateMachinePlayback).Travel(name);
+                    currentAnimationName = name;
+                }
             }
+
         }
 
         public string getAnimationState()
@@ -130,8 +134,11 @@ namespace FPS.Game.Logic.Player
 
         public void setAnimationTimeScale(float timeScale)
         {
-            currentAnimationScale = timeScale;
-            this._tree.Set("parameters/scale/scale", timeScale);
+            if (this._tree != null)
+            {
+                currentAnimationScale = timeScale;
+                this._tree.Set("parameters/scale/scale", timeScale);
+            }
         }
 
         public void setBobbing(float delta)
@@ -177,42 +184,44 @@ namespace FPS.Game.Logic.Player
         {
             if (mode == PlayerCameraMode.TPS)
             {
+                this._TPSCamera.Visible = true;
+                this._TPSCamera.Current = true;
+
                 this._FPSCamera.Current = false;
                 this._FPSCamera.Visible = false;
-                this._thirdPersonCamera.Current = true;
             }
             else if (mode == PlayerCameraMode.FPS)
             {
-                this._FPSCamera.Visible = true;
                 this._FPSCamera.Current = true;
-                this._thirdPersonCamera.Current = false;
+                this._FPSCamera.Visible = true;
+
+                this._TPSCamera.Current = false;
+                this._TPSCamera.Visible = false;
             }
             else
             {
                 this._FPSCamera.Current = false;
+                this._TPSCamera.Current = false;
                 this._FPSCamera.Visible = false;
-                this._thirdPersonCamera.Current = false;
+                this._TPSCamera.Visible = false;
             }
         }
+
 
         public void setDrawMode(PlayerDrawMode mode)
         {
             if (mode == PlayerDrawMode.TPS)
             {
-                this._FPSCamera.Visible = false;
                 this._tpsCharacter.Visible = true;
                 enableShadowing(this._tpsCharacter, false);
             }
             else if (mode == PlayerDrawMode.FPS)
             {
-
-                this._FPSCamera.Visible = true;
                 this._tpsCharacter.Visible = true;
                 enableShadowing(this._tpsCharacter, true);
             }
             else
             {
-                this._FPSCamera.Visible = false;
                 this._tpsCharacter.Visible = false;
             }
         }
@@ -222,7 +231,6 @@ namespace FPS.Game.Logic.Player
             if (node is MeshInstance3D)
             {
                 (node as MeshInstance3D).CastShadow = (enableShadows) ? GeometryInstance3D.ShadowCastingSetting.ShadowsOnly : GeometryInstance3D.ShadowCastingSetting.On;
-                (node as MeshInstance3D).GiMode = (enableShadows) ? GeometryInstance3D.GIMode.Dynamic : GeometryInstance3D.GIMode.Baked;
             }
 
             foreach (var child in node.GetChildren())
@@ -239,10 +247,10 @@ namespace FPS.Game.Logic.Player
         const float maxLookAngleY = 85.0f;
         public void rotateTPSCamera(float headRotation)
         {
-            var tpsCamera = this._thirdPersonCamera.Rotation;
+            var tpsCamera = this._TPSCamera.Rotation;
             tpsCamera.x -= Mathf.Deg2Rad(headRotation);
             tpsCamera.x = Mathf.Deg2Rad(Mathf.Clamp(Mathf.Rad2Deg(tpsCamera.x), minLookAngleY, maxLookAngleY));
-            this._thirdPersonCamera.Rotation = tpsCamera;
+            this._TPSCamera.Rotation = tpsCamera;
         }
 
         public void rotateFPS(float charRotation, float headRotation)
@@ -345,7 +353,6 @@ namespace FPS.Game.Logic.Player
                 if (box is Area3D)
                     this.GetNode("hitboxes").RemoveChild(box as Area3D);
             }
-
         }
 
         public void DoFire()
@@ -364,7 +371,13 @@ namespace FPS.Game.Logic.Player
                         var collider = this.aimRay.GetCollider();
                         if (collider is StaticBody3D)
                         {
+                            FPS.Game.Utils.Logger.InfoDraw("Hit wall at " + this.aimRay.GetCollisionPoint());
                             GameWorld.TriggerNewDecal(this.aimRay.GetCollisionPoint(), this.aimRay.GetCollisionNormal(), collider as StaticBody3D);
+                        }
+                        else if (collider is Hitbox)
+                        {
+                            var name = (collider as Hitbox).Name;
+                            FPS.Game.Utils.Logger.InfoDraw("Hit hitbox " + name + " on " + this.aimRay.GetCollisionPoint());
                         }
                     }
                 }
@@ -387,12 +400,15 @@ namespace FPS.Game.Logic.Player
             }
 
             this._FPSCamera = GetNode<FPSCamera>(cameraNodePath);
-            this._thirdPersonCamera = GetNode(cameraThirdPersonPath) as Camera3D;
+            this._TPSCamera = GetNode(cameraThirdPersonPath) as Camera3D;
             this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
             this._tree = GetNode(animationTreeNodePath) as AnimationTree;
             this.weaponHolder = GetNode(weaponHolderPath) as WeaponHolder;
             this.footstepPlayer = GetNode<AudioStreamPlayer3D>(footstepPlayerPath);
             this.aimRay = GetNode(aimRayPath) as RayCast3D;
+
+            this._FPSCamera.Current = false;
+            this._TPSCamera.Current = false;
 
             this.head = GetNode("head") as Node3D;
 
@@ -439,7 +455,7 @@ namespace FPS.Game.Logic.Player
             this.origColliderShapeHeight = this.colliderShape.Height;
 
             this._FPSCamera.Current = false;
-            this._thirdPersonCamera.Current = false;
+            this._TPSCamera.Current = false;
             this._tpsCharacter.Visible = false;
             this._FPSCamera.Visible = false;
 

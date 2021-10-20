@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FPS.Game.Logic.World;
 
 namespace FPS.Game.Logic.Server
 {
@@ -36,6 +37,8 @@ namespace FPS.Game.Logic.Server
 
         public Error levelState = Error.Failed;
 
+        public List<ServerClient> clients = new List<ServerClient>();
+
         public override void _EnterTree()
         {
             InitNetwork();
@@ -46,43 +49,49 @@ namespace FPS.Game.Logic.Server
             CustomMultiplayer.MultiplayerPeer = network;
             Multiplayer.RootNode = this;
 
-            GD.Print("[Server] started at port " + port);
+            FPS.Game.Utils.Logger.InfoDraw("[Server] started at port " + port);
 
             CustomMultiplayer.PeerConnected += onPlayerConnect;
             CustomMultiplayer.PeerDisconnected += onPlayerDisconnect;
 
+        }
+
+        public override void _Ready()
+        {
+            base._Ready();
             this.loadWorldThreaded();
         }
 
         protected override void OnGameWorldResourceLoaded()
         {
-            GD.Print("Game world loaded successfull");
+            FPS.Game.Utils.Logger.InfoDraw("Game world loaded successfull");
             this.World.OnGameLevelLoadedSuccessfull += this.OnLevelLoadedSuccesfull;
             this.World.loadLevelThreaded(this.levelPath);
         }
 
         protected void OnLevelLoadedSuccesfull()
         {
-            this.World.setFreeMode(false);
+            this.World.setFreeMode(true);
             this.levelState = Error.Ok;
         }
 
         public void onPlayerDisconnect(int id)
         {
-            GD.Print("[Server] Client " + id.ToString() + " disconnected.");
+            FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " disconnected.");
             this.World.removePlayer(id);
         }
 
         public void onPlayerConnect(int id)
         {
-            GD.Print("[Server] Client " + id.ToString() + " connected.");
+            FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " connected.");
 
             if (levelState != Error.Ok)
             {
-                GD.Print("Server not ready now");
+                FPS.Game.Utils.Logger.InfoDraw("Server not ready now");
             }
             else
             {
+                this.clients.Add(new ServerClient(id));
                 RpcId(id, "serverAuthSuccessfull", levelPath);
             }
         }
@@ -92,14 +101,37 @@ namespace FPS.Game.Logic.Server
         {
             var id = Multiplayer.GetRemoteSenderId();
 
+            var client = this.clients.FirstOrDefault(df => df.id == id);
+            if (client == null)
+                return;
+
             var spwanPoint = this.World.Level.findFreeSpwanPoint();
             if (spwanPoint != null)
             {
                 spwanPoint.inUsage = true;
-                GD.Print("[Server] Client " + id.ToString() + " world loaded.");
+                FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " world loaded.");
 
-                this.World.spwanPlayer(id, spwanPoint.GlobalTransform.origin, Player.PlayerType.Server);
-                Rpc("spwanPlayer", id, spwanPoint.GlobalTransform.origin);
+                var callback = new GameWorld.CallBackFunction(() =>
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " character added.");
+
+                    client.state = ServerClientState.INIT;
+                    foreach (var client in clients.Where(df => df.state == ServerClientState.INIT))
+                    {
+                        if (client.id == id)
+                        {
+                            var list = this.World.GetPlayers();
+                            var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(list);
+                            RpcId(id, "spwanPlayers", sendMessage);
+                        }
+                        else
+                        {
+                            RpcId(id, "spwanPlayer", id, spwanPoint.GlobalTransform.origin);
+                        }
+                    }
+                });
+
+                this.World.spwanPlayer(id, spwanPoint.GlobalTransform.origin, Player.PlayerType.Server, callback);
             }
         }
 
@@ -110,12 +142,14 @@ namespace FPS.Game.Logic.Server
 
         private void DisconnectClient(int id, string message = "")
         {
-            GD.Print("[Server][Player][" + id + "] Disconnect Reason:" + message);
+            FPS.Game.Utils.Logger.InfoDraw("[Server][Player][" + id + "] Disconnect Reason:" + message);
             //RpcId(id, "forceDisconnect", message);
             network.GetPeer(id).PeerDisconnect();
 
             this.World.removePlayer(id);
+            this.clients.RemoveAll(df => df.id == id);
         }
+
     }
 
 }

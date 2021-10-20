@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bvkmlri3hjr0d"
+uid="uid://3q86ygvq7gqn"
 path="res://.godot/imported/soldier.glb-fafa8217963206ab256c32f3c1970adf.scn"
 
 [deps]
@@ -253,97 +253,97 @@ _subresources={
 "meshes": {
 "soldier_B1_1_B1_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/b1_1.res"
 },
 "soldier_B3_1_B3_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/b3.res"
 },
 "soldier_C1_1_C1_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/c1.res"
 },
 "soldier_C1_1_copy1_C1_1_copy1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/c1_copy1.res"
 },
 "soldier_C2_1_C2_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/c2.res"
 },
 "soldier_C3_1_C3_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/c3.res"
 },
 "soldier_CA1_1_CA1_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/ca1.res"
 },
 "soldier_COSAS_ARRIBA_1_COSAS_ARRIBA_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/cosas_arriba.res"
 },
 "soldier_COSAS_CARA_1_COSAS_CARA_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/cosas_cara.res"
 },
 "soldier_COSAS_PIERNAS_1_COSAS_PIERNAS_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/cosas.res"
 },
 "soldier_CUELLO_2_CUELLO_2_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/cuello.res"
 },
 "soldier_MANOS_1_MANOS_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/manos.res"
 },
 "soldier_P1_1_P1_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/p1_1.res"
 },
 "soldier_P2_1_P2_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/p2.res"
 },
 "soldier_P3_1_P3_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/p3.res"
 },
 "soldier_PI3_1_PI3_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/pi3.res"
 },
 "soldier_PI_2_PI_2_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/pi_2.res"
 },
 "soldier_RO1_1_RO1_1_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/roi.res"
 },
 "soldier_SOLDIER_3D_2_SOLDIER_3D_2_0": {
 "save_to_file/enabled": true,
-"save_to_file/make_streamable": true,
+"save_to_file/make_streamable": false,
 "save_to_file/path": "res://assets/character/meshes/soldier_naked.res"
 }
 },

@@ -9,13 +9,13 @@ public partial class Bootloader : Node
 
     private void createServerWindow(string name = "window")
     {
-        GD.Print("Load server..");
+        FPS.Game.Utils.Logger.InfoDraw("Load server..");
 
         var scene = (PackedScene)ResourceLoader.Load("res://bootloader/ServerWindow.tscn");
         var serverWindow = (ServerWindow)scene.Instantiate();
         serverWindow.Name = name;
-        serverWindow.Visible = false;
-        AddChild(serverWindow);
+        //  serverWindow.Visible = false;
+        GetNode("box").AddChild(serverWindow);
     }
 
     public override void _Process(float delta)
@@ -27,17 +27,17 @@ public partial class Bootloader : Node
 
     private void createClientWindow(string name = "window")
     {
-        GD.Print("Load client..");
+        FPS.Game.Utils.Logger.InfoDraw("Load client..");
 
         var scene = (PackedScene)ResourceLoader.Load("res://bootloader/ClientWindow.tscn");
         var clientWindow = scene.Instantiate();
         clientWindow.Name = name;
-        AddChild(clientWindow);
+        GetNode("box").AddChild(clientWindow);
     }
 
     public override void _Ready()
     {
-        GD.Print("Bootloading..");
+        FPS.Game.Utils.Logger.InfoDraw("Bootloading..");
 
         if (OS.GetCmdlineArgs().Contains("-server"))
         {

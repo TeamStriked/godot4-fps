@@ -21,6 +21,7 @@ namespace FPS.Game.Logic.Networking
             base._EnterTree();
 
             RpcConfig("spwanPlayer", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("spwanPlayers", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("serverAuthSuccessfull", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("serverNotReady", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("mapLoadedSuccessfull", RPCMode.AnyPeer, false, TransferMode.Reliable);
@@ -40,6 +41,11 @@ namespace FPS.Game.Logic.Networking
             attachNodesToNetwork(this);
         }
 
+        public virtual void logNetPackage(int id, byte[] packet)
+        {
+            GD.Print("Client receveid package from " + id + " with" + packet.Length);
+        }
+
 
         public override void _Process(float delta)
         {
@@ -47,7 +53,6 @@ namespace FPS.Game.Logic.Networking
             {
                 CustomMultiplayer.Poll();
             }
-
 
         }
 
@@ -69,6 +74,7 @@ namespace FPS.Game.Logic.Networking
             node.CustomMultiplayer = CustomMultiplayer;
         }
 
+
         public override void _Notification(int what)
         {
             if (what == NotificationExitTree)
@@ -88,17 +94,28 @@ namespace FPS.Game.Logic.Networking
             }
         }
 
+        ResourceBackgroundLoader _gameWorldLoader = new ResourceBackgroundLoader();
+
         protected void loadWorldThreaded()
         {
-            var scene = ResourceLoader.Load("res://Game/Logic/World/GameWorld.tscn") as PackedScene;
+            FPS.Game.Utils.Logger.InfoDraw("Try to add game world..");
 
-            GD.Print("Add game world..");
-            scene.ResourceLocalToScene = true;
-            this._world = (GameWorld)scene.Instantiate();
-            this._world.Name = "World";
+            _gameWorldLoader.LoadInstancedScene("res://Game/Logic/World/GameWorld.tscn");
+            _gameWorldLoader.OnLoaderComplete += (Node instancedNode) =>
+            {
 
-            AddChild(this._world);
-            OnGameWorldResourceLoaded();
+                FPS.Game.Utils.Logger.InfoDraw("Add game world..");
+
+                this._world = (GameWorld)instancedNode;
+                this._world.Name = "World";
+                this._world.Visible = true;
+                this._world.Ready += OnGameWorldResourceLoaded;
+
+                this.CallDeferred("add_child", this._world);
+            };
+        }
+        public void doSomethingThread(object userdata = null)
+        {
         }
 
         protected void destroyWorld()
@@ -126,6 +143,12 @@ namespace FPS.Game.Logic.Networking
 
         [Authority]
         public virtual void spwanPlayer(int id, Vector3 origin)
+        {
+
+        }
+
+        [Authority]
+        public virtual void spwanPlayers(string message)
         {
 
         }

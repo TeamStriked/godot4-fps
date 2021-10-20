@@ -28,17 +28,21 @@ namespace FPS.Game.Logic.Player
 
         private bool isThirdPerson = false;
 
-        public bool canHandleInput = true;
 
 
         private List<float> _rotArrayX = new List<float>();
         private List<float> _rotArrayY = new List<float>();
 
+        public override void _Ready()
+        {
+            base._Ready();
+        }
+
 
         [Authority]
         public override void onNetworkTeleport(Vector3 origin)
         {
-            GD.Print("Cliend receive teleport on " + origin);
+            FPS.Game.Utils.Logger.InfoDraw("Cliend receive teleport on " + origin);
             base.DoTeleport(origin);
         }
 
@@ -82,7 +86,7 @@ namespace FPS.Game.Logic.Player
         // Called when the node enters the scene tree for the first time.
         public override void _PhysicsProcess(float delta)
         {
-            if (!canHandleInput)
+            if (!isActivated)
                 return;
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
@@ -146,7 +150,7 @@ namespace FPS.Game.Logic.Player
         {
             base._Process(delta);
 
-            if (!canHandleInput)
+            if (!isActivated)
                 return;
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
@@ -177,7 +181,7 @@ namespace FPS.Game.Logic.Player
         {
             base._Input(@event);
 
-            if (!canHandleInput)
+            if (!isActivated)
             {
                 @event.Dispose();
                 return;
@@ -204,17 +208,19 @@ namespace FPS.Game.Logic.Player
 
         public override void Activate()
         {
-            this.canHandleInput = true;
-            Input.SetMouseMode(Input.MouseMode.Captured);
 
             this.playerChar.setCameraMode(PlayerCameraMode.FPS);
             this.playerChar.setDrawMode(PlayerDrawMode.FPS);
+
+            this.isActivated = true;
+            Input.SetMouseMode(Input.MouseMode.Captured);
+
             this.playerChar.DisableHitboxes();
         }
 
         public void Dectivate()
         {
-            this.canHandleInput = false;
+            this.isActivated = false;
             Input.SetMouseMode(Input.MouseMode.Visible);
             this.playerChar.setCameraMode(PlayerCameraMode.NONE);
             this.playerChar.setDrawMode(PlayerDrawMode.NONE);
