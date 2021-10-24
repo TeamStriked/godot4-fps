@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://b6qlixykgceqv"
+uid="uid://g0q3sutfdv2f"
 path="res://.godot/imported/Hand_Albedo(1).png-fbe50e6a55ad040b8f4acbcbaf819eef.stex"
 metadata={
 "vram_texture": false
@@ -15,14 +15,14 @@ dest_files=["res://.godot/imported/Hand_Albedo(1).png-fbe50e6a55ad040b8f4acbcbaf
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -31,5 +31,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

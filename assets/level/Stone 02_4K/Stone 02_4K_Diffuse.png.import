@@ -2,29 +2,27 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://db52qfs73450h"
-path.s3tc="res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.s3tc.stex"
-path.etc2="res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.etc2.stex"
+uid="uid://wfffgg8et7cb"
+path="res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/level/Stone 02_4K/Stone 02_4K_Diffuse.png"
-dest_files=["res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.s3tc.stex", "res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.etc2.stex"]
+dest_files=["res://.godot/imported/Stone 02_4K_Diffuse.png-992f97566cdb50f671322d9ac3271049.stex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -33,5 +31,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://du4s074805d64"
+uid="uid://vjdmygex1yef"
 path="res://.godot/imported/Hand_normals.png-79ae4baed04e2f4d52a9ab20d34c53a0.stex"
 metadata={
 "vram_texture": false
@@ -15,21 +15,21 @@ dest_files=["res://.godot/imported/Hand_normals.png-79ae4baed04e2f4d52a9ab20d34c
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
-compress/normal_map=1
+compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://assets/weapons/Weapons/Hands_Axe/Hand_normals.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

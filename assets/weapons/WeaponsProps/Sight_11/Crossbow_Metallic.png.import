@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://dmvmiulrutboa"
+uid="uid://04ax0urp8ah5"
 path="res://.godot/imported/Crossbow_Metallic.png-50f86a5c52c20b5b561f92882c144b97.stex"
 metadata={
 "vram_texture": false
@@ -15,21 +15,21 @@ dest_files=["res://.godot/imported/Crossbow_Metallic.png-50f86a5c52c20b5b561f928
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=8
-roughness/src_normal="res://assets/weapons/WeaponsProps/Sight_11/Crossbow_Normals.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

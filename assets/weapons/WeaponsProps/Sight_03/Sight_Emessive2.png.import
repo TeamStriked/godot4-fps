@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://bylthcmgj64h6"
+uid="uid://85531prtaxoy"
 path="res://.godot/imported/Sight_Emessive2.png-e77776112c5bac41fc3d1eb6640a69f3.stex"
 metadata={
 "vram_texture": false
@@ -15,14 +15,14 @@ dest_files=["res://.godot/imported/Sight_Emessive2.png-e77776112c5bac41fc3d1eb66
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -31,5 +31,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

@@ -2,36 +2,34 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://i2u60ovyccid"
-path.s3tc="res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.s3tc.stex"
-path.etc2="res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.etc2.stex"
+uid="uid://c1msxq74vfhfw"
+path="res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Flame_Arrester_02/Flame_Arrester_Normals.png"
-dest_files=["res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.s3tc.stex", "res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.etc2.stex"]
+dest_files=["res://.godot/imported/Flame_Arrester_Normals.png-8f91000dbb725a8dad3617e50b7d225c.stex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
-compress/normal_map=1
+compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
-roughness/mode=1
-roughness/src_normal="res://assets/weapons/WeaponsProps/Flame_Arrester_02/Flame_Arrester_Normals.png"
+roughness/mode=0
+roughness/src_normal=""
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0
