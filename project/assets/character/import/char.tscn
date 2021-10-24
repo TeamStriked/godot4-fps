@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://beu6wsq1h3qhm"]
+
+[ext_resource type="PackedScene" uid="uid://d3oyasgue5h80" path="res://assets/character/import/char.gltf" id="1_og4sv"]
+
+[node name="char" instance=ExtResource( "1_og4sv" )]
+
+[node name="AnimationPlayer" parent="." index="2"]
+blend_times = []

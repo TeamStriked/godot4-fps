@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1kwltirt34k1"]
+
+[ext_resource type="Script" path="res://Game/UI/MainMenu.cs" id="1_yotma"]
+
+[node name="MeinMenu" type="CanvasLayer"]
+script = ExtResource( "1_yotma" )
+hostNodePath = NodePath("AspectRatioContainer/VBoxContainer/Hostname")
+portNodePath = NodePath("AspectRatioContainer/VBoxContainer/Port")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+offset_right = 40.0
+offset_bottom = 40.0
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer"]
+offset_left = 102.4
+offset_right = 756.8
+offset_bottom = 654.4
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hostname" type="LineEdit" parent="AspectRatioContainer/VBoxContainer"]
+offset_right = 654.0
+offset_bottom = 33.0
+text = "localhost"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="Port" type="LineEdit" parent="AspectRatioContainer/VBoxContainer"]
+offset_top = 37.0
+offset_right = 654.0
+offset_bottom = 70.0
+text = "27015"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="Button" type="Button" parent="AspectRatioContainer/VBoxContainer"]
+offset_top = 74.0
+offset_right = 654.0
+offset_bottom = 103.0
+text = "Connect"
+script = null
+
+[connection signal="pressed" from="AspectRatioContainer/VBoxContainer/Button" to="." method="onConnectButtonPressed"]
