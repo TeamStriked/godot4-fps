@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=3 uid="uid://b2jribo6f646u"]
+
+[ext_resource type="PackedScene" uid="uid://htkfpsruywg0" path="res://assets/weapons/Weapons_New/Rifle02.glb" id="1_bvnb3"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0ww68"]
+filters = []
+animation = &"Hands_Automatic_Rifle02006"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1jlho"]
+filters = []
+animation = &"Hands_Automatic_Rifle02006"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cr07k"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bvv2q"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_lylnn"]
+states/Hands_Automatic_Rifle02006/node = SubResource( "AnimationNodeAnimation_1jlho" )
+states/Hands_Automatic_Rifle02006/position = Vector2(259, 112)
+"states/Hands_Automatic_Rifle02006 2/node" = SubResource( "AnimationNodeAnimation_0ww68" )
+"states/Hands_Automatic_Rifle02006 2/position" = Vector2(478, 82)
+transitions = [&"Hands_Automatic_Rifle02006", &"Hands_Automatic_Rifle02006 2", SubResource( "AnimationNodeStateMachineTransition_cr07k" ), &"Hands_Automatic_Rifle02006 2", &"Hands_Automatic_Rifle02006", SubResource( "AnimationNodeStateMachineTransition_bvv2q" )]
+start_node = "Hands_Automatic_Rifle02006"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_thq1t"]
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0799415, -0.85216, -0.0557529)
+script = null
+
+[node name="Rifle02" parent="." instance=ExtResource( "1_bvnb3" )]
+
+[node name="Character001Hub001" parent="Rifle02/Hands_Automatic_Rifle02" index="1"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
+
+[node name="Skeleton3D2" parent="Rifle02/Hands_Automatic_Rifle02/Character001Hub001" index="0"]
+bones/1/rotation = Quaternion(-0.114708, -0.291897, -0.523716, 0.792059)
+bones/2/rotation = Quaternion(0.669416, -2.56875e-07, -2.51457e-07, 0.742887)
+bones/3/rotation = Quaternion(-1.30239e-08, -0.39423, -4.93922e-08, 0.919012)
+bones/4/rotation = Quaternion(-0.147193, -0.916219, 0.0691673, 0.366186)
+bones/21/rotation = Quaternion(0.293866, -0.398921, 0.564261, 0.66039)
+bones/22/rotation = Quaternion(0.897659, 6.19124e-08, 6.02588e-07, 0.440691)
+bones/23/rotation = Quaternion(-1.21579e-08, -0.0786037, -5.20228e-08, 0.996906)
+bones/24/rotation = Quaternion(0.222602, 0.52647, -0.541377, 0.616595)
+
+[node name="Character001LArmIKTarget" parent="Rifle02/Hands_Automatic_Rifle02" index="2"]
+transform = Transform3D(0.63523, -0.145047, -0.758581, 0.139875, -0.94436, 0.297699, -0.759551, -0.295214, -0.579595, 0.00395773, 1.37968, -0.60486)
+
+[node name="Character001RArmIKTarget" parent="Rifle02/Hands_Automatic_Rifle02" index="3"]
+transform = Transform3D(0.178819, 0.983802, 0.0119542, 0.0474283, 0.00351654, -0.998872, -0.982741, 0.179182, -0.0460316, 0.0353012, 1.40876, -0.226511)
+
+[node name="Skeleton3D" parent="Rifle02/Hands_Automatic_Rifle02" index="6"]
+bones/0/position = Vector3(1.92267e-09, 1.42108, -0.217)
+bones/0/rotation = Quaternion(-0.707107, 5.6284e-08, 5.55825e-08, 0.707107)
+bones/6/position = Vector3(3.84373e-08, 1.40825, -0.388989)
+bones/6/rotation = Quaternion(-0.5, -0.5, -0.5, 0.5)
+
+[node name="AnimationPlayer" parent="Rifle02" index="1"]
+blend_times = []
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( "AnimationNodeStateMachine_lylnn" )
+anim_player = NodePath("../Rifle02/AnimationPlayer")
+active = true
+parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_thq1t" )
+script = null
+
+[editable path="Rifle02"]

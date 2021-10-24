@@ -1,0 +1,115 @@
+[gd_scene load_steps=12 format=3 uid="uid://das3d81a6v1oo"]
+
+[ext_resource type="Script" path="res://Game/Logic/Weapon/Weapon.cs" id="1_cly8b"]
+[ext_resource type="PackedScene" uid="uid://7dr65tv0nmm1" path="res://assets/weapons/Weapons_New/RifleInstance.tscn" id="2_tdbsc"]
+[ext_resource type="Material" uid="uid://bwcgnli12ctr" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
+[ext_resource type="Texture2D" uid="uid://cxwy7p5uowjku" path="res://assets/weapons/smoke.png" id="3_jumv0"]
+[ext_resource type="Texture2D" uid="uid://by3il14ud4mmn" path="res://assets/weapons/fire.png" id="5_muqrv"]
+[ext_resource type="AudioStream" uid="uid://vaokp66d2yiv" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24seq"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.54902)
+albedo_texture = ExtResource( "3_jumv0" )
+texture_filter = 1
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_e6hti"]
+material = SubResource( "StandardMaterial3D_24seq" )
+size = Vector2(0.2, 0.2)
+
+[sub_resource type="ParticlesMaterial" id="ParticlesMaterial_pp7l4"]
+emission_shape = 1
+emission_sphere_radius = 0.02
+direction = Vector3(1, 1, 1)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+angle_min = 720.0
+angle_max = 720.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vb8k5"]
+transparency = 1
+blend_mode = 1
+depth_draw_mode = 1
+albedo_color = Color(1, 1, 1, 0.392157)
+albedo_texture = ExtResource( "5_muqrv" )
+metallic_specular = 0.0
+emission_enabled = true
+emission = Color(1, 0.490196, 0, 1)
+emission_energy = 3.0
+texture_filter = 1
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_bt00b"]
+material = SubResource( "StandardMaterial3D_vb8k5" )
+size = Vector2(0.2, 0.2)
+
+[node name="rifle" type="Node3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0799415, -0.85216, -0.0557529)
+script = ExtResource( "1_cly8b" )
+smokeEffectPath = NodePath("Effects/smoke")
+muzzleEffectPath = NodePath("Effects/fire")
+shotLightPath = NodePath("Effects/shoot")
+audioShotPlayerPath = NodePath("Audio/Shot")
+
+[node name="Rifle" parent="." instance=ExtResource( "2_tdbsc" )]
+
+[node name="Effects" type="Node3D" parent="."]
+script = null
+
+[node name="smoke" type="GPUParticles3D" parent="Effects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.57859, -0.874406)
+layers = 524288
+cast_shadow = 0
+ignore_occlusion_culling = true
+emitting = false
+amount = 5
+one_shot = true
+fixed_fps = 0
+local_coords = false
+process_material = ExtResource( "3_67hug" )
+draw_pass_1 = SubResource( "QuadMesh_e6hti" )
+script = null
+
+[node name="fire" type="GPUParticles3D" parent="Effects"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.61282, -0.855395)
+layers = 524288
+cast_shadow = 0
+emitting = false
+amount = 5
+lifetime = 0.05
+one_shot = true
+fixed_fps = 0
+interpolate = false
+local_coords = false
+process_material = SubResource( "ParticlesMaterial_pp7l4" )
+draw_pass_1 = SubResource( "QuadMesh_bt00b" )
+script = null
+
+[node name="shoot" type="OmniLight3D" parent="Effects"]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.73117, -0.832655)
+layers = 3
+light_color = Color(0.94902, 0.490196, 0.0470588, 1)
+light_energy = 0.0
+light_cull_mask = 4294443007
+shadow_enabled = true
+shadow_bias = 0.15
+omni_range = 10.0
+script = null
+
+[node name="Audio" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.59697, -1.08276)
+script = null
+
+[node name="Shot" type="AudioStreamPlayer3D" parent="Audio"]
+transform = Transform3D(2, 0, -9.23706e-14, 0, 2, 1.11022e-16, -7.10543e-15, -1.11022e-16, 2, 0, 0, 0)
+stream = ExtResource( "6_mft8l" )
+max_distance = 100.0
+bus = &"Weapon Sound"
+script = null

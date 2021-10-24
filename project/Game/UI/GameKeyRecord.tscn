@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmyx53gcl62yd"]
+
+[ext_resource type="Script" path="res://Game/UI/GameKeyRecord.cs" id="1_sxtrw"]
+
+[node name="MovementControl" type="HBoxContainer"]
+anchor_right = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( "1_sxtrw" )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MovementLabel" type="Label" parent="."]
+offset_top = 1.0
+offset_right = 458.0
+offset_bottom = 27.0
+size_flags_horizontal = 3
+text = "Movement"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="MovementCurrentKey" type="Label" parent="."]
+offset_left = 462.0
+offset_top = 1.0
+offset_right = 920.0
+offset_bottom = 27.0
+size_flags_horizontal = 3
+text = "W"
+structured_text_bidi_override_options = []
+script = null
+
+[node name="ChangeKeyButton" type="Button" parent="."]
+offset_left = 924.0
+offset_right = 1024.0
+offset_bottom = 29.0
+text = "Change key"
+script = null
