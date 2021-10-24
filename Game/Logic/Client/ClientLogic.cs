@@ -77,7 +77,7 @@ namespace FPS.Game.Logic.Client
         {
             serverId = Multiplayer.GetRemoteSenderId();
             this.currentLevelName = levelName;
-            loadWorldThreaded();
+            this.CallDeferred("loadWorldThreaded");
         }
 
         protected override void OnGameWorldResourceLoaded()

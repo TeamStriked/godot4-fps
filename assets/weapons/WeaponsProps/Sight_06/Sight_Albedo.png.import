@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://bdum1ixe6hsu2"
-path.s3tc="res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.s3tc.stex"
-path.etc2="res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.etc2.stex"
+uid="uid://drrbu0jped4x0"
+path="res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_06/Sight_Albedo.png"
-dest_files=["res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.s3tc.stex", "res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.etc2.stex"]
+dest_files=["res://.godot/imported/Sight_Albedo.png-b6283590766e3c0498c9ea641ff4b786.stex"]
 
 [params]
 

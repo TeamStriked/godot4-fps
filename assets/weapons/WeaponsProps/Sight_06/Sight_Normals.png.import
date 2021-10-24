@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://cx84eel6qr525"
-path.s3tc="res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.s3tc.stex"
-path.etc2="res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.etc2.stex"
+uid="uid://bhur18oe11xfx"
+path="res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_06/Sight_Normals.png"
-dest_files=["res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.s3tc.stex", "res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.etc2.stex"]
+dest_files=["res://.godot/imported/Sight_Normals.png-7e770dadecf60d98700a9266e6605997.stex"]
 
 [params]
 

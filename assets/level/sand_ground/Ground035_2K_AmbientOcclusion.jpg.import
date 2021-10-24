@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://u0al6ggkcqvb"
+uid="uid://cuu50adg2fp7r"
 path.s3tc="res://.godot/imported/Ground035_2K_AmbientOcclusion.jpg-c45632463f16fd7121637dc0d95e5d0c.s3tc.stex"
 path.etc2="res://.godot/imported/Ground035_2K_AmbientOcclusion.jpg-c45632463f16fd7121637dc0d95e5d0c.etc2.stex"
 metadata={
@@ -26,8 +26,8 @@ compress/channel_pack=0
 compress/streamed=false
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=8
+roughness/src_normal="res://assets/level/sand_ground/Ground035_2K_NormalGL.jpg"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

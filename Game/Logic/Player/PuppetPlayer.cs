@@ -37,6 +37,8 @@ namespace FPS.Game.Logic.Player
 
         public override void Activate()
         {
+            this.playerChar.ProcessMode = ProcessModeEnum.Always;
+
             this.playerChar.setCameraMode(PlayerCameraMode.NONE);
             this.playerChar.setDrawMode(PlayerDrawMode.TPS);
         }

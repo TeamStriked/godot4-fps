@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://c5lr6620rtaur"
-path.s3tc="res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.s3tc.stex"
-path.etc2="res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.etc2.stex"
+uid="uid://omiwagnxaui1"
+path="res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_07/Automatic_Rifle_Albedo02.png"
-dest_files=["res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.s3tc.stex", "res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.etc2.stex"]
+dest_files=["res://.godot/imported/Automatic_Rifle_Albedo02.png-c88088139c2228cfc72af5b4651cf7ac.stex"]
 
 [params]
 

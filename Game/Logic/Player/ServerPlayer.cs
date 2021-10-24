@@ -18,7 +18,7 @@ namespace FPS.Game.Logic.Player
 
         public override void _PhysicsProcess(float delta)
         {
-            if (!isActivated)
+            if (!isActivated || !calculated)
                 return;
 
             base._PhysicsProcess(delta);
@@ -50,12 +50,14 @@ namespace FPS.Game.Logic.Player
         [AnyPeer]
         public override void onClientInput(string inputMessage)
         {
+            calculated = true;
             var lastInput = FPS.Game.Utils.NetworkCompressor.Decompress<InputFrame>(inputMessage);
             inputQueue.Enqueue(lastInput);
         }
 
         public override void Activate()
         {
+            this.playerChar.ProcessMode = ProcessModeEnum.Always;
             this.playerChar.setCameraMode(PlayerCameraMode.NONE);
             this.playerChar.setDrawMode(PlayerDrawMode.NONE);
             this.isActivated = true;

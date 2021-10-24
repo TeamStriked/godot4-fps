@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://hlc4mkxqbca8"
-path.s3tc="res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.s3tc.stex"
-path.etc2="res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.etc2.stex"
+uid="uid://dlxranxo7qw0j"
+path="res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_06/Flashlight_2_Glasses.png"
-dest_files=["res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.s3tc.stex", "res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.etc2.stex"]
+dest_files=["res://.godot/imported/Flashlight_2_Glasses.png-0aee5f566e2d2cbb364a172544b516da.stex"]
 
 [params]
 

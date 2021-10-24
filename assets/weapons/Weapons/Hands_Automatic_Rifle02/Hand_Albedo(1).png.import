@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://d1i4w53vaxjf7"
-path.s3tc="res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.s3tc.stex"
-path.etc2="res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.etc2.stex"
+uid="uid://j172nkfro2hr"
+path="res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Automatic_Rifle02/Hand_Albedo(1).png"
-dest_files=["res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.s3tc.stex", "res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.etc2.stex"]
+dest_files=["res://.godot/imported/Hand_Albedo(1).png-d17fe925cd8ce23fc51bc427e4dbfa35.stex"]
 
 [params]
 

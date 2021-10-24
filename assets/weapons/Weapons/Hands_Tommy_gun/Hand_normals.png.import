@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://0wu4pb84vgv2"
-path.s3tc="res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.s3tc.stex"
-path.etc2="res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.etc2.stex"
+uid="uid://dn7lrv37g5083"
+path="res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Tommy_gun/Hand_normals.png"
-dest_files=["res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.s3tc.stex", "res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.etc2.stex"]
+dest_files=["res://.godot/imported/Hand_normals.png-455d95906e92e76259b7393f7cc7ff6a.stex"]
 
 [params]
 

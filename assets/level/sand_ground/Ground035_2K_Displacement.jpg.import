@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://dqp1n51u0ecjs"
+uid="uid://dwcgirlo3xhi3"
 path.s3tc="res://.godot/imported/Ground035_2K_Displacement.jpg-f94c70e21ccf9ea9d2301a1634e1be12.s3tc.stex"
 path.etc2="res://.godot/imported/Ground035_2K_Displacement.jpg-f94c70e21ccf9ea9d2301a1634e1be12.etc2.stex"
 metadata={
@@ -26,8 +26,8 @@ compress/channel_pack=0
 compress/streamed=false
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=7
+roughness/src_normal="res://assets/level/sand_ground/Ground035_2K_NormalGL.jpg"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

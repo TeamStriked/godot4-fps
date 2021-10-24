@@ -2,7 +2,7 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://di1ab0l72l0uo"
+uid="uid://dngqx4e4dgctb"
 path="res://.godot/imported/Walk_4.mp3-14549299de20ec6ad3649829abebb8d3.mp3str"
 
 [deps]
@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/Walk_4.mp3-14549299de20ec6ad3649829abebb8d3.m
 
 [params]
 
-loop=false
+loop=true
 loop_offset=0

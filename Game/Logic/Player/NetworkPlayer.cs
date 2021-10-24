@@ -16,6 +16,99 @@ namespace FPS.Game.Logic.Player
         public bool isActivated = false;
 
 
+        protected float crouchDownSpeed = 8;
+        protected float crouchUpSpeed = 20;
+
+
+        protected float crouchColliderMultiplier = 1.5f;
+
+        protected float proneColliderMultiplier = 1.3f;
+
+
+        [Export]
+        protected float proneUpSpeed = 1.8f;
+
+        [Export]
+        protected float proneDownSpeed = 1.3f;
+
+
+        [Export]
+        protected float Friction = 6;
+
+        [Export] protected float FrictionSpeedThreshold = 0.5f;
+
+        [Export]
+        protected float maxSpeedAir = 1.3f;
+
+        [Export]
+        protected float sprintSpeed = 12f;
+
+        [Export]
+        protected float speedRechargeMultiplier = 2f;
+
+        [Export]
+        protected float speedLooseMultiplier = 0.3f;
+
+        [Export]
+        protected float currentSpeedAmount = 1.0f;
+
+        protected float sideStrafeAcceleration = 50.0f;
+
+        protected float walkSpeed = 3.6f;
+
+        protected float proneSpeed = 1.4f;
+
+        [Export]
+        protected float defaultSpeed = 6.5f;
+
+        [Export]
+        protected float Accel = 14.0f;
+
+        [Export]
+        protected float Deaccel = 10.0f; //start speed
+
+        [Export]
+        protected float FlyAccel = 2.0f; // stop speed
+
+        public float sideStrafeSpeed = 1.0f;
+
+        protected float jumpForce = 15.0f;
+
+        protected float jumpCrouchForce = 17.5f;
+
+        [Export]
+        protected float jumpCoolDown = 0.65f;
+
+        protected float gravity = 36.0f;
+
+
+        protected CharacterInstance playerChar = null;
+
+        public int networkId = 0;
+
+        protected Vector3 lastTeleportOrigin;
+
+        public virtual void DoFire()
+        {
+            this.playerChar.DoFire();
+        }
+
+
+        [Authority]
+        public virtual void onNetworkTeleport(Vector3 origin)
+        {
+        }
+
+        [Authority]
+        public virtual void onPuppetUpdate(string message)
+        {
+        }
+
+        [AnyPeer]
+        public virtual void onClientInput(string inputMessage)
+        {
+        }
+
         public override void _PhysicsProcess(float delta)
         {
             base._PhysicsProcess(delta);
@@ -43,6 +136,11 @@ namespace FPS.Game.Logic.Player
                 this.playerChar.rotateFPS(mouseMotion.x, mouseMotion.y);
                 this.playerChar.rotateTPSCamera(mouseMotion.y);
             }
+        }
+
+        public override void _Ready()
+        {
+            base._Ready();
         }
 
         public CalculatedFrame calulcateFrame(InputFrame inputFrame, float delta)
@@ -168,25 +266,14 @@ namespace FPS.Game.Logic.Player
             return calculatedFrame;
         }
 
-
-        [AnyPeer]
-        public virtual void onClientInput(string inputMessage)
-        {
-        }
-
-        [Export]
-        NodePath placerChatPath;
-
-
         public override void _EnterTree()
         {
             base._EnterTree();
+            this.playerChar = GetNode("char") as CharacterInstance;
 
             RpcConfig("onNetworkTeleport", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("onPuppetUpdate", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("onClientInput", RPCMode.AnyPeer, false, TransferMode.Unreliable);
-
-            this.playerChar = GetNode<CharacterInstance>(placerChatPath);
         }
 
         protected void handleAnimation()
@@ -300,94 +387,6 @@ namespace FPS.Game.Logic.Player
             }
         }
 
-
-        protected float crouchDownSpeed = 8;
-        protected float crouchUpSpeed = 20;
-
-
-        protected float crouchColliderMultiplier = 1.5f;
-
-        protected float proneColliderMultiplier = 1.3f;
-
-
-        [Export]
-        protected float proneUpSpeed = 1.8f;
-
-        [Export]
-        protected float proneDownSpeed = 1.3f;
-
-
-        [Export]
-        protected float Friction = 6;
-
-        [Export] protected float FrictionSpeedThreshold = 0.5f;
-
-        [Export]
-        protected float maxSpeedAir = 1.3f;
-
-        [Export]
-        protected float sprintSpeed = 12f;
-
-        [Export]
-        protected float speedRechargeMultiplier = 2f;
-
-        [Export]
-        protected float speedLooseMultiplier = 0.3f;
-
-        [Export]
-        protected float currentSpeedAmount = 1.0f;
-
-        protected float sideStrafeAcceleration = 50.0f;
-
-        protected float walkSpeed = 3.6f;
-
-        protected float proneSpeed = 1.4f;
-
-        [Export]
-        protected float defaultSpeed = 6.5f;
-
-        [Export]
-        protected float Accel = 14.0f;
-
-        [Export]
-        protected float Deaccel = 10.0f; //start speed
-
-        [Export]
-        protected float FlyAccel = 2.0f; // stop speed
-
-        public float sideStrafeSpeed = 1.0f;
-
-        protected float jumpForce = 15.0f;
-
-        protected float jumpCrouchForce = 17.5f;
-
-        [Export]
-        protected float jumpCoolDown = 0.65f;
-
-        protected float gravity = 36.0f;
-
-
-        protected CharacterInstance playerChar = null;
-
-        public int networkId = 0;
-
-        public virtual void DoFire()
-        {
-            this.playerChar.DoFire();
-        }
-
-
-        [Authority]
-        public virtual void onNetworkTeleport(Vector3 origin)
-        {
-        }
-
-        [Authority]
-        public virtual void onPuppetUpdate(string message)
-        {
-        }
-
-        protected Vector3 lastTeleportOrigin;
 
         public virtual void DoTeleport(Vector3 origin)
         {

@@ -16,13 +16,13 @@ namespace FPS.Game.Logic.Weapon
         {
             foreach (var child in this.GetChildren())
             {
-                if (child is Node3D)
+                if (child is Node)
                 {
-                    weaponList.Add((child as Node3D).Name);
+                    weaponList.Add((child as Node).Name);
                 }
             }
 
-            ShowGun(weaponList.FirstOrDefault());
+            //  ShowGun(weaponList.FirstOrDefault());
         }
 
         public void ShowGun(string name)
@@ -75,17 +75,17 @@ namespace FPS.Game.Logic.Weapon
                 }
                 else
                 {
-
                     var newWeapon = this.weaponList[currentIndex - 1];
                     ShowGun(newWeapon);
-
                 }
             }
         }
 
         public override void _Input(InputEvent @event)
         {
+            /*
             base._Input(@event);
+
             if (@event is InputEventMouseButton)
             {
                 InputEventMouseButton emb = (InputEventMouseButton)@event;
@@ -103,6 +103,7 @@ namespace FPS.Game.Logic.Weapon
             }
 
             @event.Dispose();
+            */
         }
     }
 

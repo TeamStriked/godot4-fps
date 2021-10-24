@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://by6jdxolpmpa1"
+uid="uid://cvp82sup0wwx8"
 path="res://.godot/imported/garage.glb-113127ea41cb525b0d6f56740cb5a03a.scn"
 
 [deps]
@@ -23,7 +23,6 @@ meshes/light_baking=2
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
 animation/import=true
-animation/bake_reset_animation=true
 animation/fps=15
 import_script/path=""
 _subresources={

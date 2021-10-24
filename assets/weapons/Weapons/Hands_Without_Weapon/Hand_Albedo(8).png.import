@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://dvpoi47q5p74j"
-path.s3tc="res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.s3tc.stex"
-path.etc2="res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.etc2.stex"
+uid="uid://dtjsm32kcsc1l"
+path="res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Without_Weapon/Hand_Albedo(8).png"
-dest_files=["res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.s3tc.stex", "res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.etc2.stex"]
+dest_files=["res://.godot/imported/Hand_Albedo(8).png-d16d533932aa3120b7d4501c111cc7ad.stex"]
 
 [params]
 

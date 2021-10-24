@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://cvbcpmiqm3kn2"
-path.s3tc="res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.s3tc.stex"
-path.etc2="res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.etc2.stex"
+uid="uid://co0lpo6tkmxdm"
+path="res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Flaslight_4/Flashlight_Emessive.png"
-dest_files=["res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.s3tc.stex", "res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.etc2.stex"]
+dest_files=["res://.godot/imported/Flashlight_Emessive.png-db15e0eabc78e3b5977adb0807e60cfa.stex"]
 
 [params]
 

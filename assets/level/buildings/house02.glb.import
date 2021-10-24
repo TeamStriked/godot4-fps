@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://b6pipd1nx1dt4"
+uid="uid://c2ey1jqnh35fb"
 path="res://.godot/imported/house02.glb-49a971b7944bba27ff6c59262d29e002.scn"
 
 [deps]
@@ -23,7 +23,6 @@ meshes/light_baking=2
 meshes/lightmap_texel_size=0.1
 skins/use_named_skins=true
 animation/import=true
-animation/bake_reset_animation=true
 animation/fps=15
 import_script/path=""
 _subresources={

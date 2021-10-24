@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://8e2fb6mhkd34"
-path.s3tc="res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.s3tc.stex"
-path.etc2="res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.etc2.stex"
+uid="uid://doiyqnh5ia7wl"
+path="res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Automatic_Rifle02/Hand_normals.png"
-dest_files=["res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.s3tc.stex", "res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.etc2.stex"]
+dest_files=["res://.godot/imported/Hand_normals.png-afcbe73ac488bc2904b639d02d854d8d.stex"]
 
 [params]
 

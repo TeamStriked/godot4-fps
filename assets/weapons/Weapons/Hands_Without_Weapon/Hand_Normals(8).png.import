@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://carvnmqqmvq7f"
-path.s3tc="res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.s3tc.stex"
-path.etc2="res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.etc2.stex"
+uid="uid://dego6cwlcxjbd"
+path="res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Without_Weapon/Hand_Normals(8).png"
-dest_files=["res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.s3tc.stex", "res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.etc2.stex"]
+dest_files=["res://.godot/imported/Hand_Normals(8).png-321c61c88fc1ff72a5542e7b9580081f.stex"]
 
 [params]
 

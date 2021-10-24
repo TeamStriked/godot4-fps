@@ -2,16 +2,18 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://b5m4k5esh7bra"
-path="res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.stex"
+uid="uid://dredj3gmclsp0"
+path.s3tc="res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.s3tc.stex"
+path.etc2="res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.etc2.stex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc", "etc2"],
+"vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Lighter/Lighter_Normals.png"
-dest_files=["res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.stex"]
+dest_files=["res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.s3tc.stex", "res://.godot/imported/Lighter_Normals.png-a81699e7b88e2b90abfcadf3e8b1b2cc.etc2.stex"]
 
 [params]
 

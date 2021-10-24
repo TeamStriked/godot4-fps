@@ -1,11 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://crsfpb7n72rx"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/PuppetPlayer.cs" id="1_f70di"]
-[ext_resource type="PackedScene" uid="uid://bqaearth6g8cl" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_61fvs"]
+[ext_resource type="PackedScene" uid="uid://bqaearth6g8cl" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_hafsh"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_f70di" )
-placerChatPath = NodePath("Node3D")
 
-[node name="Node3D" parent="." instance=ExtResource( "2_61fvs" )]
+[node name="char" parent="." instance=ExtResource( "2_hafsh" )]
 WalkSoundPaths = ["res://assets/weapons/Sounds/13Walk_Set/Walk_1.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_2.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_3.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_3.mp3"]

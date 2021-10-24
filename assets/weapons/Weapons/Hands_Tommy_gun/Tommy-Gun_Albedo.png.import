@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://cs7ieybrcevr3"
-path.s3tc="res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.s3tc.stex"
-path.etc2="res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.etc2.stex"
+uid="uid://cjdx2hwbw7nt0"
+path="res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/Weapons/Hands_Tommy_gun/Tommy-Gun_Albedo.png"
-dest_files=["res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.s3tc.stex", "res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.etc2.stex"]
+dest_files=["res://.godot/imported/Tommy-Gun_Albedo.png-a977c4386a492376c57d9bc8aac3ea36.stex"]
 
 [params]
 

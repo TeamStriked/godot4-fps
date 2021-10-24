@@ -2,29 +2,27 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://dkmvm5ewwgvfo"
-path.s3tc="res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.s3tc.stex"
-path.etc2="res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.etc2.stex"
+uid="uid://dhsdu6cqwaane"
+path="res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/level/road/Sci-fi_Floor_003_ambientOcclusion.jpg"
-dest_files=["res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.s3tc.stex", "res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.etc2.stex"]
+dest_files=["res://.godot/imported/Sci-fi_Floor_003_ambientOcclusion.jpg-d438e4691222d1467cd2e9dfc70adaf3.stex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 compress/streamed=false
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
@@ -33,5 +31,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/HDR_as_SRGB=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0

@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://3p0qu16re48y"
-path.s3tc="res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.s3tc.stex"
-path.etc2="res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.etc2.stex"
+uid="uid://cdnliml507s7s"
+path="res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_06/Sight_Emessive2.png"
-dest_files=["res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.s3tc.stex", "res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.etc2.stex"]
+dest_files=["res://.godot/imported/Sight_Emessive2.png-8a0f460007e12e6166a71e9ebb9fc9e2.stex"]
 
 [params]
 

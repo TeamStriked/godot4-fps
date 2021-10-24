@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://dwo4hhrmpve0d"
-path.s3tc="res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.s3tc.stex"
-path.etc2="res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.etc2.stex"
+uid="uid://dds5y1ui2j2p"
+path="res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Sight_07/Automatic_Rifle_Normals02.png"
-dest_files=["res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.s3tc.stex", "res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.etc2.stex"]
+dest_files=["res://.godot/imported/Automatic_Rifle_Normals02.png-cd38587f338861f76f21e59f9e773fa9.stex"]
 
 [params]
 

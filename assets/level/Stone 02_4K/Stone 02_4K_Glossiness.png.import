@@ -2,7 +2,7 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://66isyh7c1jwo"
+uid="uid://crsukj2ld6ss6"
 path.s3tc="res://.godot/imported/Stone 02_4K_Glossiness.png-d05b16773006e036404c86f2f5899e00.s3tc.stex"
 path.etc2="res://.godot/imported/Stone 02_4K_Glossiness.png-d05b16773006e036404c86f2f5899e00.etc2.stex"
 metadata={
@@ -26,8 +26,8 @@ compress/channel_pack=0
 compress/streamed=false
 mipmaps/generate=true
 mipmaps/limit=-1
-roughness/mode=0
-roughness/src_normal=""
+roughness/mode=8
+roughness/src_normal="res://assets/level/Stone 02_4K/Stone 02_4K_Normal.png"
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false

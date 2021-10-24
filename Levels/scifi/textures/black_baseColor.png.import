@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://c8t17ji41almj"
-path.s3tc="res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.s3tc.stex"
-path.etc2="res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.etc2.stex"
+uid="uid://ci0jpqux6tbst"
+path="res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://Levels/scifi/textures/black_baseColor.png"
-dest_files=["res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.s3tc.stex", "res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.etc2.stex"]
+dest_files=["res://.godot/imported/black_baseColor.png-7e680a4637023bc47d72e75f42c39ef5.stex"]
 
 [params]
 

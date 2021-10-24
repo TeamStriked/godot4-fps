@@ -1,37 +1,11 @@
-[gd_scene load_steps=18 format=3 uid="uid://das3d81a6v1oo"]
+[gd_scene load_steps=12 format=3 uid="uid://das3d81a6v1oo"]
 
 [ext_resource type="Script" path="res://Game/Logic/Weapon/Weapon.cs" id="1_cly8b"]
-[ext_resource type="PackedScene" uid="uid://davgka064e23s" path="res://assets/weapons/Weapons_New/Rifle.glb" id="1_w27dx"]
+[ext_resource type="PackedScene" uid="uid://7dr65tv0nmm1" path="res://assets/weapons/Weapons_New/RifleInstance.tscn" id="2_tdbsc"]
 [ext_resource type="Material" uid="uid://bwcgnli12ctr" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
-[ext_resource type="Texture2D" uid="uid://cjcsk0pp2ypoj" path="res://assets/weapons/smoke.png" id="3_jumv0"]
-[ext_resource type="Texture2D" uid="uid://d1p610n15apdh" path="res://assets/weapons/fire.png" id="5_muqrv"]
-[ext_resource type="AudioStream" uid="uid://bmlql5g7inwd1" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m4de1"]
-filters = []
-animation = &"Hands_Automatic_rifle006"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8v7wu"]
-filters = []
-animation = &"Hands_Automatic_rifle006"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2i7g8"]
-switch_mode = 2
-auto_advance = true
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_187ox"]
-switch_mode = 2
-auto_advance = true
-
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_selep"]
-states/Hands_Automatic_rifle006/node = SubResource( "AnimationNodeAnimation_8v7wu" )
-states/Hands_Automatic_rifle006/position = Vector2(701, 51)
-"states/Hands_Automatic_rifle006 2/node" = SubResource( "AnimationNodeAnimation_m4de1" )
-"states/Hands_Automatic_rifle006 2/position" = Vector2(1178, 91)
-transitions = [&"Hands_Automatic_rifle006", &"Hands_Automatic_rifle006 2", SubResource( "AnimationNodeStateMachineTransition_2i7g8" ), &"Hands_Automatic_rifle006 2", &"Hands_Automatic_rifle006", SubResource( "AnimationNodeStateMachineTransition_187ox" )]
-start_node = "Hands_Automatic_rifle006"
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_lad3q"]
+[ext_resource type="Texture2D" uid="uid://dxbc8q26m2eic" path="res://assets/weapons/smoke.png" id="3_jumv0"]
+[ext_resource type="Texture2D" uid="uid://bcpjxh4luoob4" path="res://assets/weapons/fire.png" id="5_muqrv"]
+[ext_resource type="AudioStream" uid="uid://c2cyei51ux3b6" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24seq"]
 transparency = 1
@@ -84,52 +58,7 @@ muzzleEffectPath = NodePath("Effects/fire")
 shotLightPath = NodePath("Effects/shoot")
 audioShotPlayerPath = NodePath("Audio/Shot")
 
-[node name="Rifle" parent="." instance=ExtResource( "1_w27dx" )]
-
-[node name="Character001" parent="Rifle/Hands_Automatic_rifle" index="1"]
-transform = Transform3D(1.23323e-14, -2.8213e-07, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -2.8213e-07, 4.0829e-06, 0, -0.0159189)
-
-[node name="Character001Hub001" parent="Rifle/Hands_Automatic_rifle" index="2"]
-transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
-
-[node name="Skeleton3D" parent="Rifle/Hands_Automatic_rifle/Character001Hub001" index="0"]
-bones/1/rotation = Quaternion(-0.110325, -0.322962, -0.1418, 0.929201)
-bones/2/rotation = Quaternion(0.798838, -1.76888e-06, 3.48909e-06, 0.601545)
-bones/3/rotation = Quaternion(-1.35876e-08, -0.290333, 5.30607e-09, 0.956926)
-bones/4/rotation = Quaternion(-0.167563, -0.819874, 0.328224, 0.438177)
-bones/21/rotation = Quaternion(0.353814, -0.310889, 0.371029, 0.800313)
-bones/22/rotation = Quaternion(0.923501, -3.45393e-06, 2.13361e-06, 0.383595)
-bones/23/rotation = Quaternion(-8.2844e-08, 0.0508813, -6.86419e-08, 0.998704)
-bones/24/rotation = Quaternion(0.0783385, 0.582301, -0.614964, 0.525935)
-
-[node name="Character001LArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="3"]
-transform = Transform3D(0.480842, -0.842655, -0.242335, -0.0891379, -0.321932, 0.942556, -0.872262, -0.431622, -0.229911, -0.033002, 1.48194, -0.571898)
-
-[node name="Character001RArmIKTarget" parent="Rifle/Hands_Automatic_rifle" index="4"]
-transform = Transform3D(-0.117026, 0.979915, 0.161425, -0.0737773, 0.153512, -0.985393, -0.990387, -0.127224, 0.0543311, 0.0418623, 1.42903, -0.247139)
-
-[node name="Hp_Scar_Base" parent="Rifle/Hands_Automatic_rifle" index="6"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.46574, -0.246618)
-
-[node name="Hp_Scar_Magazine" parent="Rifle/Hands_Automatic_rifle" index="7"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.53674e-09, 1.44697, -0.391602)
-
-[node name="Skeleton3D3" parent="Rifle/Hands_Automatic_rifle/Hp_Scar_Magazine" index="0"]
-bones/0/position = Vector3(6.52295e-10, 0.00249775, -0.0369196)
-
-[node name="Skeleton3D4" parent="Rifle/Hands_Automatic_rifle" index="9"]
-bones/0/position = Vector3(0.0082091, 1.56625, -0.369753)
-bones/0/rotation = Quaternion(0.500216, -0.500216, 0.499784, 0.499784)
-
-[node name="AnimationPlayer" parent="Rifle" index="1"]
-blend_times = []
-
-[node name="AnimationTree" type="AnimationTree" parent="."]
-tree_root = SubResource( "AnimationNodeStateMachine_selep" )
-anim_player = NodePath("../Rifle/AnimationPlayer")
-active = true
-parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_lad3q" )
-script = null
+[node name="Rifle" parent="." instance=ExtResource( "2_tdbsc" )]
 
 [node name="Effects" type="Node3D" parent="."]
 script = null
@@ -165,6 +94,7 @@ script = null
 
 [node name="shoot" type="OmniLight3D" parent="Effects"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.73117, -0.832655)
+visible = false
 layers = 3
 light_color = Color(0.94902, 0.490196, 0.0470588, 1)
 light_energy = 0.0
@@ -184,5 +114,3 @@ stream = ExtResource( "6_mft8l" )
 max_distance = 100.0
 bus = &"Weapon Sound"
 script = null
-
-[editable path="Rifle"]

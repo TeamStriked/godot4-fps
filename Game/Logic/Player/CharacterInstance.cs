@@ -43,8 +43,7 @@ namespace FPS.Game.Logic.Player
         float zoomOutSpeed = 20.3f;
 
 
-        [Export]
-        NodePath animationTreeNodePath = null;
+
 
         [Export]
         NodePath weaponHolderPath = null;
@@ -71,7 +70,7 @@ namespace FPS.Game.Logic.Player
 
         private Node3D head = null;
         private FPSCamera _FPSCamera;
-        private AnimationTree _tree;
+        private AnimationTree _animationTree;
 
         private Camera3D _TPSCamera;
 
@@ -111,9 +110,9 @@ namespace FPS.Game.Logic.Player
 
         public void setAnimationState(string name)
         {
-            if (_tree != null)
+            if (_animationTree != null)
             {
-                var obj = this._tree.Get("parameters/state/playback");
+                var obj = this._animationTree.Get("parameters/state/playback");
                 if (obj != null)
                 {
                     (obj as AnimationNodeStateMachinePlayback).Travel(name);
@@ -134,10 +133,10 @@ namespace FPS.Game.Logic.Player
 
         public void setAnimationTimeScale(float timeScale)
         {
-            if (this._tree != null)
+            if (this._animationTree != null)
             {
                 currentAnimationScale = timeScale;
-                this._tree.Set("parameters/scale/scale", timeScale);
+                this._animationTree.Set("parameters/scale/scale", timeScale);
             }
         }
 
@@ -402,7 +401,6 @@ namespace FPS.Game.Logic.Player
             this._FPSCamera = GetNode<FPSCamera>(cameraNodePath);
             this._TPSCamera = GetNode(cameraThirdPersonPath) as Camera3D;
             this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
-            this._tree = GetNode(animationTreeNodePath) as AnimationTree;
             this.weaponHolder = GetNode(weaponHolderPath) as WeaponHolder;
             this.footstepPlayer = GetNode<AudioStreamPlayer3D>(footstepPlayerPath);
             this.aimRay = GetNode(aimRayPath) as RayCast3D;
@@ -410,10 +408,15 @@ namespace FPS.Game.Logic.Player
             this._FPSCamera.Current = false;
             this._TPSCamera.Current = false;
 
+            this.detectAnimationTree(this._tpsCharacter);
+            if (this._animationTree != null)
+                this._animationTree.Active = false;
+
             this.head = GetNode("head") as Node3D;
 
             this.collider = GetNode("collider") as CollisionShape3D;
             this.colliderShape = this.collider.Shape as CapsuleShape3D;
+
 
         }
 
@@ -446,6 +449,29 @@ namespace FPS.Game.Logic.Player
             }
         }
 
+        private bool detectAnimationTree(Node instance)
+        {
+            if (instance is AnimationTree)
+            {
+                this._animationTree = instance as AnimationTree;
+                return true;
+            }
+            else
+            {
+                foreach (var item in instance.GetChildren())
+                {
+                    if (item is Node)
+                    {
+                        var result = this.detectAnimationTree(item as Node);
+                        if (result == true)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
@@ -459,6 +485,7 @@ namespace FPS.Game.Logic.Player
             this._tpsCharacter.Visible = false;
             this._FPSCamera.Visible = false;
 
+            this._animationTree.Active = true;
             this.setAnimationState("idle");
         }
 

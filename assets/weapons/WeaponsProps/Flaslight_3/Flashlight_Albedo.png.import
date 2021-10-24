@@ -2,18 +2,16 @@
 
 importer="texture"
 type="StreamTexture2D"
-uid="uid://le2lun7f4ql3"
-path.s3tc="res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.s3tc.stex"
-path.etc2="res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.etc2.stex"
+uid="uid://dml2aqiy6os3i"
+path="res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.stex"
 metadata={
-"imported_formats": ["s3tc", "etc2"],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/weapons/WeaponsProps/Flaslight_3/Flashlight_Albedo.png"
-dest_files=["res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.s3tc.stex", "res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.etc2.stex"]
+dest_files=["res://.godot/imported/Flashlight_Albedo.png-3d249301230eff97c65303fe3334dee0.stex"]
 
 [params]
 

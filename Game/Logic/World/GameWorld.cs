@@ -64,8 +64,6 @@ namespace FPS.Game.Logic.World
             }
         }
 
-        ResourceBackgroundLoader _gameMapLoader = new ResourceBackgroundLoader();
-
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -74,13 +72,31 @@ namespace FPS.Game.Logic.World
             OnNewDecal += AddDecal;
         }
 
+
         public void loadLevelThreaded(string levelName)
         {
+            FPS.Game.Utils.Logger.InfoDraw("Loading game level.." + this.gameLevelName);
+
             this.gameLevelName = "res://" + levelName;
 
-            FPS.Game.Utils.Logger.InfoDraw("Loading game level.." + this.gameLevelName);
-            this._gameMapLoader.LoadInstancedScene(this.gameLevelName);
-            _gameMapLoader.OnLoaderComplete += LoadCompleteGameLevel;
+            ResourceBackgroundLoader.Add(this.gameLevelName, (Node instancedNode) =>
+            {
+                FPS.Game.Utils.Logger.InfoDraw("Game level loaded");
+                this.CallDeferred("loadLevel", instancedNode);
+            });
+        }
+
+        public void loadLevel(Node instancedNode)
+        {
+            this._level = (GameLevel)instancedNode.Duplicate();
+            this._level.Name = "Level";
+            this._level.Ready += () =>
+             {
+                 if (OnGameLevelLoadedSuccessfull != null)
+                     OnGameLevelLoadedSuccessfull();
+             };
+
+            this.AddChild(this._level);
         }
 
 
@@ -109,23 +125,46 @@ namespace FPS.Game.Logic.World
             decal.Rotation = rot;
         }
 
-        public void LoadCompleteGameLevel(Node instanced)
+
+        public delegate void CallBackFunction();
+
+        private void AddPlayerInstance(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
         {
-            FPS.Game.Utils.Logger.InfoDraw("Game level loaded");
-
-            this._level = (GameLevel)instanced.Duplicate();
-            this._level.Name = "Level";
-            this._level.Ready += () =>
+            if (type == PlayerType.Local)
             {
-                OnGameLevelLoadedSuccessfull();
-            };
+                FPS.Game.Utils.Logger.InfoDraw("Try to load local player");
 
-            //  this.AddChild(this._level);
+                ResourceBackgroundLoader.Add("res://Game/Logic/Player/LocalPlayer.tscn", (Node instance) =>
+                {
+                    this.CallDeferred("addPlayer", instance as LocalPlayer, id, origin);
+                    if (callback != null)
+                        callback();
+                });
+            }
+            else if (type == PlayerType.Server)
+            {
+                FPS.Game.Utils.Logger.InfoDraw("Try to load server player");
+                ResourceBackgroundLoader.Add("res://Game/Logic/Player/ServerPlayer.tscn", (Node instance) =>
+                {
+                    this.CallDeferred("addPlayer", instance as ServerPlayer, id, origin);
+                    if (callback != null)
+                        callback();
+                });
 
-            this.CallDeferred("add_child", this._level);
+            }
+            else if (type == PlayerType.Puppet)
+            {
+                FPS.Game.Utils.Logger.InfoDraw("Try to load puppet player");
+                ResourceBackgroundLoader.Add("res://Game/Logic/Player/PuppetPlayer.tscn", (Node instance) =>
+                {
+                    this.CallDeferred("addPlayer", instance as PuppetPlayer, id, origin);
+                    if (callback != null)
+                        callback();
+                });
+            }
         }
 
-        private void AddPlayerAfterThreadLoading(int id, NetworkPlayer player, Vector3 origin, CallBackFunction callback = null)
+        public void addPlayer(NetworkPlayer player, int id, Vector3 origin)
         {
             this.players.Add(id, player);
 
@@ -134,69 +173,16 @@ namespace FPS.Game.Logic.World
             {
                 player.Name = id.ToString();
                 player.networkId = id;
-                player.Visible = true;
-                player.Ready += () =>
-                {
-                    player.DoTeleport(origin);
-                    player.Activate();
-                    if (callback != null)
-                        callback();
-                };
 
-                path.CallDeferred("add_child", player);
-            }
-        }
-        public delegate void CallBackFunction();
-        ResourceBackgroundLoader loader = new ResourceBackgroundLoader();
-
-        public void AddPlayerInstance(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
-        {
-
-            if (type == PlayerType.Local)
-            {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load local player");
-                loader.LoadInstancedScene("res://Game/Logic/Player/LocalPlayer.tscn");
-
-                loader.OnLoaderComplete += (Node instanced) =>
-                {
-                    FPS.Game.Utils.Logger.InfoDraw("Local player Loaded");
-
-                    this._localPlayer = (LocalPlayer)instanced;
-                    this.AddPlayerAfterThreadLoading(id, this._localPlayer, origin, callback);
-                };
-
-            }
-            else if (type == PlayerType.Server)
-            {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load server player");
-                loader.LoadInstancedScene("res://Game/Logic/Player/ServerPlayer.tscn");
-
-                loader.OnLoaderComplete += (Node instanced) =>
-                {
-                    FPS.Game.Utils.Logger.InfoDraw("Server player Loaded");
-
-                    var player = (ServerPlayer)instanced;
-                    this.AddPlayerAfterThreadLoading(id, player, origin, callback);
-                };
-            }
-            else if (type == PlayerType.Puppet)
-            {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load puppet player");
-                loader.LoadInstancedScene("res://Game/Logic/Player/PuppetPlayer.tscn");
-
-                loader.OnLoaderComplete += (Node instanced) =>
-                {
-                    FPS.Game.Utils.Logger.InfoDraw("Puppet puppet Loaded");
-
-                    var player = (PuppetPlayer)instanced;
-                    this.AddPlayerAfterThreadLoading(id, player, origin, callback);
-                };
+                path.AddChild(player);
+                player.DoTeleport(origin);
+                player.Activate();
             }
         }
 
         public void spwanPlayer(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
         {
-            FPS.Game.Utils.Logger.InfoDraw("[Client][Player] Spwan " + id + " on location " + origin + " type " + type);
+            FPS.Game.Utils.Logger.InfoDraw("[Player] Spwan " + id + " on location " + origin + " type " + type);
 
             if (this._level == null)
                 return;
