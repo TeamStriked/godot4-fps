@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ceiqv32tj7q6k"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_qr1cl"]
-[ext_resource type="PackedScene" uid="uid://bqaearth6g8cl" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_1j0qd"]
+[ext_resource type="PackedScene" uid="uid://pukan1cf6dvm" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_1j0qd"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_qr1cl" )

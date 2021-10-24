@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://pukan1cf6dvm"]
+[gd_scene load_steps=13 format=3 uid="uid://pukan1cf6dvm"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/CharacterInstance.cs" id="1_nwdc5"]
 [ext_resource type="PackedScene" uid="uid://63luc35hbh35" path="res://assets/character/character_1.tscn" id="2_22ie3"]
 [ext_resource type="Script" path="res://Game/Logic/Player/Hitbox.cs" id="2_o7ank"]
 [ext_resource type="Script" path="res://Game/Logic/Camera/FPSCamera.cs" id="3_gcthm"]
 [ext_resource type="Script" path="res://Game/Logic/Weapon/WeaponHolder.cs" id="3_yut5h"]
+[ext_resource type="PackedScene" uid="uid://das3d81a6v1oo" path="res://assets/weapons/Weapons_New/Rifle.tscn" id="6_7sc2r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
 resource_local_to_scene = true
@@ -101,7 +102,7 @@ script = null
 script = null
 
 [node name="Node3D" parent="tps_character" instance=ExtResource( "2_22ie3" )]
-transform = Transform3D(-0.016, 1.39876e-09, -1.39876e-09, -1.39876e-09, -0.016, 1.39876e-09, -1.39876e-09, 1.39876e-09, 0.016, 0, -0.0756612, 0)
+transform = Transform3D(-0.016, 1.39876e-09, 6.11419e-17, 0, -6.99382e-10, 0.016, 1.39876e-09, 0.016, 6.99382e-10, 0, -0.0756612, 0)
 
 [node name="head" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.56593, -0.515204)
@@ -119,6 +120,9 @@ script = ExtResource( "3_gcthm" )
 [node name="WeaponHolder" type="Node3D" parent="head/fps_camera"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.266218, 0.179946)
 script = ExtResource( "3_yut5h" )
+
+[node name="rifle" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "6_7sc2r" )]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.128852, -0.629476, -0.316247)
 
 [node name="aim_cast" type="RayCast3D" parent="head/fps_camera"]
 target_position = Vector3(0, 0, -200)

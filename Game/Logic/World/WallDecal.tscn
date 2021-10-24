@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://byqpgtjhehp6n"]
 
-[ext_resource type="Texture2D" uid="uid://gcnu7hn3dkyd" path="res://assets/weapons/decal.png" id="1_s280e"]
+[ext_resource type="Texture2D" uid="uid://tftc10wnqglj" path="res://assets/weapons/decal.png" id="1_s280e"]
 [ext_resource type="Script" path="res://Game/Logic/World/WallDecal.cs" id="2_85103"]
 
 [node name="Decal" type="Decal"]

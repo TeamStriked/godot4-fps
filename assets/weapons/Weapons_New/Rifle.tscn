@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://Game/Logic/Weapon/Weapon.cs" id="1_cly8b"]
 [ext_resource type="PackedScene" uid="uid://7dr65tv0nmm1" path="res://assets/weapons/Weapons_New/RifleInstance.tscn" id="2_tdbsc"]
 [ext_resource type="Material" uid="uid://bwcgnli12ctr" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
-[ext_resource type="Texture2D" uid="uid://dxbc8q26m2eic" path="res://assets/weapons/smoke.png" id="3_jumv0"]
-[ext_resource type="Texture2D" uid="uid://bcpjxh4luoob4" path="res://assets/weapons/fire.png" id="5_muqrv"]
-[ext_resource type="AudioStream" uid="uid://c2cyei51ux3b6" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
+[ext_resource type="Texture2D" uid="uid://cxwy7p5uowjku" path="res://assets/weapons/smoke.png" id="3_jumv0"]
+[ext_resource type="Texture2D" uid="uid://by3il14ud4mmn" path="res://assets/weapons/fire.png" id="5_muqrv"]
+[ext_resource type="AudioStream" uid="uid://vaokp66d2yiv" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24seq"]
 transparency = 1
@@ -94,7 +94,6 @@ script = null
 
 [node name="shoot" type="OmniLight3D" parent="Effects"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1.73117, -0.832655)
-visible = false
 layers = 3
 light_color = Color(0.94902, 0.490196, 0.0470588, 1)
 light_energy = 0.0

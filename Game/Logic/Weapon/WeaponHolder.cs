@@ -22,7 +22,7 @@ namespace FPS.Game.Logic.Weapon
                 }
             }
 
-            //  ShowGun(weaponList.FirstOrDefault());
+            ShowGun(weaponList.FirstOrDefault());
         }
 
         public void ShowGun(string name)
