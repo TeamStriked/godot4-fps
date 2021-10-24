@@ -18,12 +18,6 @@ public partial class Bootloader : Node
         GetNode("box").AddChild(serverWindow);
     }
 
-    public override void _Process(float delta)
-    {
-        base._Process(delta);
-        GC.Collect(GC.MaxGeneration);
-        GC.WaitForPendingFinalizers();
-    }
 
     private void createClientWindow(string name = "window")
     {
@@ -37,6 +31,7 @@ public partial class Bootloader : Node
 
     public override void _Ready()
     {
+        FPS.Game.Logic.World.ResourceBackgroundLoader.Start();
         FPS.Game.Utils.Logger.InfoDraw("Bootloading..");
 
         if (OS.GetCmdlineArgs().Contains("-server"))

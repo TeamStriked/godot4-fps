@@ -31,8 +31,6 @@ namespace FPS.Game.Logic.Weapon
         public override void _EnterTree()
         {
             base._EnterTree();
-            Console.WriteLine("enter weapon");
-
         }
         public override void _Ready()
         {
@@ -67,6 +65,8 @@ namespace FPS.Game.Logic.Weapon
 
         public override void _Process(float delta)
         {
+            base._Process(delta);
+
             //dim the shot light
             this.shotLight.LightEnergy = Mathf.Lerp(this.shotLight.LightEnergy, 0, 5 * delta);
 

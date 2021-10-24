@@ -33,12 +33,6 @@ namespace FPS.Game.Logic.Player
         private List<float> _rotArrayX = new List<float>();
         private List<float> _rotArrayY = new List<float>();
 
-        public override void _Ready()
-        {
-            base._Ready();
-        }
-
-
         [Authority]
         public override void onNetworkTeleport(Vector3 origin)
         {
@@ -54,7 +48,6 @@ namespace FPS.Game.Logic.Player
         public float ROF = 0.12f;
 
         public RecoilModes mode = RecoilModes.AUTO;
-
 
         public async void startRecoil()
         {
@@ -88,6 +81,8 @@ namespace FPS.Game.Logic.Player
         {
             if (!isActivated)
                 return;
+
+            base._PhysicsProcess(delta);
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
@@ -148,10 +143,10 @@ namespace FPS.Game.Logic.Player
 
         public override void _Process(float delta)
         {
-            base._Process(delta);
-
             if (!isActivated)
                 return;
+
+            base._Process(delta);
 
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
@@ -208,6 +203,7 @@ namespace FPS.Game.Logic.Player
 
         public override void Activate()
         {
+            this.playerChar.ProcessMode = ProcessModeEnum.Always;
 
             this.playerChar.setCameraMode(PlayerCameraMode.FPS);
             this.playerChar.setDrawMode(PlayerDrawMode.FPS);

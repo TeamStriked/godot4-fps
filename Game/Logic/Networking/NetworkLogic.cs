@@ -58,6 +58,8 @@ namespace FPS.Game.Logic.Networking
 
         private void onNodeUpdate(Node node)
         {
+            if (!node.IsInsideTree())
+                return;
             var path = node.GetPath().ToString();
             var mypath = GetPath().ToString();
 
@@ -94,25 +96,27 @@ namespace FPS.Game.Logic.Networking
             }
         }
 
-        ResourceBackgroundLoader _gameWorldLoader = new ResourceBackgroundLoader();
 
         protected void loadWorldThreaded()
         {
             FPS.Game.Utils.Logger.InfoDraw("Try to add game world..");
 
-            _gameWorldLoader.LoadInstancedScene("res://Game/Logic/World/GameWorld.tscn");
-            _gameWorldLoader.OnLoaderComplete += (Node instancedNode) =>
+            ResourceBackgroundLoader.Add("res://Game/Logic/World/GameWorld.tscn", (Node instancedNode) =>
             {
+                this.CallDeferred("addWorld", instancedNode);
+            });
+        }
 
-                FPS.Game.Utils.Logger.InfoDraw("Add game world..");
+        public void addWorld(Node world)
+        {
+            FPS.Game.Utils.Logger.InfoDraw("Game world added.");
 
-                this._world = (GameWorld)instancedNode;
-                this._world.Name = "World";
-                this._world.Visible = true;
-                this._world.Ready += OnGameWorldResourceLoaded;
+            this._world = (GameWorld)world.Duplicate();
+            this._world.Name = "World";
+            this._world.Visible = true;
+            this._world.Ready += OnGameWorldResourceLoaded;
 
-                this.CallDeferred("add_child", this._world);
-            };
+            this.AddChild(this._world);
         }
         public void doSomethingThread(object userdata = null)
         {

@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=3 uid="uid://7dr65tv0nmm1"]
+
+[ext_resource type="PackedScene" uid="uid://0pafxbexymca" path="res://assets/weapons/Weapons_New/Rifle.glb" id="1_ui5yx"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vv215"]
+filters = []
+animation = &"Hands_Automatic_rifle006"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_reyaw"]
+filters = []
+animation = &"Hands_Automatic_rifle006"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_etkwb"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6re7b"]
+switch_mode = 2
+auto_advance = true
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_w3nxf"]
+states/Hands_Automatic_rifle005/node = SubResource( "AnimationNodeAnimation_vv215" )
+states/Hands_Automatic_rifle005/position = Vector2(215, 27)
+states/Hands_Automatic_rifle006/node = SubResource( "AnimationNodeAnimation_reyaw" )
+states/Hands_Automatic_rifle006/position = Vector2(467, 77)
+transitions = [&"Hands_Automatic_rifle005", &"Hands_Automatic_rifle006", SubResource( "AnimationNodeStateMachineTransition_etkwb" ), &"Hands_Automatic_rifle006", &"Hands_Automatic_rifle005", SubResource( "AnimationNodeStateMachineTransition_6re7b" )]
+start_node = "Hands_Automatic_rifle005"
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id="AnimationNodeStateMachinePlayback_hgbt8"]
+
+[node name="Rifle" instance=ExtResource( "1_ui5yx" )]
+
+[node name="Character001" parent="Hands_Automatic_rifle" index="1"]
+transform = Transform3D(1.75431e-14, -4.01339e-07, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.01339e-07, 4.0829e-06, 0, -0.0159189)
+
+[node name="Character001Hub001" parent="Hands_Automatic_rifle" index="2"]
+transform = Transform3D(1.91069e-15, -4.37114e-08, 1, -1, -4.37114e-08, 0, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
+
+[node name="Skeleton3D" parent="Hands_Automatic_rifle/Character001Hub001" index="0"]
+bones/1/rotation = Quaternion(-0.110629, -0.32279, -0.142007, 0.929192)
+bones/2/rotation = Quaternion(0.799185, -4.8238e-06, 2.37581e-06, 0.601085)
+bones/3/rotation = Quaternion(-1.41926e-08, -0.290294, 6.32872e-09, 0.956938)
+bones/4/rotation = Quaternion(-0.167471, -0.819797, 0.328445, 0.438189)
+bones/21/rotation = Quaternion(0.353733, -0.31137, 0.370995, 0.800178)
+bones/22/rotation = Quaternion(0.923535, -8.25538e-06, 4.36078e-06, 0.383514)
+bones/23/rotation = Quaternion(-8.4405e-08, 0.0506987, -6.89682e-08, 0.998714)
+bones/24/rotation = Quaternion(0.0787998, 0.582181, -0.614893, 0.526082)
+
+[node name="Character001LArmIKTarget" parent="Hands_Automatic_rifle" index="3"]
+transform = Transform3D(0.480843, -0.842655, -0.242336, -0.0889127, -0.321821, 0.942617, -0.872287, -0.431705, -0.229668, -0.033002, 1.48182, -0.57164)
+
+[node name="Character001RArmIKTarget" parent="Hands_Automatic_rifle" index="4"]
+transform = Transform3D(-0.117026, 0.979915, 0.161424, -0.0735735, 0.153538, -0.985404, -0.990402, -0.127192, 0.0541283, 0.0418623, 1.42885, -0.246885)
+
+[node name="Hp_Scar_Base" parent="Hands_Automatic_rifle" index="6"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.46562, -0.246437)
+
+[node name="Hp_Scar_Magazine" parent="Hands_Automatic_rifle" index="7"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 9.53674e-09, 1.44682, -0.39135)
+
+[node name="Skeleton3D3" parent="Hands_Automatic_rifle/Hp_Scar_Magazine" index="0"]
+bones/0/position = Vector3(6.52295e-10, 0.00249775, -0.0369196)
+
+[node name="Skeleton3D4" parent="Hands_Automatic_rifle" index="9"]
+bones/0/position = Vector3(0.0082091, 1.56609, -0.369483)
+bones/0/rotation = Quaternion(0.500268, -0.500268, 0.499732, 0.499732)
+
+[node name="AnimationPlayer" parent="." index="1"]
+blend_times = []
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+tree_root = SubResource( "AnimationNodeStateMachine_w3nxf" )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+parameters/playback = SubResource( "AnimationNodeStateMachinePlayback_hgbt8" )
+script = null

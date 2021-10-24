@@ -80,6 +80,7 @@ driver/output_latency=45
 [autoload]
 
 Autoload="*res://bootloader/Autoload.cs"
+ResourceBackgroundLoader="*res://Game/Logic/World/ResourceBackgroundLoader.cs"
 
 [debug]
 
@@ -91,10 +92,6 @@ window/size/height=768
 window/dpi/allow_hidpi=true
 window/handheld/orientation=1
 window/vsync/vsync_mode=0
-
-[editor]
-
-import/use_multiple_threads=false
 
 [input]
 
@@ -183,15 +180,6 @@ game_reload={
 3d_physics/layer_12="AimCast"
 3d_navigation/layer_12="AimCast"
 
-[mono]
-
-export/include_scripts_content=true
-export/aot/enabled=true
-
-[network]
-
-limits/tcp/connect_timeout_seconds=120
-
 [physics]
 
 2d/run_on_thread=true
@@ -199,6 +187,5 @@ limits/tcp/connect_timeout_seconds=120
 
 [rendering]
 
-textures/lossless_compression/force_png=true
-reflections/sky_reflections/fast_filter_high_quality=true
+driver/threads/thread_model=0
 environment/defaults/default_environment="res://default_env.tres"
