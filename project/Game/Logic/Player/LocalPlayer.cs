@@ -118,6 +118,7 @@ namespace FPS.Game.Logic.Player
                 //send input frame to server
                 var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(this.inputFrames);
                 RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
+                this.inputFrames.Clear();
             }
 
             //fix godot issue
