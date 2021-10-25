@@ -18,7 +18,7 @@ namespace FPS.Game.Logic.Server
         public float MAX_DISTANCE = 45.0f;
 
         [Export]
-        public string ip = "0:0:0:0:0:0:0:0";
+        public string ip = "0.0.0.0";
 
         [Export]
         public int maxPlayers = 10;
