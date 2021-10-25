@@ -1,3 +1,4 @@
+@echo off
 :: --HAS ENDING BACKSLASH
 set batdir=%~dp0
 :: --MISSING ENDING BACKSLASH

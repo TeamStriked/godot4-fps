@@ -28,6 +28,9 @@ namespace FPS.Game.Logic.Weapon
 
         private float fireTimeout = 0f;
 
+        [Export]
+        private float damagePerBulletInHp = 0f; 
+
         public override void _EnterTree()
         {
             base._EnterTree();
@@ -49,14 +52,14 @@ namespace FPS.Game.Logic.Weapon
 
         public void FireGun()
         {
-            if (!this.CanShoot())
-                return;
+            this.fireTimeout = this.fireRate / 100;
+        }
 
+        public void GunEffects()
+        {
             this.shotLight.LightEnergy = 2.0f;
             this.smokeEffect.Emitting = true;
             this.muzzleEffect.Emitting = true;
-
-            this.fireTimeout = this.fireRate / 100;
 
             //play sound
             var stream = this.audioShotPlayer.Stream as AudioStreamMP3;

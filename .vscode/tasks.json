@@ -10,7 +10,7 @@
       "command": "dotnet",
       "args": [
         "msbuild",
-        "C:/Game/FPS.sln",
+        "C:/Game/project/FPS.sln",
         "/restore",
         "/t:Build",
         "/p:Configuration=Debug",

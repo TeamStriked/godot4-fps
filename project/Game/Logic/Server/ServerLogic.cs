@@ -37,7 +37,7 @@ namespace FPS.Game.Logic.Server
 
         public Error levelState = Error.Failed;
 
-        public List<ServerClient> clients = new List<ServerClient>();
+        public static List<ServerClient> clients = new List<ServerClient>();
 
         public override void _EnterTree()
         {
@@ -53,7 +53,6 @@ namespace FPS.Game.Logic.Server
 
             CustomMultiplayer.PeerConnected += onPlayerConnect;
             CustomMultiplayer.PeerDisconnected += onPlayerDisconnect;
-
         }
 
         public override void _Ready()
@@ -66,6 +65,7 @@ namespace FPS.Game.Logic.Server
         {
             FPS.Game.Utils.Logger.InfoDraw("Game world loaded successfull");
             this.World.OnGameLevelLoadedSuccessfull += this.OnLevelLoadedSuccesfull;
+            this.World.OnPlayerInstanceCreated += this.PlayerInstanceCreated;
             this.World.loadLevelThreaded(this.levelPath);
         }
 
@@ -78,7 +78,7 @@ namespace FPS.Game.Logic.Server
         public void onPlayerDisconnect(int id)
         {
             FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " disconnected.");
-            this.World.removePlayer(id);
+            this.DisconnectClient(id, "Timeout");
         }
 
         public void onPlayerConnect(int id)
@@ -91,7 +91,7 @@ namespace FPS.Game.Logic.Server
             }
             else
             {
-                this.clients.Add(new ServerClient(id));
+                clients.Add(new ServerClient(id));
                 RpcId(id, "serverAuthSuccessfull", levelPath);
             }
         }
@@ -101,53 +101,70 @@ namespace FPS.Game.Logic.Server
         {
             var id = Multiplayer.GetRemoteSenderId();
 
-            var client = this.clients.FirstOrDefault(df => df.id == id);
+            var client = clients.FirstOrDefault(df => df.id == id);
             if (client == null)
                 return;
+
 
             var spwanPoint = this.World.Level.findFreeSpwanPoint();
             if (spwanPoint != null)
             {
                 spwanPoint.inUsage = true;
+                client.spawnPoint = spwanPoint;
                 FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " world loaded.");
-
-                var callback = new GameWorld.CallBackFunction(() =>
-                {
-                    FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " character added.");
-
-                    client.state = ServerClientState.INIT;
-                    foreach (var client in clients.Where(df => df.state == ServerClientState.INIT))
-                    {
-                        if (client.id == id)
-                        {
-                            var list = this.World.GetPlayers();
-                            var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(list);
-                            RpcId(id, "spwanPlayers", sendMessage);
-                        }
-                        else
-                        {
-                            RpcId(id, "spwanPlayer", id, spwanPoint.GlobalTransform.origin);
-                        }
-                    }
-                });
-
-                this.World.spwanPlayer(id, spwanPoint.GlobalTransform.origin, Player.PlayerType.Server, callback);
+                this.World.spawnPlayer(id, spwanPoint.GlobalTransform.origin, Player.PlayerType.Server);
+            }
+            else
+            {
+                FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " has no free spawnpoint.");
+                this.DisconnectClient(id, "No free spawnpoint.");
             }
         }
 
-        public void CreatePlayer(int id)
+        public void PlayerInstanceCreated(int id, Vector3 origin)
         {
+            var client = clients.FirstOrDefault(df => df.id == id);
+            if (client == null)
+                return;
 
+            FPS.Game.Utils.Logger.InfoDraw("[Server] Client " + id.ToString() + " character added.");
+            client.state = ServerClientState.INIT;
+
+            foreach (var currentClient in clients.Where(df => df.state == ServerClientState.INIT))
+            {
+                if (currentClient.id == id)
+                {
+                    var list = this.World.GetPlayers();
+                    var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(list);
+                    RpcId(currentClient.id, "spawnPlayers", sendMessage);
+                }
+                else
+                {
+                    RpcId(currentClient.id, "spawnPlayer", id, origin);
+                }
+            }
         }
 
         private void DisconnectClient(int id, string message = "")
         {
+            var client = clients.FirstOrDefault(df => df.id == id);
+            if (client != null)
+            {
+                if (client.spawnPoint != null)
+                    client.spawnPoint.inUsage = false;
+            }
+
             FPS.Game.Utils.Logger.InfoDraw("[Server][Player][" + id + "] Disconnect Reason:" + message);
-            //RpcId(id, "forceDisconnect", message);
-            network.GetPeer(id).PeerDisconnect();
+
+            if (network.GetPeer(id) != null && network.GetPeer(id).GetState() == ENetPacketPeer.PeerState.Connected)
+            {
+                network.GetPeer(id).PeerDisconnect();
+            }
+
+            Rpc("removePlayer", id, message);
 
             this.World.removePlayer(id);
-            this.clients.RemoveAll(df => df.id == id);
+            clients.RemoveAll(df => df.id == id);
         }
 
     }

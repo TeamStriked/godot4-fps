@@ -345,43 +345,35 @@ namespace FPS.Game.Logic.Player
             return temp.Length();
         }
 
-        public void DisableHitboxes()
+        public void IgnoreOwnHitboxes()
         {
+            this.aimRay.AddException(this);
+
             foreach (var box in this.GetNode("hitboxes").GetChildren())
             {
-                if (box is Area3D)
-                    this.GetNode("hitboxes").RemoveChild(box as Area3D);
-            }
-        }
-
-        public void DoFire()
-        {
-            if (this.weaponHolder.currentGun != null)
-            {
-                if (this.weaponHolder.currentGun.CanShoot())
+                if (box is Hitbox)
                 {
-                    this.weaponHolder.currentGun.FireGun();
-
-                    this._FPSCamera.ShakeForce = 0.002f;
-                    this._FPSCamera.ShakeTime = 0.2f;
-
-                    if (this.aimRay.IsColliding())
-                    {
-                        var collider = this.aimRay.GetCollider();
-                        if (collider is StaticBody3D)
-                        {
-                            FPS.Game.Utils.Logger.InfoDraw("Hit wall at " + this.aimRay.GetCollisionPoint());
-                            GameWorld.TriggerNewDecal(this.aimRay.GetCollisionPoint(), this.aimRay.GetCollisionNormal(), collider as StaticBody3D);
-                        }
-                        else if (collider is Hitbox)
-                        {
-                            var name = (collider as Hitbox).Name;
-                            FPS.Game.Utils.Logger.InfoDraw("Hit hitbox " + name + " on " + this.aimRay.GetCollisionPoint());
-                        }
-                    }
+                    this.aimRay.AddException(box as Hitbox);
                 }
             }
         }
+
+        public Weapon.Weapon GetCurrentWeapon()
+        {
+            return this.weaponHolder.currentGun;
+        }
+
+        public void setCameraShake(float shakeForce = 0.002f, float shakeTime = 0.2f)
+        {
+            this._FPSCamera.ShakeForce = shakeForce;
+            this._FPSCamera.ShakeTime = shakeTime;
+        }
+
+        public RayCast3D getRaycast3D()
+        {
+            return this.aimRay;
+        }
+
 
         [Export(PropertyHint.ArrayType)]
         System.Collections.Generic.List<string> WalkSoundPaths = new System.Collections.Generic.List<string>();
@@ -409,6 +401,7 @@ namespace FPS.Game.Logic.Player
             this._TPSCamera.Current = false;
 
             this.detectAnimationTree(this._tpsCharacter);
+
             if (this._animationTree != null)
                 this._animationTree.Active = false;
 
@@ -416,8 +409,6 @@ namespace FPS.Game.Logic.Player
 
             this.collider = GetNode("collider") as CollisionShape3D;
             this.colliderShape = this.collider.Shape as CapsuleShape3D;
-
-
         }
 
         public bool canPlayFootstepSound = true;
@@ -475,7 +466,6 @@ namespace FPS.Game.Logic.Player
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
-
             this.origColliderPositionY = this.collider.Transform.origin.y;
             this.origHeadY = this.head.Transform.origin.y;
             this.origColliderShapeHeight = this.colliderShape.Height;
@@ -487,6 +477,7 @@ namespace FPS.Game.Logic.Player
 
             this._animationTree.Active = true;
             this.setAnimationState("idle");
+            this.IgnoreOwnHitboxes();
         }
 
         public FPSCamera Camera

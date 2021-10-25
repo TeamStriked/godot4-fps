@@ -12,8 +12,7 @@ namespace FPS.Game.Logic.Level
 
         public GameSpwanPoint findFreeSpwanPoint()
         {
-
-            return this.SpwanPoints.First(df => !df.inUsage);
+            return this.SpwanPoints.FirstOrDefault(df => !df.inUsage);
         }
 
         public List<GameSpwanPoint> SpwanPoints

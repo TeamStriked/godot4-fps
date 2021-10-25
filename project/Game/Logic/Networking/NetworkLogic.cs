@@ -20,8 +20,9 @@ namespace FPS.Game.Logic.Networking
         {
             base._EnterTree();
 
-            RpcConfig("spwanPlayer", RPCMode.Auth, false, TransferMode.Reliable);
-            RpcConfig("spwanPlayers", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("removePlayer", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("spawnPlayer", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("spawnPlayers", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("serverAuthSuccessfull", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("serverNotReady", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("mapLoadedSuccessfull", RPCMode.AnyPeer, false, TransferMode.Reliable);
@@ -146,19 +147,21 @@ namespace FPS.Game.Logic.Networking
         }
 
         [Authority]
-        public virtual void spwanPlayer(int id, Vector3 origin)
+        public virtual void spawnPlayer(int id, Vector3 origin)
         {
 
         }
 
         [Authority]
-        public virtual void spwanPlayers(string message)
+        public virtual void removePlayer(int id, string message)
         {
 
         }
 
+        [Authority]
+        public virtual void spawnPlayers(string message)
+        {
 
-
-
+        }
     }
 }

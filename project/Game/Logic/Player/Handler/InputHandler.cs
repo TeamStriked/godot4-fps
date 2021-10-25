@@ -16,6 +16,7 @@ namespace FPS.Game.Logic.Player.Handler
         public bool onShifting;
         public bool onSprinting;
         public bool onJumpStart;
+        public bool onShoot;
 
     }
     public static class InputHandler
@@ -36,7 +37,6 @@ namespace FPS.Game.Logic.Player.Handler
                 newFrame.direction.x -= 1f;
             if (Input.IsActionPressed("game_moveRight"))
                 newFrame.direction.x += 1f;
-
 
             if (Input.IsActionPressed("game_crouching"))
                 newFrame.onCrouching = true;
@@ -62,6 +62,9 @@ namespace FPS.Game.Logic.Player.Handler
                 newFrame.onJumpStart = true;
             else
                 newFrame.onJumpStart = false;
+
+
+            newFrame.onShoot = Input.IsActionPressed("fire");
 
             return newFrame;
         }
