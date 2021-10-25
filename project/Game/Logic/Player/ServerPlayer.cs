@@ -63,20 +63,29 @@ namespace FPS.Game.Logic.Player
                     this.AppendCalculatedFrame(newFrame);
 
                     handleAnimation();
+
+                    var puppetFrame = new CalculatedPuppetFrame();
+                    puppetFrame.timestamp = serverTick;
+                    puppetFrame.origin = this.playerChar.GlobalTransform.origin;
+                    puppetFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
+                    puppetFrame.velocity = this.playerChar.MotionVelocity;
+                    puppetFrame.currentAnimation = this.playerChar.getAnimationState();
+                    puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
+                    var sendMessagePuppet = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
+                    this.world.updateAllPuppets(networkId, sendMessagePuppet);
                 }
 
-                var puppetFrame = new CalculatedPuppetFrame();
-                puppetFrame.timestamp = serverTick;
-                puppetFrame.origin = this.playerChar.GlobalTransform.origin;
-                puppetFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
-                puppetFrame.velocity = this.playerChar.MotionVelocity;
-                puppetFrame.currentAnimation = this.playerChar.getAnimationState();
-                puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
+                var clientFrame = new CalculatedPuppetFrame();
+                clientFrame.timestamp = serverTick;
+                clientFrame.origin = this.playerChar.GlobalTransform.origin;
+                clientFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
+                clientFrame.velocity = this.playerChar.MotionVelocity;
+                clientFrame.currentAnimation = this.playerChar.getAnimationState();
+                clientFrame.currentAnimationTime = this.playerChar.getAnimationScale();
 
-                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
+                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(clientFrame);
                 RpcId(networkId, "onServerInput", sendMessage);
 
-                this.world.updateAllPuppets(networkId, sendMessage);
             }
         }
 

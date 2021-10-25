@@ -132,61 +132,61 @@ bones/63/rotation = Quaternion(0.316725, 0.035045, -0.00983526, 0.947819)
 bones/64/position = Vector3(-3.74168e-05, 656.936, 6.67601e-06)
 
 [node name="arms_pad" parent="char/Armature/Skeleton3D" index="0"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="breast_pad" parent="char/Armature/Skeleton3D" index="1"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="collar" parent="char/Armature/Skeleton3D" index="2"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="fead_pad_2" parent="char/Armature/Skeleton3D" index="3"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="fead_utils" parent="char/Armature/Skeleton3D" index="4"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="gloves" parent="char/Armature/Skeleton3D" index="5"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="head_comm" parent="char/Armature/Skeleton3D" index="6"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="head_glass" parent="char/Armature/Skeleton3D" index="7"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="head_glass_2" parent="char/Armature/Skeleton3D" index="8"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="head_pad" parent="char/Armature/Skeleton3D" index="9"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="lower_arm_pads" parent="char/Armature/Skeleton3D" index="10"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="mid_pads" parent="char/Armature/Skeleton3D" index="11"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="middle_breast_pad" parent="char/Armature/Skeleton3D" index="12"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="middle_breast_pad_2" parent="char/Armature/Skeleton3D" index="13"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="rips_pads" parent="char/Armature/Skeleton3D" index="14"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="shoes" parent="char/Armature/Skeleton3D" index="15"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="shoes_utils" parent="char/Armature/Skeleton3D" index="16"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="throat_pad" parent="char/Armature/Skeleton3D" index="17"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="undersuite" parent="char/Armature/Skeleton3D" index="18"]
-lod_bias = 15.0
+lod_bias = 30.0
 
 [node name="AnimationPlayer" parent="char" index="2"]
 autoplay = "rifle_idle"

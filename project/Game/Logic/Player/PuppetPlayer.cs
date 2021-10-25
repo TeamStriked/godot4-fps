@@ -28,6 +28,11 @@ namespace FPS.Game.Logic.Player
                 var q = incomingServerFrames.Dequeue();
                 this.ExecPuppetFrame(q);
             }
+
+            if (this.playerChar.getSpeed() > this.walkSpeed)
+            {
+                this.playerChar.doFootstep();
+            }
         }
 
         public void IncomingServerFrame(CalculatedPuppetFrame puppetFrame)
