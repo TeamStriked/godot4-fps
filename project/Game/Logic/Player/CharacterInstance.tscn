@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://pukan1cf6dvm"]
+[gd_scene load_steps=14 format=3 uid="uid://pukan1cf6dvm"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/CharacterInstance.cs" id="1_nwdc5"]
 [ext_resource type="PackedScene" uid="uid://63luc35hbh35" path="res://assets/character/character_1.tscn" id="2_22ie3"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://Game/Logic/Camera/FPSCamera.cs" id="3_gcthm"]
 [ext_resource type="Script" path="res://Game/Logic/Weapon/WeaponHolder.cs" id="3_yut5h"]
 [ext_resource type="PackedScene" uid="uid://das3d81a6v1oo" path="res://assets/weapons/Weapons_New/Rifle.tscn" id="6_7sc2r"]
+[ext_resource type="PackedScene" uid="uid://b5rdvrs3qak3n" path="res://assets/weapons/Weapons_New/Rifle05.tscn" id="7_51cf2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
 resource_local_to_scene = true
@@ -70,6 +71,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115967, 1.3917, 0)
 collision_layer = 2048
 collision_mask = 2048
 script = ExtResource( "2_o7ank" )
+damageInPercentage = 50.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitboxes/body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.132264, 0.436153, 0.168051)
@@ -81,6 +83,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115967, 0.860181, 0)
 collision_layer = 2048
 collision_mask = 2048
 script = ExtResource( "2_o7ank" )
+damageInPercentage = 30.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitboxes/feeds"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.132264, 0.00558984, 0.0803656)
@@ -92,6 +95,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.115967, 0.860181, 0)
 collision_layer = 2048
 collision_mask = 2048
 script = ExtResource( "2_o7ank" )
+damageInPercentage = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="hitboxes/shoes"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.132264, -0.700127, 0.027552)
@@ -99,6 +103,7 @@ shape = SubResource( "BoxShape3D_odcut" )
 script = null
 
 [node name="tps_character" type="Node3D" parent="."]
+visible = false
 script = null
 
 [node name="Node3D" parent="tps_character" instance=ExtResource( "2_22ie3" )]
@@ -122,7 +127,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.266218, 0.179946)
 script = ExtResource( "3_yut5h" )
 
 [node name="rifle" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "6_7sc2r" )]
-transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.128852, -0.629476, -0.316247)
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0789823, -0.585654, -0.219349)
+visible = false
+
+[node name="rifle2" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "7_51cf2" )]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0251721, -0.590818, -0.136259)
 
 [node name="aim_cast" type="RayCast3D" parent="head/fps_camera"]
 target_position = Vector3(0, 0, -200)

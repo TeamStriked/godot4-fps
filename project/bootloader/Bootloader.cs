@@ -14,7 +14,6 @@ public partial class Bootloader : Node
         var scene = (PackedScene)ResourceLoader.Load("res://bootloader/ServerWindow.tscn");
         var serverWindow = (ServerWindow)scene.Instantiate();
         serverWindow.Name = name;
-        //  serverWindow.Visible = false;
         GetNode("box").AddChild(serverWindow);
     }
 
@@ -31,6 +30,12 @@ public partial class Bootloader : Node
 
     public override void _Ready()
     {
+        /** currently only way to fix this trash godot game engine */
+        ResourceLoader.Load("res://Game/Logic/Player/CharacterInstance.tscn");
+        ResourceLoader.Load("res://assets/weapons/Weapons_New/Rifle.tscn");
+        ResourceLoader.Load("res://Levels/ExampleLevel.tscn");
+
+
         FPS.Game.Logic.World.ResourceBackgroundLoader.Start();
         FPS.Game.Utils.Logger.InfoDraw("Bootloading..");
 

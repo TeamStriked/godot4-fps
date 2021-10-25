@@ -1,12 +1,15 @@
 using Godot;
 using System;
 using FPS.Game.Logic.Player.Handler;
+using FPS.Game.Logic.World;
 
 namespace FPS.Game.Logic.Player
 {
     public abstract partial class NetworkPlayer : Node3D
     {
         protected CalculatedFrame lastFrame = new CalculatedFrame();
+
+        public GameWorld world = null;
 
         private float currentJumpTime = 0.0f;
 
@@ -88,26 +91,23 @@ namespace FPS.Game.Logic.Player
 
         protected Vector3 lastTeleportOrigin;
 
-        public virtual void DoFire()
+        public virtual void DoFire(Weapon.Weapon weapon)
         {
-            this.playerChar.DoFire();
-        }
 
-
-        [Authority]
-        public virtual void onNetworkTeleport(Vector3 origin)
-        {
-        }
-
-        [Authority]
-        public virtual void onPuppetUpdate(string message)
-        {
         }
 
         [AnyPeer]
         public virtual void onClientInput(string inputMessage)
         {
         }
+
+
+        [AnyPeer]
+        public virtual void onServerInput(string inputMessage)
+        {
+        }
+
+
 
         public override void _PhysicsProcess(float delta)
         {
@@ -138,13 +138,18 @@ namespace FPS.Game.Logic.Player
             }
         }
 
-        public override void _Ready()
-        {
-            base._Ready();
-        }
-
         public CalculatedFrame calulcateFrame(InputFrame inputFrame, float delta)
         {
+            if (inputFrame.onShoot)
+            {
+                var weapon = this.playerChar.GetCurrentWeapon();
+                if (weapon != null && weapon.CanShoot())
+                {
+                    //send shot to weapons
+                    this.DoFire(weapon);
+                }
+            }
+
             var calculatedFrame = new CalculatedFrame();
             var currentSpeed = playerChar.MotionVelocity.Length();
             calculatedFrame.velocity = playerChar.MotionVelocity;
@@ -270,10 +275,8 @@ namespace FPS.Game.Logic.Player
         {
             base._EnterTree();
             this.playerChar = GetNode("char") as CharacterInstance;
-
-            RpcConfig("onNetworkTeleport", RPCMode.Auth, false, TransferMode.Reliable);
-            RpcConfig("onPuppetUpdate", RPCMode.Auth, false, TransferMode.Reliable);
             RpcConfig("onClientInput", RPCMode.AnyPeer, false, TransferMode.Unreliable);
+            RpcConfig("onServerInput", RPCMode.Auth, false, TransferMode.Reliable);
         }
 
         protected void handleAnimation()
@@ -386,7 +389,6 @@ namespace FPS.Game.Logic.Player
                 this.playerChar.setBodyHeight(delta, calculatedFrame.crouching ? crouchDownSpeed : crouchUpSpeed, crouchColliderMultiplier, calculatedFrame.crouching);
             }
         }
-
 
         public virtual void DoTeleport(Vector3 origin)
         {

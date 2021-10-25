@@ -23,17 +23,15 @@ namespace FPS.Game.Logic.Player
             lastFrame = newFrame;
         }
 
-        [Authority]
-        public override void onPuppetUpdate(string message)
+        public void IncomingServerFrame(CalculatedPuppetFrame puppetFrame)
         {
-
-            var puppetFrame = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(message);
             this.DoTeleport(puppetFrame.origin);
             this.DoRotate(puppetFrame.rotation);
             this.playerChar.MotionVelocity = puppetFrame.velocity;
             this.playerChar.setAnimationState(puppetFrame.currentAnimation);
             this.playerChar.setAnimationTimeScale(puppetFrame.currentAnimationTime);
         }
+
 
         public override void Activate()
         {

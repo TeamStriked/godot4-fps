@@ -180,6 +180,10 @@ game_reload={
 3d_physics/layer_12="AimCast"
 3d_navigation/layer_12="AimCast"
 
+[network]
+
+limits/tcp/connect_timeout_seconds=120
+
 [physics]
 
 2d/run_on_thread=true

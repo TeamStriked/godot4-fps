@@ -8,9 +8,8 @@ namespace FPS.Game.Logic.Weapon
     {
 
         List<string> weaponList = new List<string>();
-        string currentGunName = null;
         public Weapon currentGun = null;
-
+        private int currentWeaponIndex = 0;
 
         public override void _Ready()
         {
@@ -22,19 +21,19 @@ namespace FPS.Game.Logic.Weapon
                 }
             }
 
-            ShowGun(weaponList.FirstOrDefault());
+            ShowGun();
         }
 
-        public void ShowGun(string name)
+        public void ShowGun()
         {
-            currentGunName = null;
+            GD.Print("new weapon index" + currentWeaponIndex);
+            int weaponIndex = 0;
             foreach (var child in this.GetChildren())
             {
                 if (child is Node3D)
                 {
                     var weapon = (child as Node3D);
-                    var activeGun = weapon.Name == name ? true : false;
-
+                    var activeGun = weaponIndex == currentWeaponIndex ? true : false;
                     weapon.Visible = activeGun;
 
                     if (activeGun == true && weapon is Weapon)
@@ -42,48 +41,43 @@ namespace FPS.Game.Logic.Weapon
                         currentGun = weapon as Weapon;
                     }
 
-                    if (activeGun)
-                        currentGunName = weapon.Name;
+                    weaponIndex++;
                 }
             }
         }
 
         public void nextGun()
         {
-            if (currentGunName != null)
+            if (currentWeaponIndex + 1 >= this.weaponList.Count)
             {
-                var currentIndex = this.weaponList.IndexOf(currentGunName);
-                if (currentIndex + 1 >= this.weaponList.Count)
-                {
-                    ShowGun(this.weaponList.FirstOrDefault());
-                }
-                else
-                {
-                    var newWeapon = this.weaponList[currentIndex + 1];
-                    ShowGun(newWeapon);
-                }
+                currentWeaponIndex = 0;
+                ShowGun();
+            }
+            else
+            {
+                currentWeaponIndex += 1;
+                ShowGun();
             }
         }
+
         public void prevGun()
         {
-            if (currentGunName != null)
+
+            if (currentWeaponIndex - 1 < 0)
             {
-                var currentIndex = this.weaponList.IndexOf(currentGunName);
-                if (currentIndex - 1 < 0)
-                {
-                    ShowGun(this.weaponList.LastOrDefault());
-                }
-                else
-                {
-                    var newWeapon = this.weaponList[currentIndex - 1];
-                    ShowGun(newWeapon);
-                }
+                currentWeaponIndex = this.weaponList.Count - 1;
+                ShowGun();
             }
+            else
+            {
+                currentWeaponIndex = currentWeaponIndex - 1;
+                ShowGun();
+            }
+
         }
 
         public override void _Input(InputEvent @event)
         {
-            /*
             base._Input(@event);
 
             if (@event is InputEventMouseButton)
@@ -103,7 +97,6 @@ namespace FPS.Game.Logic.Weapon
             }
 
             @event.Dispose();
-            */
         }
     }
 

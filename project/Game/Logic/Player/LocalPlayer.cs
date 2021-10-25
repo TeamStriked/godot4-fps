@@ -33,12 +33,6 @@ namespace FPS.Game.Logic.Player
         private List<float> _rotArrayX = new List<float>();
         private List<float> _rotArrayY = new List<float>();
 
-        [Authority]
-        public override void onNetworkTeleport(Vector3 origin)
-        {
-            FPS.Game.Utils.Logger.InfoDraw("Cliend receive teleport on " + origin);
-            base.DoTeleport(origin);
-        }
 
         public bool isRecoling = false;
 
@@ -49,7 +43,7 @@ namespace FPS.Game.Logic.Player
 
         public RecoilModes mode = RecoilModes.AUTO;
 
-        public async void startRecoil()
+        private async void startRecoil()
         {
             isRecoling = true;
             var timer = GetTree().CreateTimer(ROF);
@@ -57,7 +51,7 @@ namespace FPS.Game.Logic.Player
             this.isRecoling = false;
         }
 
-        public void recoiling(float delta)
+        private void handleRecoil(float delta)
         {
             if (isRecoling)
             {
@@ -102,41 +96,39 @@ namespace FPS.Game.Logic.Player
                     this.playerChar.setDrawMode(PlayerDrawMode.FPS);
                 }
             }
+
             var inputFrame = (this.IsProcessingInput()) ? InputHandler.getInputFrame() : new InputFrame();
+
+
+            //create new frame
             var newFrame = this.calulcateFrame(inputFrame, delta);
             this.execFrame(newFrame);
             lastFrame = newFrame;
 
+            //override input frame with new head postion
             inputFrame.mouseMotion = new Vector2(this.playerChar.GetCharRotation(), this.playerChar.GetHeadRotation());
 
             //send input frame to server
             var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(inputFrame);
-
             RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
 
             //fix godot issue
             handleAnimation();
 
-            //do recoil
-            if (Input.IsActionPressed("fire") && !isRecoling && mode == RecoilModes.AUTO)
-                startRecoil();
-
-            else if (Input.IsActionJustPressed("fire") && !isRecoling && mode == RecoilModes.SINGLE)
-                startRecoil();
-
             //handle recoil
-            recoiling(delta);
-
-            //send shot to weapons
-
-            if (Input.IsActionPressed("fire"))
-                this.DoFire();
+            this.handleRecoil(delta);
         }
 
-
-        public override void DoFire()
+        public override void DoFire(Weapon.Weapon weapon)
         {
-            base.DoFire();
+            weapon.FireGun();
+            weapon.GunEffects();
+
+            //do recoil
+            if (!isRecoling && mode == RecoilModes.AUTO)
+                this.startRecoil();
+
+            this.playerChar.setCameraShake();
         }
 
         Vector2 mouseMotion = Vector2.Zero;
@@ -198,6 +190,20 @@ namespace FPS.Game.Logic.Player
             @event.Dispose();
         }
 
+        [AnyPeer]
+        public override void onServerInput(string inputMessage)
+        {
+            var uncompress = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(inputMessage);
+            if (uncompress != null)
+            {
+                var diff = this.playerChar.GlobalTransform.origin - uncompress.origin;
+                if (diff.Length() >= 5)
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("[Client] input lag size " + diff.Length());
+                    this.DoTeleport(uncompress.origin);
+                }
+            }
+        }
 
         bool rightMouseActivated = false;
 
@@ -210,8 +216,6 @@ namespace FPS.Game.Logic.Player
 
             this.isActivated = true;
             Input.SetMouseMode(Input.MouseMode.Captured);
-
-            this.playerChar.DisableHitboxes();
         }
 
         public void Dectivate()

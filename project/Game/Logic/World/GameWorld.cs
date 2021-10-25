@@ -4,7 +4,9 @@ using System;
 using FPS.Game.Logic.Camera;
 using FPS.Game.Logic.Level;
 using FPS.Game.Logic.Player;
+using FPS.Game.Logic.Server;
 using System.Collections.Generic;
+
 namespace FPS.Game.Logic.World
 {
     public partial class GameWorld : Node3D
@@ -32,6 +34,48 @@ namespace FPS.Game.Logic.World
         public NetworkPlayer getPlayer(int id)
         {
             return this.players[id];
+        }
+
+        public void sendDecalsToClients(Vector3 point, Vector3 normal)
+        {
+            foreach (var item in ServerLogic.clients.Where(df => df.state == ServerClientState.INIT))
+            {
+                RpcId(item.id, "onNewDecal", point, normal);
+            }
+        }
+
+        [Authority]
+        public void onNewDecal(Vector3 point, Vector3 normal)
+        {
+            this.AddDecal(point, normal);
+        }
+
+        [Authority]
+        public void onNetworkTeleport(int id, Vector3 origin)
+        {
+            FPS.Game.Utils.Logger.InfoDraw("Cliend received teleport on " + origin);
+            if (this.players.ContainsKey(id))
+            {
+                this.players[id].DoTeleport(origin);
+            }
+        }
+
+        [Authority]
+        public void onPuppetUpdate(int id, string message)
+        {
+            if (this.players.ContainsKey(id) && this.players[id] is PuppetPlayer)
+            {
+                var puppetFrame = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(message);
+                (this.players[id] as PuppetPlayer).IncomingServerFrame(puppetFrame);
+            }
+        }
+
+        public void updateAllPuppets(int puppetId, string message)
+        {
+            foreach (var currentClient in ServerLogic.clients.Where(df => df.id != puppetId && df.state == ServerClientState.INIT))
+            {
+                RpcId(currentClient.id, "onPuppetUpdate", puppetId, message);
+            }
         }
 
         public Dictionary<int, Vector3> GetPlayers()
@@ -67,9 +111,13 @@ namespace FPS.Game.Logic.World
         public override void _EnterTree()
         {
             base._EnterTree();
+
+            RpcConfig("onNetworkTeleport", RPCMode.Auth, false, TransferMode.Reliable);
+            RpcConfig("onPuppetUpdate", RPCMode.Auth, false, TransferMode.Unreliable);
+            RpcConfig("onNewDecal", RPCMode.Auth, false, TransferMode.Unreliable);
+
             this._decalNode = GetNode<Node3D>(decalNodePath);
 
-            OnNewDecal += AddDecal;
         }
 
 
@@ -99,16 +147,7 @@ namespace FPS.Game.Logic.World
             this.AddChild(this._level);
         }
 
-
-        public delegate void NewDecal(Vector3 point, Vector3 normal, StaticBody3D collider);
-        public static event NewDecal OnNewDecal;
-
-        public static void TriggerNewDecal(Vector3 point, Vector3 normal, StaticBody3D collider)
-        {
-            OnNewDecal(point, normal, collider);
-        }
-
-        public void AddDecal(Vector3 point, Vector3 normal, StaticBody3D collider)
+        private void AddDecal(Vector3 point, Vector3 normal)
         {
             var resource = GD.Load("res://Game/Logic/World/WallDecal.tscn") as PackedScene;
             var decal = resource.Instantiate() as Decal;
@@ -125,63 +164,69 @@ namespace FPS.Game.Logic.World
             decal.Rotation = rot;
         }
 
+        public delegate void PlayerInstanceCreated(int id, Vector3 origin);
 
-        public delegate void CallBackFunction();
+        [Signal]
+        public event PlayerInstanceCreated OnPlayerInstanceCreated;
 
-        private void AddPlayerInstance(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
+        private void AddPlayerInstance(int id, Vector3 origin, PlayerType type)
         {
             if (type == PlayerType.Local)
             {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load local player");
-
                 ResourceBackgroundLoader.Add("res://Game/Logic/Player/LocalPlayer.tscn", (Node instance) =>
                 {
                     this.CallDeferred("addPlayer", instance as LocalPlayer, id, origin);
-                    if (callback != null)
-                        callback();
                 });
             }
             else if (type == PlayerType.Server)
             {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load server player");
                 ResourceBackgroundLoader.Add("res://Game/Logic/Player/ServerPlayer.tscn", (Node instance) =>
                 {
                     this.CallDeferred("addPlayer", instance as ServerPlayer, id, origin);
-                    if (callback != null)
-                        callback();
-                });
 
+                });
             }
             else if (type == PlayerType.Puppet)
             {
-                FPS.Game.Utils.Logger.InfoDraw("Try to load puppet player");
                 ResourceBackgroundLoader.Add("res://Game/Logic/Player/PuppetPlayer.tscn", (Node instance) =>
                 {
                     this.CallDeferred("addPlayer", instance as PuppetPlayer, id, origin);
-                    if (callback != null)
-                        callback();
                 });
             }
         }
 
         public void addPlayer(NetworkPlayer player, int id, Vector3 origin)
         {
-            this.players.Add(id, player);
+            if (this.players.ContainsKey(id))
+                return;
 
+            player = (NetworkPlayer)player.Duplicate();
             var path = GetNode(playerNodePath);
             if (path != null)
             {
+
+                this.players.Add(id, player);
+                FPS.Game.Utils.Logger.InfoDraw("[Player] Added " + id + player.GetType() + " at " + origin);
+
+                player.world = this;
                 player.Name = id.ToString();
                 player.networkId = id;
-
                 path.AddChild(player);
+
                 player.DoTeleport(origin);
                 player.Activate();
+
+                if (OnPlayerInstanceCreated != null)
+                    OnPlayerInstanceCreated(id, origin);
+
             }
         }
 
-        public void spwanPlayer(int id, Vector3 origin, PlayerType type, CallBackFunction callback = null)
+        public void spawnPlayer(int id, Vector3 origin, PlayerType type)
         {
+            if (this.players.ContainsKey(id))
+                return;
+
             FPS.Game.Utils.Logger.InfoDraw("[Player] Spwan " + id + " on location " + origin + " type " + type);
 
             if (this._level == null)
@@ -189,7 +234,7 @@ namespace FPS.Game.Logic.World
 
             if (playerNodePath != null)
             {
-                this.AddPlayerInstance(id, origin, type, callback);
+                this.AddPlayerInstance(id, origin, type);
             }
         }
 

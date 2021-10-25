@@ -175,8 +175,8 @@ namespace FPS.Game.Logic.World
                     return;
                 }
 
-                //    Godot.RenderingServer.ForceSync();
-                //   Godot.OS.DelayUsec(16000);
+                Godot.RenderingServer.ForceSync();
+                Godot.OS.DelayUsec(16000);
 
                 var obj = resource.Instantiate();
                 nodes.Add(element.resName, obj);
@@ -195,7 +195,6 @@ namespace FPS.Game.Logic.World
                 Godot.RenderingServer.ForceSync();
                 Godot.OS.DelayUsec(16000);
                 handleQueueProcess();
-                Thread.Sleep(1000);
             }
         }
     }

@@ -72,6 +72,8 @@ namespace FPS.Game.Logic.Client
                 this.handleDisconnect();
             };
         }
+
+
         [Authority]
         public override void serverAuthSuccessfull(string levelName)
         {
@@ -193,16 +195,27 @@ namespace FPS.Game.Logic.Client
 
 
         [Authority]
-        public override void spwanPlayer(int id, Vector3 origin)
+        public override void spawnPlayer(int id, Vector3 origin)
         {
             if (id != this.ownNetworkId)
             {
-                this.World.spwanPlayer(id, origin, Player.PlayerType.Puppet);
+                this.World.spawnPlayer(id, origin, Player.PlayerType.Puppet);
+            }
+        }
+
+
+        [Authority]
+        public override void removePlayer(int id, string message)
+        {
+            if (id != this.ownNetworkId)
+            {
+                FPS.Game.Utils.Logger.LogError("[Client][" + id + "]" + " Disconnected with reason " + message);
+                this.World.removePlayer(id);
             }
         }
 
         [Authority]
-        public override void spwanPlayers(string message)
+        public override void spawnPlayers(string message)
         {
             var uncompress = FPS.Game.Utils.NetworkCompressor.Decompress<Dictionary<int, Vector3>>(message);
 
@@ -210,11 +223,11 @@ namespace FPS.Game.Logic.Client
             {
                 if (item.Key == this.ownNetworkId)
                 {
-                    this.World.spwanPlayer(item.Key, item.Value, Player.PlayerType.Local);
+                    this.World.spawnPlayer(item.Key, item.Value, Player.PlayerType.Local);
                 }
                 else
                 {
-                    this.World.spwanPlayer(item.Key, item.Value, Player.PlayerType.Puppet);
+                    this.World.spawnPlayer(item.Key, item.Value, Player.PlayerType.Puppet);
                 }
             }
         }

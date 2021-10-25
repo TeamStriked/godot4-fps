@@ -2,12 +2,35 @@ using Godot;
 using System;
 using FPS.Game.Logic.Player.Handler;
 using System.Collections.Generic;
+using FPS.Game.Logic.Server;
+using System.Linq;
 
 namespace FPS.Game.Logic.Player
 {
     public partial class ServerPlayer : NetworkPlayer
     {
         bool calculated = false;
+
+        public override void DoFire(Weapon.Weapon weapon)
+        {
+            weapon.FireGun();
+
+            var rayCast = this.playerChar.getRaycast3D();
+            if (rayCast.IsColliding())
+            {
+                var collider = rayCast.GetCollider();
+                if (collider is StaticBody3D)
+                {
+                    FPS.Game.Utils.Logger.InfoDraw("Hit wall at " + rayCast.GetCollisionPoint());
+                    this.world.sendDecalsToClients(rayCast.GetCollisionPoint(), rayCast.GetCollisionNormal());
+                }
+                else if (collider is Hitbox)
+                {
+                    var name = (collider as Hitbox).Name;
+                    FPS.Game.Utils.Logger.InfoDraw("Hit hitbox " + name + " on " + rayCast.GetCollisionPoint());
+                }
+            }
+        }
 
         public override bool isServerPlayer()
         {
@@ -31,6 +54,7 @@ namespace FPS.Game.Logic.Player
 
                 var newFrame = this.calulcateFrame(lastInput, delta);
                 this.execFrame(newFrame);
+
                 lastFrame = newFrame;
 
                 handleAnimation();
@@ -44,7 +68,9 @@ namespace FPS.Game.Logic.Player
             puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
 
             var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
-            Rpc("onPuppetUpdate", sendMessage);
+            RpcId(networkId, "onServerInput", sendMessage);
+
+            this.world.updateAllPuppets(networkId, sendMessage);
         }
 
         [AnyPeer]
