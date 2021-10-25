@@ -103,7 +103,6 @@ shape = SubResource( "BoxShape3D_odcut" )
 script = null
 
 [node name="tps_character" type="Node3D" parent="."]
-visible = false
 script = null
 
 [node name="Node3D" parent="tps_character" instance=ExtResource( "2_22ie3" )]

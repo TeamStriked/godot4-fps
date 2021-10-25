@@ -53,7 +53,6 @@ namespace FPS.Game.Logic.Server
 
             CustomMultiplayer.PeerConnected += onPlayerConnect;
             CustomMultiplayer.PeerDisconnected += onPlayerDisconnect;
-
         }
 
         public override void _Ready()

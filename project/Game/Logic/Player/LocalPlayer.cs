@@ -11,12 +11,12 @@ namespace FPS.Game.Logic.Player
 {
     public partial class LocalPlayer : NetworkPlayer
     {
+        const int inputFramesToSend = 10;
+
         public override bool isServerPlayer()
         {
             return false;
         }
-
-        const int _averageFromThisManySteps = 3;
 
         //vec
         Vector2 mouseDelta = new Vector2();
@@ -41,7 +41,11 @@ namespace FPS.Game.Logic.Player
 
         public float ROF = 0.12f;
 
+        Vector2 mouseMotion = Vector2.Zero;
+
         public RecoilModes mode = RecoilModes.AUTO;
+
+        private List<InputFrame> inputFrames = new List<InputFrame>();
 
         private async void startRecoil()
         {
@@ -99,18 +103,23 @@ namespace FPS.Game.Logic.Player
 
             var inputFrame = (this.IsProcessingInput()) ? InputHandler.getInputFrame() : new InputFrame();
 
-
             //create new frame
             var newFrame = this.calulcateFrame(inputFrame, delta);
             this.execFrame(newFrame);
-            lastFrame = newFrame;
+            this.AppendCalculatedFrame(newFrame);
 
             //override input frame with new head postion
             inputFrame.mouseMotion = new Vector2(this.playerChar.GetCharRotation(), this.playerChar.GetHeadRotation());
 
-            //send input frame to server
-            var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(inputFrame);
-            RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
+            this.inputFrames.Add(inputFrame);
+
+            if (this.inputFrames.Count >= inputFramesToSend)
+            {
+                //send input frame to server
+                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(this.inputFrames);
+                RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
+                this.inputFrames.Clear();
+            }
 
             //fix godot issue
             handleAnimation();
@@ -130,8 +139,6 @@ namespace FPS.Game.Logic.Player
 
             this.playerChar.setCameraShake();
         }
-
-        Vector2 mouseMotion = Vector2.Zero;
 
         public override void _Process(float delta)
         {
@@ -197,7 +204,7 @@ namespace FPS.Game.Logic.Player
             if (uncompress != null)
             {
                 var diff = this.playerChar.GlobalTransform.origin - uncompress.origin;
-                if (diff.Length() >= 5)
+                if (diff.Length() >= 1.0f)
                 {
                     FPS.Game.Utils.Logger.InfoDraw("[Client] input lag size " + diff.Length());
                     this.DoTeleport(uncompress.origin);

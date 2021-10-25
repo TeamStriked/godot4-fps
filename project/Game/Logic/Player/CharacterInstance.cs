@@ -401,6 +401,7 @@ namespace FPS.Game.Logic.Player
             this._TPSCamera.Current = false;
 
             this.detectAnimationTree(this._tpsCharacter);
+
             if (this._animationTree != null)
                 this._animationTree.Active = false;
 
@@ -408,8 +409,6 @@ namespace FPS.Game.Logic.Player
 
             this.collider = GetNode("collider") as CollisionShape3D;
             this.colliderShape = this.collider.Shape as CapsuleShape3D;
-
-
         }
 
         public bool canPlayFootstepSound = true;

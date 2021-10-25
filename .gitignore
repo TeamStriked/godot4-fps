@@ -5,10 +5,6 @@ project/.orig
 # Godot-specific ignores
 project/.import/
 project/Output/
-project/project/export.cfg
-project/export_presets.cfg
-# Dummy HTML5 export presets file for continuous integration
-!.github/dist/export_presets.cfg
 
 # Imported translations (automatically generated from CSV files)
 project/*.translation

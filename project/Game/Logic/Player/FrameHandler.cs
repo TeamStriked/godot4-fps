@@ -30,6 +30,8 @@ namespace FPS.Game.Logic.Player
 
         public Vector3 rotation;
 
+        public int timestamp;
+
         public string currentAnimation;
 
         public float currentAnimationTime;

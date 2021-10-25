@@ -39,46 +39,56 @@ namespace FPS.Game.Logic.Player
 
         Queue<InputFrame> inputQueue = new Queue<InputFrame>();
 
+        public int serverTick = 0;
+
         public override void _PhysicsProcess(float delta)
         {
+            base._PhysicsProcess(delta);
+
             if (!isActivated || !calculated)
                 return;
 
-            base._PhysicsProcess(delta);
+            serverTick++;
 
-            while (inputQueue.Count > 0)
+            if (inputQueue.Count > 0)
             {
-                var lastInput = inputQueue.Dequeue();
-                this.playerChar.SetCharRotation(lastInput.mouseMotion.x);
-                this.playerChar.SetHeadRotation(lastInput.mouseMotion.y);
+                while (inputQueue.Count > 0)
+                {
+                    var lastInput = inputQueue.Dequeue();
+                    this.playerChar.SetCharRotation(lastInput.mouseMotion.x);
+                    this.playerChar.SetHeadRotation(lastInput.mouseMotion.y);
 
-                var newFrame = this.calulcateFrame(lastInput, delta);
-                this.execFrame(newFrame);
+                    var newFrame = this.calulcateFrame(lastInput, delta);
+                    this.execFrame(newFrame);
+                    this.AppendCalculatedFrame(newFrame);
 
-                lastFrame = newFrame;
+                    handleAnimation();
+                }
 
-                handleAnimation();
+                var puppetFrame = new CalculatedPuppetFrame();
+                puppetFrame.timestamp = serverTick;
+                puppetFrame.origin = this.playerChar.GlobalTransform.origin;
+                puppetFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
+                puppetFrame.velocity = this.playerChar.MotionVelocity;
+                puppetFrame.currentAnimation = this.playerChar.getAnimationState();
+                puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
+
+                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
+                RpcId(networkId, "onServerInput", sendMessage);
+
+                this.world.updateAllPuppets(networkId, sendMessage);
             }
-
-            var puppetFrame = new CalculatedPuppetFrame();
-            puppetFrame.origin = this.playerChar.GlobalTransform.origin;
-            puppetFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
-            puppetFrame.velocity = this.playerChar.MotionVelocity;
-            puppetFrame.currentAnimation = this.playerChar.getAnimationState();
-            puppetFrame.currentAnimationTime = this.playerChar.getAnimationScale();
-
-            var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(puppetFrame);
-            RpcId(networkId, "onServerInput", sendMessage);
-
-            this.world.updateAllPuppets(networkId, sendMessage);
         }
 
         [AnyPeer]
         public override void onClientInput(string inputMessage)
         {
             calculated = true;
-            var lastInput = FPS.Game.Utils.NetworkCompressor.Decompress<InputFrame>(inputMessage);
-            inputQueue.Enqueue(lastInput);
+            var lastInputs = FPS.Game.Utils.NetworkCompressor.Decompress<List<InputFrame>>(inputMessage);
+            foreach (var item in lastInputs)
+            {
+                inputQueue.Enqueue(item);
+            }
         }
 
         public override void Activate()

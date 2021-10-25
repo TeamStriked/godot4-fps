@@ -1,13 +1,30 @@
 using Godot;
 using System;
+using System.Linq;
 using FPS.Game.Logic.Player.Handler;
 using FPS.Game.Logic.World;
 
+using System.Collections.Generic;
 namespace FPS.Game.Logic.Player
 {
     public abstract partial class NetworkPlayer : Node3D
     {
-        protected CalculatedFrame lastFrame = new CalculatedFrame();
+        const int maxStoragelFrames = 100;
+        protected List<CalculatedFrame> storedFrames = new List<CalculatedFrame>();
+
+        public void AppendCalculatedFrame(CalculatedFrame frame)
+        {
+            this.storedFrames.Add(frame);
+            if (this.storedFrames.Count > maxStoragelFrames)
+            {
+                var rest = this.storedFrames.Count - maxStoragelFrames;
+                this.storedFrames.RemoveRange(0, rest);
+            }
+        }
+        public CalculatedFrame GetLastCalculatedFrame()
+        {
+            return this.storedFrames.LastOrDefault();
+        }
 
         public GameWorld world = null;
 
@@ -115,12 +132,6 @@ namespace FPS.Game.Logic.Player
 
             if (!isActivated)
                 return;
-
-
-            if (Input.IsActionJustPressed("game_reset_tp") && this.IsProcessingInput())
-            {
-                this.DoTeleport(this.lastTeleportOrigin);
-            }
         }
 
         public void execFrame(CalculatedFrame frame)
@@ -140,6 +151,8 @@ namespace FPS.Game.Logic.Player
 
         public CalculatedFrame calulcateFrame(InputFrame inputFrame, float delta)
         {
+            var lastFrame = this.GetLastCalculatedFrame();
+
             if (inputFrame.onShoot)
             {
                 var weapon = this.playerChar.GetCurrentWeapon();
@@ -231,7 +244,7 @@ namespace FPS.Game.Logic.Player
                 relativeDir.z *= moveSpeed;
 
                 // jumping
-                if (inputFrame.onJumpStart && currentJumpTime <= 0.0f && lastFrame.jumpLocked == false && inputFrame.onProne == false)
+                if (inputFrame.onJumpStart && currentJumpTime <= 0.0f && (lastFrame == null || lastFrame.jumpLocked == false) && inputFrame.onProne == false)
                 {
                     currentJumpTime = jumpCoolDown;
 
@@ -281,7 +294,9 @@ namespace FPS.Game.Logic.Player
 
         protected void handleAnimation()
         {
-            var calculatedFrame = this.lastFrame;
+            var calculatedFrame = this.GetLastCalculatedFrame();
+            if (calculatedFrame == null)
+                return;
 
             if (this.playerChar.getSpeed() > this.defaultSpeed)
             {
@@ -290,7 +305,6 @@ namespace FPS.Game.Logic.Player
                 this.playerChar.setAnimationState((calculatedFrame.direction.y < 0) ? "run" : "run_back");
                 this.playerChar.setAnimationTimeScale(scale);
 
-                this.playerChar.doFootstep();
 
             }
             else if (this.playerChar.getSpeed() > 1.0f)
@@ -307,7 +321,6 @@ namespace FPS.Game.Logic.Player
                 }
 
                 this.playerChar.setAnimationTimeScale(scale);
-                this.playerChar.doFootstep();
             }
             else
             {
@@ -321,6 +334,11 @@ namespace FPS.Game.Logic.Player
                 {
                     this.playerChar.setAnimationState("idle");
                 }
+            }
+
+            if (this.playerChar.getSpeed() > this.walkSpeed)
+            {
+                this.playerChar.doFootstep();
             }
         }
 

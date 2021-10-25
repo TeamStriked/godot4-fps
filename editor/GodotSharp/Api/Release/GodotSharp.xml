@@ -26641,11 +26641,6 @@
             <para>[/codeblocks]</para>
             </summary>
         </member>
-        <member name="P:Godot.Font.BaseSize">
-            <summary>
-            <para>Default font size.</para>
-            </summary>
-        </member>
         <member name="P:Godot.Font.VariationCoordinates">
             <summary>
             <para>Default font <a href="https://docs.microsoft.com/en-us/typography/opentype/spec/dvaraxisreg">variation coordinates</a>.</para>
