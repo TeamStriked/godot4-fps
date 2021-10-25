@@ -26,6 +26,8 @@ namespace FPS.Game.UI
 
         [Export]
         NodePath containerPath = null;
+        [Export]
+        NodePath soundVolumePath = null;
 
         [Export]
         NodePath keyContainerPath = null;
@@ -55,6 +57,8 @@ namespace FPS.Game.UI
         OptionButton resChanger = null;
         OptionButton windowModeChanger = null;
         public bool isOpen = false;
+
+        HSlider volumeSlider;
 
         public void Hide()
         {
@@ -97,7 +101,7 @@ namespace FPS.Game.UI
             this.rootContainer = GetNode(rootContainerPath) as Control;
             this.resChanger = GetNode(resChangerPath) as OptionButton;
             this.windowModeChanger = GetNode(windowModeChangerPath) as OptionButton;
-
+            this.volumeSlider = GetNode(soundVolumePath) as HSlider;
             this.resChanger.ItemSelected += onResChanged;
             this.windowModeChanger.ItemSelected += onFullScreenChanged;
 
@@ -124,8 +128,20 @@ namespace FPS.Game.UI
                 node.currentKey = this.keyChangeDialog.selectedKey;
             };
 
+
             this.SetProcess(false);
+
+            var bus = AudioServer.GetBusIndex("Master");
+            this.volumeSlider.Value = db2linear(AudioServer.GetBusVolumeDb(bus));
+            this.volumeSlider.ValueChanged += (float value) =>
+            {
+                AudioServer.SetBusVolumeDb(bus, linear2db(value));
+            };
         }
+
+        float db2linear(float p_db) { return Mathf.Exp(p_db * 0.11512925464970228420089957273422f); }
+        float linear2db(float p_linear) { return Mathf.Log(p_linear) * 8.6858896380650365530225783783321f; }
+
 
         public void onResChanged(int index)
         {

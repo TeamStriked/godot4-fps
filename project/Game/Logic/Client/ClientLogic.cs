@@ -22,7 +22,6 @@ namespace FPS.Game.Logic.Client
 
         MainMenu mainMenu = null;
 
-        [Export]
         public string hostname = "localhost";
 
         [Export]
@@ -108,7 +107,7 @@ namespace FPS.Game.Logic.Client
         {
             this.mainMenu.Hide();
 
-            var realIP = IP.ResolveHostname(hostname, IP.Type.Any);
+            var realIP = IP.ResolveHostname(hostname, IP.Type.Ipv4);
             FPS.Game.Utils.Logger.InfoDraw("Try to connect to " + realIP + ":" + port);
             var error = network.CreateClient(realIP, port);
             if (error != Error.Ok)
