@@ -118,7 +118,6 @@ namespace FPS.Game.Logic.Player
                 //send input frame to server
                 var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(this.inputFrames);
                 RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
-                this.inputFrames.Clear();
             }
 
             //fix godot issue
@@ -204,7 +203,7 @@ namespace FPS.Game.Logic.Player
             if (uncompress != null)
             {
                 var diff = this.playerChar.GlobalTransform.origin - uncompress.origin;
-                if (diff.Length() >= 1.0f)
+                if (diff.Length() >= 10.0f)
                 {
                     FPS.Game.Utils.Logger.InfoDraw("[Client] input lag size " + diff.Length());
                     this.DoTeleport(uncompress.origin);

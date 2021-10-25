@@ -41,6 +41,8 @@ namespace FPS.Game.Logic.Player
 
         public int serverTick = 0;
 
+        public InputFrame lastFrame = new InputFrame();
+
         public override void _PhysicsProcess(float delta)
         {
             base._PhysicsProcess(delta);
@@ -64,6 +66,8 @@ namespace FPS.Game.Logic.Player
 
                     handleAnimation();
 
+                    this.lastFrame = lastInput;
+
                     var puppetFrame = new CalculatedPuppetFrame();
                     puppetFrame.timestamp = serverTick;
                     puppetFrame.origin = this.playerChar.GlobalTransform.origin;
@@ -85,6 +89,11 @@ namespace FPS.Game.Logic.Player
 
                 var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(clientFrame);
                 RpcId(networkId, "onServerInput", sendMessage);
+            }
+            else
+            {
+                var newFrame = this.calulcateFrame(this.lastFrame, delta);
+                this.execFrame(newFrame);
 
             }
         }
