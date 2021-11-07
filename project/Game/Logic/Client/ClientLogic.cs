@@ -45,6 +45,9 @@ namespace FPS.Game.Logic.Client
         // Called when the node enters the scene tree for the first time.
         public override void _EnterTree()
         {
+            Engine.TargetFps = 30;
+            DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+
             this.settingsMenu = GetNode(settingsMenuPath) as GameSettings;
             this.mainMenu = GetNode(mainMenuPath) as MainMenu;
             this.graphMenu = GetNode(gameGraphPath) as GameGraph;
@@ -60,16 +63,17 @@ namespace FPS.Game.Logic.Client
                 this.doConnect(hostname, port);
             }
 
-            foreach (var id in DisplayServer.GetWindowList())
-            {
-                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Disabled, id);
-            }
 
             this.settingsMenu.OnDisconnect += () =>
             {
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+                Engine.TargetFps = 30;
                 network.CloseConnection();
                 this.handleDisconnect();
             };
+
+            ConfigValues.loadSettings();
+
         }
 
 
@@ -114,7 +118,15 @@ namespace FPS.Game.Logic.Client
             {
                 isConnected = true;
                 FPS.Game.Utils.Logger.InfoDraw("Network error: " + error.ToString());
+                Engine.TargetFps = 30;
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+
                 this.mainMenu.Show();
+            }
+            else
+            {
+                Engine.TargetFps = 300;
+                DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Adaptive, 0);
             }
 
             CustomMultiplayer.MultiplayerPeer = network;
@@ -166,8 +178,8 @@ namespace FPS.Game.Logic.Client
         {
             if (isConnected)
             {
-                this.graphMenu.inTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.ReceivedData);
-                this.graphMenu.outTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.SentData);
+                FPS.Game.UI.GameGraph.inTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.ReceivedData);
+                FPS.Game.UI.GameGraph.outTraffic = network.Host.PopStatistic(ENetConnection.HostStatistic.SentData);
             }
         }
 

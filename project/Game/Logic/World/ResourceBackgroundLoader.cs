@@ -113,6 +113,7 @@ namespace FPS.Game.Logic.World
                     * */
                     Console.WriteLine("[Loader]" + "Fails with " + status);
                     Godot.RenderingServer.RenderLoopEnabled = true;
+                    currentLoaderElement = null;
                 }
                 else
                 {
@@ -138,10 +139,22 @@ namespace FPS.Game.Logic.World
             //  Godot.RenderingServer.FramePreDraw += HandleElements;
         }
 
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+
+            loaderIsRunning = false;
+            timer.Autostart = false;
+            if (loaderThread != null)
+                loaderThread.Abort();
+        }
+
+        public static Thread loaderThread = null;
+
         public static void Start()
         {
-            Thread t = new Thread(new ThreadStart(ThreadProc));
-            t.Start();
+            loaderThread = new Thread(new ThreadStart(ThreadProc));
+            loaderThread.Start();
         }
 
         public static void Add(string name, CallBackFunction func)
@@ -187,14 +200,17 @@ namespace FPS.Game.Logic.World
             }
         }
 
+        public static bool loaderIsRunning = true;
+
         public static void ThreadProc()
         {
-            while (true)
+            while (loaderIsRunning)
             {
                 waitHandle.Wait();
                 Godot.RenderingServer.ForceSync();
-                Godot.OS.DelayUsec(16000);
                 handleQueueProcess();
+
+                Thread.Sleep(100);
             }
         }
     }

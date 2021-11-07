@@ -6,11 +6,14 @@ using FPS.Game.Config;
 using FPS.Game.Logic.Player.Handler;
 using FPS.Game.Logic.Client;
 using FPS.Game.Logic.Weapon;
+using System.Linq;
 
 namespace FPS.Game.Logic.Player
 {
     public partial class LocalPlayer : NetworkPlayer
     {
+        const float CAMERA_MOUSE_ROTATION_SPEED = 0.001f;
+
         const int inputFramesToSend = 10;
 
         public override bool isServerPlayer()
@@ -18,8 +21,6 @@ namespace FPS.Game.Logic.Player
             return false;
         }
 
-        //vec
-        Vector2 mouseDelta = new Vector2();
 
         // How precise the controller can change direction while not grounded
 
@@ -45,7 +46,7 @@ namespace FPS.Game.Logic.Player
 
         public RecoilModes mode = RecoilModes.AUTO;
 
-        private List<InputFrame> inputFrames = new List<InputFrame>();
+        private List<InputFrame> sendingInputFrameList = new List<InputFrame>();
 
         private async void startRecoil()
         {
@@ -74,58 +75,136 @@ namespace FPS.Game.Logic.Player
             }
         }
 
+        public bool showNetworkDebug = false;
+
         // Called when the node enters the scene tree for the first time.
         public override void _PhysicsProcess(float delta)
         {
+            base._PhysicsProcess(delta);
+
+            if (Input.IsActionJustPressed("game_reset_tp"))
+            {
+                showNetworkDebug = !showNetworkDebug;
+
+                this.GetNode<MeshInstance3D>("ServerFrame").Visible = showNetworkDebug;
+                this.GetNode<MeshInstance3D>("ClientFrame").Visible = showNetworkDebug;
+            }
+
             if (!isActivated)
                 return;
 
-            base._PhysicsProcess(delta);
-
-            if (Input.GetMouseMode() != Input.MouseMode.Captured)
-                return;
-
-            if (Input.IsActionJustPressed("game_camera_switch") && this.IsProcessingInput())
+            if (restoreFrame != null)
             {
-                isThirdPerson = !isThirdPerson;
-
-                if (isThirdPerson)
+                var foundIndex = this.storedInputFrames.FindIndex(df => df.timestamp == restoreFrame.timestamp);
+                if (foundIndex < 0)
                 {
-                    this.playerChar.setCameraMode(PlayerCameraMode.TPS);
-                    this.playerChar.setDrawMode(PlayerDrawMode.TPS);
+                    restoreFrame = null;
+                    return;
                 }
-                else
+
+                var foundInputFrame = this.storedInputFrames[foundIndex];
+
+                GD.Print("Start with" + foundInputFrame.timestamp);
+                var currentMouseMotion = new Vector2(this.playerChar.GetCharRotation(), this.playerChar.GetHeadRotation());
+
+                //reset to position to the first frame
+                this.playerChar.SetCharRotation(foundInputFrame.mouseMotion.x);
+                this.playerChar.SetHeadRotation(foundInputFrame.mouseMotion.y);
+                this.playerChar.MotionVelocity = restoreFrame.velocity;
+                this.DoTeleport(restoreFrame.origin);
+                this.playerChar.MoveAndSlide();
+
+                this.storePuppetFrames.Clear();
+                this.AppendPuppetFrame(restoreFrame);
+
+                //clear input frames
+                this.sendingInputFrameList.Clear();
+
+                if (this.storedInputFrames.Count > 0)
                 {
-                    this.playerChar.setCameraMode(PlayerCameraMode.FPS);
-                    this.playerChar.setDrawMode(PlayerDrawMode.FPS);
+                    var list = this.storedInputFrames.FindAll(df => df.timestamp > restoreFrame.timestamp);
+                    var total = list.Count;
+                    foreach (var item in list)
+                    {
+                        GD.Print("Attach " + item.timestamp);
+
+                        this.playerChar.SetCharRotation(item.mouseMotion.x);
+                        this.playerChar.SetHeadRotation(item.mouseMotion.y);
+
+                        //create new frame
+                        var newCalculatedFrame = this.calulcateFrame(item);
+                        this.execFrame(newCalculatedFrame);
+
+                        this.AppendPuppetFrame(this.getCurrentServerFrame(item.timestamp));
+                        this.sendingInputFrameList.Add(item);
+                    }
+                }
+
+
+                //restore old mouse postion
+                this.playerChar.SetCharRotation(currentMouseMotion.x);
+                this.playerChar.SetHeadRotation(currentMouseMotion.y);
+
+                restoreFrame = null;
+
+                return;
+            }
+
+            if (Input.GetMouseMode() == Input.MouseMode.Captured)
+            {
+                if (Input.IsActionJustPressed("game_camera_switch") && this.IsProcessingInput())
+                {
+                    isThirdPerson = !isThirdPerson;
+
+                    if (isThirdPerson)
+                    {
+                        this.playerChar.setCameraMode(PlayerCameraMode.TPS);
+                        this.playerChar.setDrawMode(PlayerDrawMode.TPS);
+                    }
+                    else
+                    {
+                        this.playerChar.setCameraMode(PlayerCameraMode.FPS);
+                        this.playerChar.setDrawMode(PlayerDrawMode.FPS);
+                    }
                 }
             }
 
-            var inputFrame = (this.IsProcessingInput()) ? InputHandler.getInputFrame() : new InputFrame();
+            var inputFrame = (this.IsProcessingInput() && Input.GetMouseMode() == Input.MouseMode.Captured)
+                ? InputHandler.getInputFrame() : new InputFrame();
 
-            //create new frame
-            var newFrame = this.calulcateFrame(inputFrame, delta);
-            this.execFrame(newFrame);
-            this.AppendCalculatedFrame(newFrame);
+            inputFrame.timestamp = Time.GetTicksMsec();
+            inputFrame.delta = delta;
 
             //override input frame with new head postion
             inputFrame.mouseMotion = new Vector2(this.playerChar.GetCharRotation(), this.playerChar.GetHeadRotation());
 
-            this.inputFrames.Add(inputFrame);
+            //create new frame
+            var newFrame = this.calulcateFrame(inputFrame);
+            this.execFrame(newFrame);
 
-            if (this.inputFrames.Count >= inputFramesToSend)
-            {
-                //send input frame to server
-                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(this.inputFrames);
-                RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
-                this.inputFrames.Clear();
-            }
+            this.sendingInputFrameList.Add(inputFrame);
+
+            this.AppendInputFrame(inputFrame);
+            this.AppendPuppetFrame(this.getCurrentServerFrame(inputFrame.timestamp));
+
+            this.sendInputFrames();
 
             //fix godot issue
             handleAnimation();
 
             //handle recoil
             this.handleRecoil(delta);
+        }
+
+        public void sendInputFrames()
+        {
+            if (this.sendingInputFrameList.Count >= inputFramesToSend)
+            {
+                //send input frame to server
+                var sendMessage = FPS.Game.Utils.NetworkCompressor.Compress(this.sendingInputFrameList);
+                RpcId(ClientLogic.serverId, "onClientInput", sendMessage);
+                this.sendingInputFrameList.Clear();
+            }
         }
 
         public override void DoFire(Weapon.Weapon weapon)
@@ -150,15 +229,6 @@ namespace FPS.Game.Logic.Player
             if (Input.GetMouseMode() != Input.MouseMode.Captured)
                 return;
 
-            if (mouseDelta.Length() > 0)
-            {
-                var charRotation = mouseDelta.x * ConfigValues.sensitivityX;
-                var headRotation = mouseDelta.y * ConfigValues.sensitivityY;
-
-                ApplyMouse(new Vector2(charRotation, headRotation));
-            }
-
-            mouseDelta = Vector2.Zero;
 
             if (!playerChar.IsOnFloor())
             {
@@ -183,7 +253,15 @@ namespace FPS.Game.Logic.Player
 
             if (@event is InputEventMouseMotion)
             {
-                mouseDelta = (@event as InputEventMouseMotion).Relative;
+                if (Input.GetMouseMode() == Input.MouseMode.Captured && restoreFrame == null)
+                {
+                    var mouseDelta = (@event as InputEventMouseMotion).Relative;
+
+                    var charRotation = mouseDelta.x * ConfigValues.sensitivityX * CAMERA_MOUSE_ROTATION_SPEED;
+                    var headRotation = mouseDelta.y * ConfigValues.sensitivityY * CAMERA_MOUSE_ROTATION_SPEED;
+
+                    ApplyMouse(new Vector2(charRotation, headRotation));
+                }
             }
 
             if (@event is InputEventMouseButton)
@@ -197,17 +275,53 @@ namespace FPS.Game.Logic.Player
             @event.Dispose();
         }
 
+        public const float inputTreshold = 0.001f;
+
+        public CalculatedServerFrame restoreFrame = null;
+
         [AnyPeer]
         public override void onServerInput(string inputMessage)
         {
-            var uncompress = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(inputMessage);
+            if (restoreFrame != null)
+                return;
+
+            var uncompress = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedServerFrame>(inputMessage);
             if (uncompress != null)
             {
-                var diff = this.playerChar.GlobalTransform.origin - uncompress.origin;
-                if (diff.Length() >= 10.0f)
+                var foundIndex = this.storedInputFrames.FindIndex(df => df.timestamp == uncompress.timestamp);
+                var foundPuppetIndex = this.storePuppetFrames.FindIndex(df => df.timestamp == uncompress.timestamp);
+
+                if (foundIndex > -1 && foundPuppetIndex > -1)
                 {
-                    FPS.Game.Utils.Logger.InfoDraw("[Client] input lag size " + diff.Length());
-                    this.DoTeleport(uncompress.origin);
+                    var inputFrame = this.storedInputFrames[foundIndex];
+                    var puppetFrame = this.storePuppetFrames[foundPuppetIndex];
+
+                    var diff = puppetFrame.origin - uncompress.origin;
+                    FPS.Game.UI.GameGraph.serverPosDifference = diff.Length();
+
+                    var sf = this.GetNode<MeshInstance3D>("ServerFrame");
+                    var cf = this.GetNode<MeshInstance3D>("ClientFrame");
+
+                    var sgt = sf.GlobalTransform;
+                    sgt.origin = uncompress.origin;
+                    sgt.origin.y += 1.0f;
+                    sf.GlobalTransform = sgt;
+
+                    var cgt = cf.GlobalTransform;
+                    cgt.origin = puppetFrame.origin;
+                    cgt.origin.y += 1.0f;
+                    cf.GlobalTransform = cgt;
+
+                    if (diff.Length() >= inputTreshold)
+                    {
+                        //clear puppet Frames
+                        FPS.Game.Utils.Logger.InfoDraw("[Client] Restore from input lag " + diff.Length());
+                        restoreFrame = uncompress;
+                    }
+                }
+                else
+                {
+                    GD.Print("Cant find timestamp!");
                 }
             }
         }

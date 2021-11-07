@@ -1,20 +1,32 @@
-[gd_scene load_steps=11 format=3 uid="uid://cpmfpjvrlo3l5"]
+[gd_scene load_steps=23 format=3 uid="uid://cpmfpjvrlo3l5"]
 
 [ext_resource type="Script" path="res://Game/Logic/Level/GameLevel.cs" id="1_er0od"]
 [ext_resource type="Script" path="res://Game/Logic/Level/GameSpwanPoint.cs" id="2_gs0dn"]
 [ext_resource type="Texture2D" uid="uid://bdpqejq7vvyqw" path="res://assets/checkerboard.png" id="3_ld5vq"]
+[ext_resource type="PackedScene" uid="uid://c2lmkkggmpx5i" path="res://assets/level/cobblestone/Plane.tscn" id="4_w8kid"]
+[ext_resource type="Shader" path="res://assets/level/cobblestone/Rain.gdshader" id="5_1ivlu"]
+[ext_resource type="Texture2D" uid="uid://yk3npjwva8vx" path="res://assets/level/cobblestone/scan_cobble_basecolor.jpg" id="6_13gu8"]
+[ext_resource type="Texture2D" uid="uid://b45yqhlf4rmmo" path="res://assets/level/cobblestone/scan_cobble_height.jpg" id="7_k15sr"]
+[ext_resource type="Texture2D" uid="uid://d0tp0na84geiu" path="res://assets/level/cobblestone/scan_cobble_normal.jpg" id="8_hbfsi"]
+[ext_resource type="Texture2D" uid="uid://dsb8krvfmwejo" path="res://assets/level/cobblestone/scan_cobble_roughness.jpg" id="9_ql76p"]
+[ext_resource type="Texture2D" uid="uid://8qt8cowl62ai" path="res://assets/level/cobblestone/drops512.png" id="10_hctyp"]
+[ext_resource type="Texture2D" uid="uid://ju8dksg7c4yf" path="res://assets/level/cobblestone/simple_noise.png" id="11_pcu6g"]
+[ext_resource type="Texture2D" uid="uid://dud0wax1bcmnx" path="res://assets/level/cobblestone/ripples512.png" id="12_6vuaw"]
+[ext_resource type="Texture2D" uid="uid://frwe48q8en03" path="res://assets/level/cobblestone/Snow005_2K_Normal.jpg" id="13_3fx8p"]
+[ext_resource type="Texture2D" uid="uid://bkkc6as14pheg" path="res://assets/level/cobblestone/streaks512.png" id="14_gtlrt"]
 
-[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_0o08w"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5qxs4"]
 
 [sub_resource type="Sky" id="Sky_gq3gl"]
-sky_material = SubResource( "PhysicalSkyMaterial_0o08w" )
+sky_material = SubResource( "ProceduralSkyMaterial_5qxs4" )
 
 [sub_resource type="Environment" id="Environment_5nrih"]
 background_mode = 2
-background_energy = 0.63
+background_energy = 0.4
 sky = SubResource( "Sky_gq3gl" )
+reflected_light_source = 2
 tonemap_mode = 2
-tonemap_white = 6.0
+tonemap_white = 12.0
 auto_exposure_enabled = true
 ssao_enabled = true
 sdfgi_use_occlusion = true
@@ -26,6 +38,35 @@ glow_normalized = true
 glow_intensity = 1.0
 volumetric_fog_density = 0.005
 adjustment_brightness = 1.1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kgb7l"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource( "5_1ivlu" )
+shader_param/scale_UV_material = 5.0
+shader_param/scale_UV_rain = 20.0
+shader_param/cam_heightmap_world_position = Vector3(0, 20, 0)
+shader_param/cam_heightmap_size = 30.0
+shader_param/rain = true
+shader_param/height_scale_level = 0.02
+shader_param/wet_level = 0.7
+shader_param/water_metallnes = 0.0
+shader_param/dry_angle = -0.1
+shader_param/puddles_noise = true
+shader_param/streaks_length = 0.5
+shader_param/streaks_angle = 0.8
+shader_param/snow_amount = 0.0
+shader_param/without_snow_angle = 0.3
+shader_param/snow_brightness = 0.5
+shader_param/Material_Albedo = ExtResource( "6_13gu8" )
+shader_param/Material_Height = ExtResource( "7_k15sr" )
+shader_param/Material_Norm = ExtResource( "8_hbfsi" )
+shader_param/Material_Rough = ExtResource( "9_ql76p" )
+shader_param/noise_tex = ExtResource( "11_pcu6g" )
+shader_param/drops_tex = ExtResource( "10_hctyp" )
+shader_param/ripples_tex = ExtResource( "12_6vuaw" )
+shader_param/streaks_tex = ExtResource( "14_gtlrt" )
+shader_param/snow_norm = ExtResource( "13_3fx8p" )
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_826ko"]
 resource_name = "Scene_-_Root"
@@ -80,7 +121,7 @@ script = null
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.495871, 0.752054, -0.434196, -1.49013e-08, 0.499998, 0.866027, 0.868396, 0.429438, -0.247935, -17.8905, 25.1582, 0)
-light_color = Color(0.901961, 0.866667, 0.94902, 1)
+light_energy = 0.2
 shadow_enabled = true
 script = null
 
@@ -97,6 +138,10 @@ script = ExtResource( "2_gs0dn" )
 
 [node name="design" type="Node" parent="."]
 script = null
+
+[node name="MeshInstance3D" parent="design" instance=ExtResource( "4_w8kid" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1756, -2.94138, -13.7244)
+material_override = SubResource( "ShaderMaterial_kgb7l" )
 
 [node name="Cube408_0" type="MeshInstance3D" parent="design"]
 transform = Transform3D(3, 0, 0, 0, -1.31134e-07, 3, 0, -3, -1.31134e-07, 20, 0, -68)

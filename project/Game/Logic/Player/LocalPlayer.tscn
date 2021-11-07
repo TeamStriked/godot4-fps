@@ -1,10 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://ceiqv32tj7q6k"]
+[gd_scene load_steps=6 format=3 uid="uid://ceiqv32tj7q6k"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/LocalPlayer.cs" id="1_qr1cl"]
-[ext_resource type="PackedScene" uid="uid://pukan1cf6dvm" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_1j0qd"]
+[ext_resource type="PackedScene" uid="uid://c84s5mqqloawo" path="res://Game/Logic/Player/CharacterInstance.tscn" id="2_1j0qd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c72j4"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.384314, 1, 0.564706, 0.588235)
+
+[sub_resource type="BoxMesh" id="BoxMesh_3l8tq"]
+size = Vector3(1, 3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hcvjh"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(1, 0, 0.247059, 0.67451)
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource( "1_qr1cl" )
 
 [node name="char" parent="." instance=ExtResource( "2_1j0qd" )]
-WalkSoundPaths = ["res://assets/weapons/Sounds/13Walk_Set/Walk_1.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_2.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_3.mp3", "res://assets/weapons/Sounds/13Walk_Set/Walk_3.mp3"]
+
+[node name="ClientFrame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+layers = 257
+material_override = SubResource( "StandardMaterial3D_c72j4" )
+mesh = SubResource( "BoxMesh_3l8tq" )
+surface_material_override/0 = null
+script = null
+
+[node name="ServerFrame" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+layers = 257
+material_override = SubResource( "StandardMaterial3D_hcvjh" )
+mesh = SubResource( "BoxMesh_3l8tq" )
+surface_material_override/0 = null
+script = null

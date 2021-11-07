@@ -8,19 +8,21 @@ namespace FPS.Game.UI
     {
         Label _label = null;
 
-        public double inTraffic = 0;
-        public double outTraffic = 0;
+        public static double inTraffic = 0;
+        public static double outTraffic = 0;
+        public static float serverPosDifference = 0;
+
         public override void _Ready()
         {
             this._label = GetNode("Content") as Label;
         }
 
-        public override void _Process(float delta)
+        public override void _PhysicsProcess(float delta)
         {
             var memBytes = OS.GetStaticMemoryUsage();
             var vidMemBytes = (float)Performance.GetMonitor(Performance.Monitor.RenderVideoMemUsed);
 
-            this._label.Text = "Mem: " + Convert(memBytes) + " NetIN: " + Convert((float)inTraffic) + "/s NetOut: " + Convert((float)outTraffic) + "/s VMem: " + Convert(vidMemBytes) + " FPS: " + Performance.GetMonitor(Performance.Monitor.TimeFps) + " Objects:" + Performance.GetMonitor(Performance.Monitor.ObjectCount) + " Resources:" + Performance.GetMonitor(Performance.Monitor.ObjectResourceCount) + " Nodes:" + Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
+            this._label.Text = " Mem: " + Convert(memBytes) + " NetIN: " + Convert((float)inTraffic) + "/s NetOut: " + Convert((float)outTraffic) + "/s Diff: " + serverPosDifference + " VMem: " + Convert(vidMemBytes) + " FPS: " + Performance.GetMonitor(Performance.Monitor.TimeFps) + " Objects:" + Performance.GetMonitor(Performance.Monitor.ObjectCount) + " Resources:" + Performance.GetMonitor(Performance.Monitor.ObjectResourceCount) + " Nodes:" + Performance.GetMonitor(Performance.Monitor.ObjectNodeCount);
         }
 
         string Convert(float bytes)

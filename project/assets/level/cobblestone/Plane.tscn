@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2lmkkggmpx5i"]
+
+[ext_resource type="Material" uid="uid://cvut5gy67xcyc" path="res://assets/level/cobblestone/cobblestone_mat.tres" id="1_6l0ks"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_cx64p"]
+subdivide_width = 200
+subdivide_depth = 200
+
+[node name="MeshInstance3D" type="MeshInstance3D"]
+material_override = ExtResource( "1_6l0ks" )
+gi_mode = 1
+mesh = SubResource( "PlaneMesh_cx64p" )
+surface_material_override/0 = null
+script = null

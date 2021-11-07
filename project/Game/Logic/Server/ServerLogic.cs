@@ -55,6 +55,18 @@ namespace FPS.Game.Logic.Server
             CustomMultiplayer.PeerDisconnected += onPlayerDisconnect;
         }
 
+        protected override void afterNodeUpdate(Node node)
+        {
+            if (node is MeshInstance3D)
+            {
+                (node as MeshInstance3D).Visible = false;
+            }
+            if (node is Light3D)
+            {
+                (node as Light3D).ShadowEnabled = false;
+            }
+        }
+
         public override void _Ready()
         {
             base._Ready();

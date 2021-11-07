@@ -9,21 +9,27 @@ namespace FPS.Game.Logic.Player
 {
     public abstract partial class NetworkPlayer : Node3D
     {
-        const int maxStoragelFrames = 100;
-        protected List<CalculatedFrame> storedFrames = new List<CalculatedFrame>();
+        const int maxStoragelFrames = 1024;
+        protected List<InputFrame> storedInputFrames = new List<InputFrame>();
+        protected List<CalculatedServerFrame> storePuppetFrames = new List<CalculatedServerFrame>();
 
-        public void AppendCalculatedFrame(CalculatedFrame frame)
+        public void AppendInputFrame(InputFrame frame)
         {
-            this.storedFrames.Add(frame);
-            if (this.storedFrames.Count > maxStoragelFrames)
+            this.storedInputFrames.Add(frame);
+            if (this.storedInputFrames.Count > maxStoragelFrames)
             {
-                var rest = this.storedFrames.Count - maxStoragelFrames;
-                this.storedFrames.RemoveRange(0, rest);
+                var rest = this.storedInputFrames.Count - maxStoragelFrames;
+                this.storedInputFrames.RemoveRange(0, rest);
             }
         }
-        public CalculatedFrame GetLastCalculatedFrame()
+        public void AppendPuppetFrame(CalculatedServerFrame frame)
         {
-            return this.storedFrames.LastOrDefault();
+            this.storePuppetFrames.Add(frame);
+            if (this.storePuppetFrames.Count > maxStoragelFrames)
+            {
+                var rest = this.storePuppetFrames.Count - maxStoragelFrames;
+                this.storePuppetFrames.RemoveRange(0, rest);
+            }
         }
 
         public GameWorld world = null;
@@ -126,19 +132,15 @@ namespace FPS.Game.Logic.Player
 
 
 
-        public override void _PhysicsProcess(float delta)
-        {
-            base._PhysicsProcess(delta);
-
-            if (!isActivated)
-                return;
-        }
-
         public void execFrame(CalculatedFrame frame)
         {
             playerChar.MotionVelocity = frame.velocity;
             playerChar.MoveAndSlide();
+
+            this.lastExecuteFrame = frame;
         }
+
+        public CalculatedFrame lastExecuteFrame = null;
 
         public void ApplyMouse(Vector2 mouseMotion)
         {
@@ -149,24 +151,30 @@ namespace FPS.Game.Logic.Player
             }
         }
 
-        public CalculatedFrame calulcateFrame(InputFrame inputFrame, float delta)
+        public CalculatedFrame calulcateFrame(InputFrame inputFrame)
         {
-            var lastFrame = this.GetLastCalculatedFrame();
-
-            if (inputFrame.onShoot)
+            var weapon = this.playerChar.GetCurrentWeapon();
+            if (weapon != null)
             {
-                var weapon = this.playerChar.GetCurrentWeapon();
-                if (weapon != null && weapon.CanShoot())
+                if (inputFrame.onShoot)
                 {
-                    //send shot to weapons
-                    this.DoFire(weapon);
+                    if (weapon.CanShoot())
+                    {
+                        //send shot to weapons
+                        this.DoFire(weapon);
+                    }
                 }
+
+                weapon.ProcessWeapon(inputFrame.delta);
             }
 
             var calculatedFrame = new CalculatedFrame();
             var currentSpeed = playerChar.MotionVelocity.Length();
             calculatedFrame.velocity = playerChar.MotionVelocity;
             calculatedFrame.direction = inputFrame.direction;
+            calculatedFrame.timestamp = inputFrame.timestamp;
+            calculatedFrame.mouseMotion = inputFrame.mouseMotion;
+            calculatedFrame.onZoom = inputFrame.onZoom;
 
             var input = inputFrame.direction.Normalized();
 
@@ -182,13 +190,14 @@ namespace FPS.Game.Logic.Player
                 calculatedFrame.crouching = inputFrame.onCrouching;
                 calculatedFrame.prone = false;
                 calculatedFrame.shifting = false;
+                calculatedFrame.onZoom = false;
 
                 Vector3 prevMove = new Vector3(playerChar.MotionVelocity.x, 0, playerChar.MotionVelocity.z);
 
 
-                Vector3 nextMove = AirAccelerate(relativeDir, prevMove, wishSpeed, Accel, delta);
+                Vector3 nextMove = AirAccelerate(relativeDir, prevMove, wishSpeed, Accel, inputFrame.delta);
                 nextMove.y = playerChar.MotionVelocity.y;
-                nextMove.y -= gravity * delta;
+                nextMove.y -= gravity * inputFrame.delta;
 
                 //add gravity
                 calculatedFrame.velocity = nextMove;
@@ -226,14 +235,14 @@ namespace FPS.Game.Logic.Player
                             calculatedFrame.prone = false;
                             calculatedFrame.sprinting = true;
 
-                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * delta), 0, 1.0f);
+                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 0, speedLooseMultiplier * speedLooseMultiplier * inputFrame.delta), 0, 1.0f);
                             var offset = sprintSpeed - defaultSpeed;
                             moveSpeed = defaultSpeed + (offset * currentSpeedAmount);
                         }
                         else if (!inputFrame.onSprinting)
                         {
                             calculatedFrame.sprinting = false;
-                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * delta), 0.0f, 1.0f);
+                            currentSpeedAmount = Mathf.Clamp(Mathf.Lerp(currentSpeedAmount, 1.0f, speedRechargeMultiplier * inputFrame.delta), 0.0f, 1.0f);
                         }
                     }
                 }
@@ -244,7 +253,7 @@ namespace FPS.Game.Logic.Player
                 relativeDir.z *= moveSpeed;
 
                 // jumping
-                if (inputFrame.onJumpStart && currentJumpTime <= 0.0f && (lastFrame == null || lastFrame.jumpLocked == false) && inputFrame.onProne == false)
+                if (inputFrame.onJumpStart && currentJumpTime <= 0.0f && (lastExecuteFrame == null || lastExecuteFrame.jumpLocked == false) && inputFrame.onProne == false)
                 {
                     currentJumpTime = jumpCoolDown;
 
@@ -265,9 +274,9 @@ namespace FPS.Game.Logic.Player
                     calculatedFrame.jumpLocked = false;
                 }
 
-                this.setPlayerCollider(calculatedFrame, delta);
+                this.setPlayerCollider(calculatedFrame, inputFrame.delta);
+                ApplyFriction(ref relativeDir, inputFrame.delta);
 
-                ApplyFriction(ref relativeDir, delta);
                 var _accel = Accel;
                 var _deaccel = Deaccel;
 
@@ -277,11 +286,24 @@ namespace FPS.Game.Logic.Player
                     deaccel = sideStrafeAcceleration;
                 }
 
-                Accelerate(ref calculatedFrame.velocity, relativeDir, _accel, _deaccel, delta);
+                Accelerate(ref calculatedFrame.velocity, relativeDir, _accel, _deaccel, inputFrame.delta);
             }
 
-            currentJumpTime = Mathf.Clamp(currentJumpTime - delta, 0, jumpCoolDown);
+            currentJumpTime = Mathf.Clamp(currentJumpTime - inputFrame.delta, 0, jumpCoolDown);
             return calculatedFrame;
+        }
+
+        public CalculatedServerFrame getCurrentServerFrame(ulong timestamp)
+        {
+            var clientFrame = new CalculatedServerFrame();
+            clientFrame.timestamp = timestamp;
+            clientFrame.origin = this.playerChar.GlobalTransform.origin;
+            clientFrame.rotation = this.playerChar.GlobalTransform.basis.GetEuler();
+            clientFrame.velocity = this.playerChar.MotionVelocity;
+            clientFrame.currentAnimation = this.playerChar.getAnimationState();
+            clientFrame.currentAnimationTime = this.playerChar.getAnimationScale();
+
+            return clientFrame;
         }
 
         public override void _EnterTree()
@@ -294,53 +316,69 @@ namespace FPS.Game.Logic.Player
 
         protected void handleAnimation()
         {
-            var calculatedFrame = this.GetLastCalculatedFrame();
-            if (calculatedFrame == null)
+            if (lastExecuteFrame == null)
                 return;
 
-            if (this.playerChar.getSpeed() > this.defaultSpeed)
+            var walkForward = lastExecuteFrame.direction.y * -1;  //up = 1
+            var walkLeft = lastExecuteFrame.direction.x; // -1 == left
+
+            this.playerChar.setAnimationMovement(new Vector2(walkLeft, walkForward));
+            this.playerChar.setAnimationState(lastExecuteFrame.onZoom ? 1 : 0);
+            var scale = this.playerChar.getSpeed() / this.walkSpeed;
+            this.playerChar.setAnimationTimeScale(scale * 2.0f);
+            this.playerChar.setAnimationAim(lastExecuteFrame.mouseMotion);
+
+
+
+            if (this.playerChar.IsOnFloor())
             {
-                var scale = this.playerChar.getSpeed() / this.sprintSpeed;
-
-                this.playerChar.setAnimationState((calculatedFrame.direction.y < 0) ? "run" : "run_back");
-                this.playerChar.setAnimationTimeScale(scale);
-
-
-            }
-            else if (this.playerChar.getSpeed() > 1.0f)
-            {
-                var scale = this.playerChar.getSpeed() / this.walkSpeed;
-
-                if (calculatedFrame.crouching)
-                {
-                    this.playerChar.setAnimationState((calculatedFrame.direction.y < 0) ? "shift_crouch" : "shift_crouch_back");
-                }
-                else
-                {
-                    this.playerChar.setAnimationState((calculatedFrame.direction.y < 0) ? "shift" : "shift_back");
-                }
-
-                this.playerChar.setAnimationTimeScale(scale);
+                this.playerChar.setAnimationFlyScale(0.0f);
             }
             else
             {
-                this.playerChar.setAnimationTimeScale(1.0f);
+                this.playerChar.setAnimationFlyScale(1.0f);
+            }
 
-                if (calculatedFrame.crouching)
+            this.doFootsteps();
+        }
+
+        public bool lastJumpState = false;
+
+        public void doFootsteps()
+        {
+            if (this.playerChar.IsOnFloor())
+            {
+                if (this.playerChar.getSpeed() > this.walkSpeed && this.nextStepSound <= 0.0f)
                 {
-                    this.playerChar.setAnimationState("crouch_idle");
+                    this.playerChar.doFootstep((this.playerChar.getSpeed() > this.defaultSpeed));
+                    this.nextStepSound = 1.0f;
+                }
+                else if (this.playerChar.getSpeed() > 0.0f)
+                {
+                    var nextStepReduce = (float)this.GetPhysicsProcessDeltaTime() * (this.playerChar.getSpeed() / this.sprintSpeed) * betweenStepMultiplier;
+                    this.nextStepSound -= nextStepReduce;
                 }
                 else
                 {
-                    this.playerChar.setAnimationState("idle");
+                    this.nextStepSound = 0.0f;
                 }
             }
-
-            if (this.playerChar.getSpeed() > this.walkSpeed)
+            else
             {
-                this.playerChar.doFootstep();
+                this.nextStepSound = 0.0f;
             }
+
+            if (lastJumpState == false && this.playerChar.IsOnFloor())
+            {
+                this.playerChar.playLandingSound();
+            }
+
+            lastJumpState = this.playerChar.IsOnFloor();
         }
+
+        public float nextStepSound = 0.0f;
+
+        public const float betweenStepMultiplier = 3.70f;
 
         public void currentAnimation()
         {

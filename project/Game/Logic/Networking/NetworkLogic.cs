@@ -61,6 +61,7 @@ namespace FPS.Game.Logic.Networking
         {
             if (!node.IsInsideTree())
                 return;
+
             var path = node.GetPath().ToString();
             var mypath = GetPath().ToString();
 
@@ -73,10 +74,14 @@ namespace FPS.Game.Logic.Networking
             if (rel.Length() > 0 && !rel.StartsWith("/"))
                 return;
 
-
             node.CustomMultiplayer = CustomMultiplayer;
+            afterNodeUpdate(node);
         }
 
+        protected virtual void afterNodeUpdate(Node node)
+        {
+
+        }
 
         public override void _Notification(int what)
         {

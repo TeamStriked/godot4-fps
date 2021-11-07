@@ -18,6 +18,18 @@ namespace FPS.Game.Logic.Player.Handler
         public bool onJumpStart;
         public bool onShoot;
 
+        public ulong timestamp;
+        public bool onZoom;
+        public float delta;
+
+        public bool isZero()
+        {
+            if (!onShoot && !onJumpStart && !onSprinting && !onShifting && !onProne && !onCrouching && mouseMotion == Vector2.Zero)
+                return true;
+            else
+                return false;
+        }
+
     }
     public static class InputHandler
     {
@@ -65,6 +77,7 @@ namespace FPS.Game.Logic.Player.Handler
 
 
             newFrame.onShoot = Input.IsActionPressed("fire");
+            newFrame.onZoom = Input.IsActionPressed("zoom");
 
             return newFrame;
         }
