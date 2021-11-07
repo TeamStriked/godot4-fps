@@ -7,10 +7,16 @@ namespace FPS.Game.Config
     public static class ConfigValues
     {
 
-        const string keysSectionName = "movement_keys";
-        const string keySettingSectionName = "movement_settings";
+        const string keysSectionName = "keys";
+        const string mouseSettingSectionName = "mouse";
+        const string audioSettingsSectionName = "audio";
+        const string videoSettingsSectionName = "video";
         static public float sensitivityX = 20.0f;
         static public float sensitivityY = 20.0f;
+
+        static public float masterVolume = 1.0f;
+
+        static public float fov = 65f;
 
         public static Dictionary<string, Godot.Key> keys = new Dictionary<string, Godot.Key>();
 
@@ -59,9 +65,25 @@ namespace FPS.Game.Config
             saveConfig();
         }
 
+        static public void setFov(float x)
+        {
+            fov = x;
+            saveConfig();
+        }
+
         static public void setSensitivityY(float y)
         {
             sensitivityY = y;
+            saveConfig();
+        }
+
+        static public void setMasterVolume(float y)
+        {
+            masterVolume = y;
+
+            var bus = AudioServer.GetBusIndex("Master");
+            AudioServer.SetBusVolumeDb(bus, linear2db(masterVolume));
+
             saveConfig();
         }
 
@@ -84,8 +106,10 @@ namespace FPS.Game.Config
                 cfg.SetValue(keysSectionName, defaultKey.Key, defaultKey.Value.ToString());
             }
 
-            cfg.SetValue(keySettingSectionName, "sensitivityX", sensitivityX);
-            cfg.SetValue(keySettingSectionName, "sensitivityY", sensitivityY);
+            cfg.SetValue(mouseSettingSectionName, "sensitivityX", sensitivityX);
+            cfg.SetValue(mouseSettingSectionName, "sensitivityY", sensitivityY);
+            cfg.SetValue(audioSettingsSectionName, "masterVolume", masterVolume);
+            cfg.SetValue(mouseSettingSectionName, "fov", fov);
 
             cfg.Save("user://settings.cfg");
         }
@@ -118,6 +142,22 @@ namespace FPS.Game.Config
             saveMap();
         }
 
+        static void parseValues(Godot.ConfigFile cfg, string section, string key, ref float value)
+        {
+            var cfgValue = cfg.GetValue(section, key);
+            if (cfgValue != null)
+            {
+                try
+                {
+                    value = float.Parse(cfgValue.ToString());
+                }
+                catch
+                {
+                    FPS.Game.Utils.Logger.LogError("Cant parse " + key);
+                }
+            }
+        }
+
         static void loadMovement()
         {
             loadDefaultMovementSettings();
@@ -125,33 +165,20 @@ namespace FPS.Game.Config
             var cfg = new Godot.ConfigFile();
             if (cfg.Load("user://settings.cfg") == Error.Ok)
             {
-                var origValueX = cfg.GetValue(keySettingSectionName, "sensitivityX");
-                if (origValueX != null)
-                {
-                    try
-                    {
-                        sensitivityX = float.Parse(origValueX.ToString());
-                    }
-                    catch
-                    {
-                        FPS.Game.Utils.Logger.LogError("Cant parse  sensitivity");
-                    }
-                }
-
-                var origValueY = cfg.GetValue(keySettingSectionName, "sensitivityY");
-                if (origValueY != null)
-                {
-                    try
-                    {
-                        sensitivityY = float.Parse(origValueY.ToString());
-                    }
-                    catch
-                    {
-                        FPS.Game.Utils.Logger.LogError("Cant parse sensitivityY");
-                    }
-                }
+                parseValues(cfg, mouseSettingSectionName, "sensitivityX", ref sensitivityX);
+                parseValues(cfg, mouseSettingSectionName, "sensitivityY", ref sensitivityY);
+                parseValues(cfg, mouseSettingSectionName, "fov", ref fov);
+                parseValues(cfg, audioSettingsSectionName, "masterVolume", ref masterVolume);
             }
+
+            var bus = AudioServer.GetBusIndex("Master");
+            AudioServer.SetBusVolumeDb(bus, linear2db(masterVolume));
         }
+
+
+        static float db2linear(float p_db) { return Mathf.Exp(p_db * 0.11512925464970228420089957273422f); }
+        static float linear2db(float p_linear) { return Mathf.Log(p_linear) * 8.6858896380650365530225783783321f; }
+
 
         static public void loadSettings()
         {

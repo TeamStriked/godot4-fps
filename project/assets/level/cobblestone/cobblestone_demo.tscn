@@ -1,0 +1,90 @@
+[gd_scene load_steps=17 format=3 uid="uid://dynsetc4b4ohr"]
+
+[ext_resource type="PackedScene" uid="uid://c2lmkkggmpx5i" path="res://assets/level/cobblestone/Plane.tscn" id="1_2ko4h"]
+[ext_resource type="Shader" path="res://assets/level/cobblestone/Rain.gdshader" id="2_jevd2"]
+[ext_resource type="Texture2D" uid="uid://yk3npjwva8vx" path="res://assets/level/cobblestone/scan_cobble_basecolor.jpg" id="3_u84h1"]
+[ext_resource type="Texture2D" uid="uid://b45yqhlf4rmmo" path="res://assets/level/cobblestone/scan_cobble_height.jpg" id="4_1t3sj"]
+[ext_resource type="Texture2D" uid="uid://d0tp0na84geiu" path="res://assets/level/cobblestone/scan_cobble_normal.jpg" id="5_oid0t"]
+[ext_resource type="Texture2D" uid="uid://dsb8krvfmwejo" path="res://assets/level/cobblestone/scan_cobble_roughness.jpg" id="6_4ytsn"]
+[ext_resource type="Texture2D" uid="uid://8qt8cowl62ai" path="res://assets/level/cobblestone/drops512.png" id="7_8n1pw"]
+[ext_resource type="Texture2D" uid="uid://ju8dksg7c4yf" path="res://assets/level/cobblestone/simple_noise.png" id="8_2g7km"]
+[ext_resource type="Texture2D" uid="uid://dud0wax1bcmnx" path="res://assets/level/cobblestone/ripples512.png" id="9_7dt2b"]
+[ext_resource type="Texture2D" uid="uid://frwe48q8en03" path="res://assets/level/cobblestone/Snow005_2K_Normal.jpg" id="10_nek5f"]
+[ext_resource type="Texture2D" uid="uid://bkkc6as14pheg" path="res://assets/level/cobblestone/streaks512.png" id="11_hr17t"]
+[ext_resource type="PackedScene" uid="uid://dfa7hcapmxm7g" path="res://assets/level/wongs_diner/wongs_diner.tscn" id="12_x78wb"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_n6ixg"]
+sky_energy = 0.0
+
+[sub_resource type="Sky" id="Sky_5f7r8"]
+sky_material = SubResource( "ProceduralSkyMaterial_n6ixg" )
+
+[sub_resource type="Environment" id="Environment_ceuaw"]
+background_mode = 2
+sky = SubResource( "Sky_5f7r8" )
+ambient_light_color = Color(0.12549, 0.12549, 0.12549, 1)
+tonemap_mode = 1
+ssao_enabled = true
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xogg7"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource( "2_jevd2" )
+shader_param/scale_UV_material = 5.0
+shader_param/scale_UV_rain = 3.0
+shader_param/cam_heightmap_world_position = Vector3(0, 20, 0)
+shader_param/cam_heightmap_size = 30.0
+shader_param/rain = true
+shader_param/height_scale_level = 0.005
+shader_param/wet_level = 0.7
+shader_param/water_metallnes = 1.0
+shader_param/dry_angle = -0.1
+shader_param/puddles_noise = true
+shader_param/streaks_length = 0.5
+shader_param/streaks_angle = 0.8
+shader_param/snow_amount = 0.0
+shader_param/without_snow_angle = 0.3
+shader_param/snow_brightness = 0.5
+shader_param/Material_Albedo = ExtResource( "3_u84h1" )
+shader_param/Material_Height = ExtResource( "4_1t3sj" )
+shader_param/Material_Norm = ExtResource( "5_oid0t" )
+shader_param/Material_Rough = ExtResource( "6_4ytsn" )
+shader_param/noise_tex = ExtResource( "8_2g7km" )
+shader_param/drops_tex = ExtResource( "7_8n1pw" )
+shader_param/ripples_tex = ExtResource( "9_7dt2b" )
+shader_param/streaks_tex = ExtResource( "11_hr17t" )
+shader_param/snow_norm = ExtResource( "10_nek5f" )
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.83265, 0)
+script = null
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( "Environment_ceuaw" )
+script = null
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 149.517, 0)
+light_color = Color(1, 0.780392, 0.619608, 1)
+light_energy = 0.1
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+script = null
+
+[node name="MeshInstance3D" parent="." instance=ExtResource( "1_2ko4h" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.04488, 0)
+material_override = SubResource( "ShaderMaterial_xogg7" )
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.084704, 0.996406, 0, -0.996406, 0.084704, 0, 4.37486, 2.39948)
+visible = false
+light_color = Color(0.290196, 0.682353, 1, 1)
+light_energy = 2.0
+spot_range = 50.0
+script = null
+
+[node name="Node3D" parent="." instance=ExtResource( "12_x78wb" )]
+transform = Transform3D(-0.999564, 0, -0.0295267, 0, 1, 0, 0.0295267, 0, -0.999564, -2.15029, -2.13862, 0.639486)

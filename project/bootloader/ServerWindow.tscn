@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://5daq4c1pgndk"]
+[gd_scene load_steps=5 format=3 uid="uid://5daq4c1pgndk"]
 
 [ext_resource type="Script" path="res://bootloader/ServerWindow.cs" id="1_0x2mh"]
 [ext_resource type="Script" path="res://Game/Logic/Server/ServerLogic.cs" id="2_h1kx1"]
+
+[sub_resource type="Environment" id="Environment_lij2q"]
+
+[sub_resource type="World3D" id="World3D_5mcvr"]
+environment = SubResource( "Environment_lij2q" )
 
 [node name="ServerWindow" type="SubViewportContainer"]
 anchor_right = 1.0
@@ -16,8 +21,9 @@ __meta__ = {
 
 [node name="viewport" type="SubViewport" parent="."]
 own_world_3d = true
+world_3d = SubResource( "World3D_5mcvr" )
 handle_input_locally = false
-physics_object_picking = true
+shadow_atlas_size = 0
 shadow_atlas_16_bits = false
 shadow_atlas_quad_0 = 0
 shadow_atlas_quad_1 = 0

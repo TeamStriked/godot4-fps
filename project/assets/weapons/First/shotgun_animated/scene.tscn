@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://da1l8og5jfrvt"]
+
+[ext_resource type="PackedScene" uid="uid://c4msoleaq1lyg" path="res://assets/weapons/First/shotgun_animated/scene.gltf" id="1_8o4d4"]
+
+[node name="scene" instance=ExtResource( "1_8o4d4" )]
+
+[node name="AnimationPlayer" parent="." index="1"]
+blend_times = []

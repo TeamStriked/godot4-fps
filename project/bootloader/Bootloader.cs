@@ -14,6 +14,8 @@ public partial class Bootloader : Node
         var scene = (PackedScene)ResourceLoader.Load("res://bootloader/ServerWindow.tscn");
         var serverWindow = (ServerWindow)scene.Instantiate();
         serverWindow.Name = name;
+        serverWindow.Visible = false;
+
         GetNode("box").AddChild(serverWindow);
     }
 
@@ -37,10 +39,12 @@ public partial class Bootloader : Node
 
 
         FPS.Game.Logic.World.ResourceBackgroundLoader.Start();
-        FPS.Game.Utils.Logger.InfoDraw("Bootloading..");
+        FPS.Game.Utils.Logger.InfoDraw("Bootloading.." + OS.IsDebugBuild());
 
         if (OS.GetCmdlineArgs().Contains("-server"))
         {
+            DisplayServer.WindowSetVsyncMode(DisplayServer.VSyncMode.Enabled, 0);
+            Engine.TargetFps = 60;
             this.createServerWindow();
         }
         else if (OS.GetCmdlineArgs().Contains("-client"))

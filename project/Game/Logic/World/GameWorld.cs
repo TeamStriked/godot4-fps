@@ -65,7 +65,7 @@ namespace FPS.Game.Logic.World
         {
             if (this.players.ContainsKey(id) && this.players[id] is PuppetPlayer)
             {
-                var puppetFrame = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedPuppetFrame>(message);
+                var puppetFrame = FPS.Game.Utils.NetworkCompressor.Decompress<CalculatedServerFrame>(message);
                 (this.players[id] as PuppetPlayer).IncomingServerFrame(puppetFrame);
             }
         }

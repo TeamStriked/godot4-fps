@@ -50,6 +50,8 @@ namespace FPS.Game.Logic.Player
 
         [Export]
         NodePath footstepPlayerPath = null;
+        [Export]
+        NodePath customSoundPlayerPath = null;
 
         [Export]
         NodePath aimRayPath = null;
@@ -57,6 +59,7 @@ namespace FPS.Game.Logic.Player
         RayCast3D aimRay = null;
         WeaponHolder weaponHolder = null;
         AudioStreamPlayer3D footstepPlayer = null;
+        AudioStreamPlayer3D CustomSoundPlayer = null;
 
         [Export]
         NodePath cameraNodePath = null;
@@ -71,6 +74,7 @@ namespace FPS.Game.Logic.Player
         private Node3D head = null;
         private FPSCamera _FPSCamera;
         private AnimationTree _animationTree;
+        private Skeleton3D _skeleton;
 
         private Camera3D _TPSCamera;
 
@@ -91,38 +95,82 @@ namespace FPS.Game.Logic.Player
         [Export] float min_weight = 1.2f;
         [Export] float interpolation = 4.0f;
 
+
+
+        [Export(PropertyHint.Dir)]
+        string WalkSoundPath = "";
+
+        [Export(PropertyHint.Dir)]
+        string SprintSoundPath = "";
+
+        System.Collections.Generic.List<AudioStreamSample> WalkSounds = new System.Collections.Generic.List<AudioStreamSample>();
+        System.Collections.Generic.List<AudioStreamSample> SprintSounds = new System.Collections.Generic.List<AudioStreamSample>();
+
+        [Export]
+        AudioStreamSample landingSound = null;
+
         public override void _Process(float delta)
         {
             base._Process(delta);
 
+            var weapon = this.GetCurrentWeapon();
+
             if (zoomIn)
             {
                 this._FPSCamera.Fov = Mathf.Lerp(this._FPSCamera.Fov, this.zoomFov, this.zoomInSpeed * delta);
+
+                if (weapon != null)
+                {
+                    weapon.Position = weapon.Position.Lerp(weapon.zoomPosition, this.zoomInSpeed * delta);
+                }
             }
             else
             {
-                this._FPSCamera.Fov = Mathf.Lerp(this._FPSCamera.Fov, this.defaultFov, this.zoomOutSpeed * delta);
+                this._FPSCamera.Fov = Mathf.Lerp(this._FPSCamera.Fov, FPS.Game.Config.ConfigValues.fov, this.zoomOutSpeed * delta);
+                if (weapon != null)
+                {
+                    weapon.Position = weapon.Position.Lerp(weapon.defaultPosition, this.zoomOutSpeed * delta);
+                }
             }
         }
 
-        private string currentAnimationName;
+        private int currentAnimationName;
+        private Godot.Vector2 lastStrafeSpace = Godot.Vector2.Zero;
         private float currentAnimationScale;
 
-        public void setAnimationState(string name)
+
+        public void setAnimationAim(Vector2 aimPos)
         {
             if (_animationTree != null)
             {
-                var obj = this._animationTree.Get("parameters/state/playback");
-                if (obj != null)
-                {
-                    (obj as AnimationNodeStateMachinePlayback).Travel(name);
-                    currentAnimationName = name;
-                }
+                this._animationTree.Set("parameters/aim_up_down/add_amount", aimPos.y * -1);
             }
-
+        }
+        public void setAnimationState(int state)
+        {
+            if (_animationTree != null)
+            {
+                this._animationTree.Set("parameters/movement/current", state);
+                currentAnimationName = state;
+            }
         }
 
-        public string getAnimationState()
+        public const float animationSpeed = 100f;
+
+        public void setAnimationMovement(Godot.Vector2 movement)
+        {
+            if (_animationTree != null)
+            {
+                Vector2 vec2 = (Vector2)this._animationTree.Get("parameters/strafe_space/blend_position");
+
+                this._animationTree.Set("parameters/strafe_space/blend_position", vec2.Lerp(movement, (float)this.GetProcessDeltaTime() * animationSpeed));
+                this._animationTree.Set("parameters/walk_space/blend_position", vec2.Lerp(movement, (float)this.GetProcessDeltaTime() * animationSpeed));
+
+                lastStrafeSpace = movement;
+            }
+        }
+
+        public int getAnimationState()
         {
             return currentAnimationName;
         }
@@ -136,8 +184,27 @@ namespace FPS.Game.Logic.Player
             if (this._animationTree != null)
             {
                 currentAnimationScale = timeScale;
-                this._animationTree.Set("parameters/scale/scale", timeScale);
+                this._animationTree.Set("parameters/movement_time/scale", timeScale);
             }
+        }
+
+        public void setAnimationFlyScale(float timeScale)
+        {
+            if (this._animationTree != null)
+            {
+                var flyScale = Mathf.Lerp(this.getAnimationFlyScale(), timeScale, (float)this.GetProcessDeltaTime() * animationSpeed);
+                this._animationTree.Set("parameters/fly/blend_amount", flyScale);
+            }
+        }
+
+        public float getAnimationFlyScale()
+        {
+            if (this._animationTree != null)
+            {
+                return (float)this._animationTree.Get("parameters/fly/blend_amount");
+            }
+
+            return 0.0f;
         }
 
         public void setBobbing(float delta)
@@ -212,30 +279,34 @@ namespace FPS.Game.Logic.Player
             if (mode == PlayerDrawMode.TPS)
             {
                 this._tpsCharacter.Visible = true;
-                enableShadowing(this._tpsCharacter, false);
+                enableShadowing(this._tpsCharacter, GeometryInstance3D.ShadowCastingSetting.On);
+                enableShadowing(this._FPSCamera, GeometryInstance3D.ShadowCastingSetting.Off);
             }
             else if (mode == PlayerDrawMode.FPS)
             {
                 this._tpsCharacter.Visible = true;
-                enableShadowing(this._tpsCharacter, true);
+                enableShadowing(this._tpsCharacter, GeometryInstance3D.ShadowCastingSetting.ShadowsOnly);
+                enableShadowing(this._FPSCamera, GeometryInstance3D.ShadowCastingSetting.Off);
             }
             else
             {
                 this._tpsCharacter.Visible = false;
+                enableShadowing(this._FPSCamera, GeometryInstance3D.ShadowCastingSetting.Off);
+                enableShadowing(this._FPSCamera, GeometryInstance3D.ShadowCastingSetting.Off);
             }
         }
 
-        private void enableShadowing(Node node, bool enableShadows)
+        private void enableShadowing(Node node, GeometryInstance3D.ShadowCastingSetting setting)
         {
             if (node is MeshInstance3D)
             {
-                (node as MeshInstance3D).CastShadow = (enableShadows) ? GeometryInstance3D.ShadowCastingSetting.ShadowsOnly : GeometryInstance3D.ShadowCastingSetting.On;
+                (node as MeshInstance3D).CastShadow = setting;
             }
 
             foreach (var child in node.GetChildren())
             {
                 if (child is Node)
-                    this.enableShadowing(child as Node, enableShadows);
+                    this.enableShadowing(child as Node, setting);
             }
 
         }
@@ -290,19 +361,6 @@ namespace FPS.Game.Logic.Player
             return headRot.x;
         }
 
-        public Vector3 GetHeadPosition()
-        {
-            return this.head.Transform.origin;
-        }
-
-
-        public void SetHeadPosition(Vector3 pos)
-        {
-            var tf = this.head.Transform;
-            tf.origin = pos;
-            this.head.Transform = tf;
-        }
-
         public void SetCharRotation(float value)
         {
             var rot = this.Rotation;
@@ -348,12 +406,22 @@ namespace FPS.Game.Logic.Player
         public void IgnoreOwnHitboxes()
         {
             this.aimRay.AddException(this);
-
-            foreach (var box in this.GetNode("hitboxes").GetChildren())
+            this.detectHitBoxes(_tpsCharacter);
+        }
+        private void detectHitBoxes(Node instance)
+        {
+            if (instance is Hitbox)
             {
-                if (box is Hitbox)
+                this.aimRay.AddException(instance as Hitbox);
+            }
+            else
+            {
+                foreach (var item in instance.GetChildren())
                 {
-                    this.aimRay.AddException(box as Hitbox);
+                    if (item is Hitbox)
+                    {
+                        this.detectHitBoxes(item as Node);
+                    }
                 }
             }
         }
@@ -374,36 +442,68 @@ namespace FPS.Game.Logic.Player
             return this.aimRay;
         }
 
+        public System.Collections.Generic.List<AudioStreamSample> loadFootstepSounds(string path)
+        {
+            var fileList = new System.Collections.Generic.List<AudioStreamSample>();
+            var folder = new Godot.Directory();
+            folder.Open(path);
+            folder.ListDirBegin();
 
-        [Export(PropertyHint.ArrayType)]
-        System.Collections.Generic.List<string> WalkSoundPaths = new System.Collections.Generic.List<string>();
+            while (true)
+            {
+                var file = folder.GetNext();
+                if (file == "" || file == null)
+                    break;
+                else if (!file.BeginsWith(".") && file.EndsWith(".wav"))
+                {
+                    var filePath = System.IO.Path.Combine(path, file);
+                    var load = GD.Load<AudioStreamSample>(filePath);
+                    fileList.Add(load);
+                }
+            }
 
-        System.Collections.Generic.List<AudioStreamMP3> WalkSounds = new System.Collections.Generic.List<AudioStreamMP3>();
+            folder.ListDirEnd();
+            return fileList;
+        }
 
         public override void _EnterTree()
         {
             base._EnterTree();
 
-            foreach (var filePath in WalkSoundPaths)
-            {
-                var load = GD.Load<AudioStreamMP3>(filePath);
-                this.WalkSounds.Add(load);
-            }
 
+            /*
+                        foreach (var filePath in WalkSoundPaths)
+                        {
+                            var load = GD.Load<AudioStreamMP3>(filePath);
+                            this.WalkSounds.Add(load);
+                        }
+            */
             this._FPSCamera = GetNode<FPSCamera>(cameraNodePath);
             this._TPSCamera = GetNode(cameraThirdPersonPath) as Camera3D;
             this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
             this.weaponHolder = GetNode(weaponHolderPath) as WeaponHolder;
             this.footstepPlayer = GetNode<AudioStreamPlayer3D>(footstepPlayerPath);
+            this.CustomSoundPlayer = GetNode<AudioStreamPlayer3D>(customSoundPlayerPath);
             this.aimRay = GetNode(aimRayPath) as RayCast3D;
 
             this._FPSCamera.Current = false;
             this._TPSCamera.Current = false;
 
             this.detectAnimationTree(this._tpsCharacter);
+            this.detectSkeleton(this._tpsCharacter);
 
             if (this._animationTree != null)
                 this._animationTree.Active = false;
+
+
+
+            if (this._skeleton != null)
+            {
+                this._skeleton.ShowRestOnly = true;
+                this._skeleton.ClearBonesGlobalPoseOverride();
+                this._skeleton.ClearBonesLocalPoseOverride();
+                this._skeleton.ShowRestOnly = false;
+            }
 
             this.head = GetNode("head") as Node3D;
 
@@ -412,32 +512,75 @@ namespace FPS.Game.Logic.Player
         }
 
         public bool canPlayFootstepSound = true;
+        public int currentStep = 0;
 
+        public void playLandingSound()
+        {
+            if (this.landingSound != null)
+            {
+                var randm = new RandomNumberGenerator();
+                randm.Randomize();
 
-        public void doFootstep()
+                this.CustomSoundPlayer.PitchScale = randm.RandfRange(0.8f, 1.2f);
+                this.CustomSoundPlayer.UnitDb = randm.RandfRange(0.8f, 1.0f);
+                this.CustomSoundPlayer.Stream = this.landingSound;
+                this.CustomSoundPlayer.Play(0);
+            }
+        }
+
+        public void doFootstep(bool isSprint)
         {
             System.Random rnd = new System.Random();
-            int index = rnd.Next(this.WalkSounds.Count);
-            var item = this.WalkSounds[index];
+
+            var list = (isSprint) ? this.SprintSounds : this.WalkSounds;
+            if (list.Count <= 0)
+                return;
+
+            int index = rnd.Next(list.Count);
+            var item = list[index];
 
             if (item != null)
             {
-                if (canPlayFootstepSound)
+                var randm = new RandomNumberGenerator();
+                randm.Randomize();
+                this.canPlayFootstepSound = false;
+                this.footstepPlayer.PitchScale = randm.RandfRange(0.8f, 1.2f);
+                this.footstepPlayer.UnitDb = randm.RandfRange(0.8f, 1.0f);
+                this.footstepPlayer.Stream = item;
+                this.footstepPlayer.Play(0);
+
+                var pos = this.footstepPlayer.Position;
+                pos.z = (currentStep % 2 == 0) ? -0.3f : 0.3f;
+                this.footstepPlayer.Position = pos;
+
+                currentStep++;
+
+                if (currentStep == 100)
+                    currentStep = 0;
+            }
+        }
+
+        private bool detectSkeleton(Node instance)
+        {
+            if (instance is Skeleton3D)
+            {
+                this._skeleton = instance as Skeleton3D;
+                return true;
+            }
+            else
+            {
+                foreach (var item in instance.GetChildren())
                 {
-                    this.canPlayFootstepSound = false;
-                    item.Loop = false;
-                    item.LoopOffset = 0;
-                    this.footstepPlayer.Stream = item;
-                    this.footstepPlayer.Play(0);
-                }
-                else
-                {
-                    if (this.footstepPlayer.GetPlaybackPosition() >= this.footstepPlayer.Stream.GetLength())
+                    if (item is Node)
                     {
-                        this.canPlayFootstepSound = true;
+                        var result = this.detectSkeleton(item as Node);
+                        if (result == true)
+                            return true;
                     }
                 }
             }
+
+            return false;
         }
 
         private bool detectAnimationTree(Node instance)
@@ -466,6 +609,9 @@ namespace FPS.Game.Logic.Player
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
         {
+            this.WalkSounds = this.loadFootstepSounds(WalkSoundPath);
+            this.SprintSounds = this.loadFootstepSounds(SprintSoundPath);
+
             this.origColliderPositionY = this.collider.Transform.origin.y;
             this.origHeadY = this.head.Transform.origin.y;
             this.origColliderShapeHeight = this.colliderShape.Height;
@@ -474,9 +620,11 @@ namespace FPS.Game.Logic.Player
             this._TPSCamera.Current = false;
             this._tpsCharacter.Visible = false;
             this._FPSCamera.Visible = false;
+            this._FPSCamera.Fov = FPS.Game.Config.ConfigValues.fov;
 
             this._animationTree.Active = true;
-            this.setAnimationState("idle");
+            this.setAnimationState(0);
+            this.setAnimationMovement(Godot.Vector2.Zero);
             this.IgnoreOwnHitboxes();
         }
 

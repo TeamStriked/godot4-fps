@@ -9,20 +9,25 @@ namespace FPS.Game.Logic.Player
     [Serializable]
     public class CalculatedFrame
     {
+        public bool onZoom;
         public bool crouching;
         public bool shifting;
         public bool sprinting;
         public bool prone;
         public bool jumpLocked;
         public Vector2 direction;
+        public Vector2 mouseMotion;
+
 
         public Vector3 velocity;
+
+        public ulong timestamp;
 
     }
 
 
     [Serializable]
-    public class CalculatedPuppetFrame
+    public class CalculatedServerFrame
     {
         public Vector3 origin;
 
@@ -30,9 +35,9 @@ namespace FPS.Game.Logic.Player
 
         public Vector3 rotation;
 
-        public int timestamp;
+        public ulong timestamp;
 
-        public string currentAnimation;
+        public int currentAnimation;
 
         public float currentAnimationTime;
 

@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://ba460ckg76xr2"]
+
+[node name="Node3D" type="Node3D"]
+script = null
+
+[node name="Skeleton3D" type="Skeleton3D" parent="."]
+script = null

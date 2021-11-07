@@ -51,7 +51,7 @@ material = SubResource( "StandardMaterial3D_vb8k5" )
 size = Vector2(0.2, 0.2)
 
 [node name="rifle" type="Node3D"]
-transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0799415, -0.85216, -0.0557529)
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0, 0, 0)
 script = ExtResource( "1_cly8b" )
 smokeEffectPath = NodePath("Effects/smoke")
 muzzleEffectPath = NodePath("Effects/fire")

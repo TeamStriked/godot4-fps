@@ -4,7 +4,6 @@ using System.Linq;
 using System;
 namespace FPS.Game.Logic.Weapon
 {
-
     public partial class Weapon : Node3D
     {
         [Export]
@@ -29,20 +28,41 @@ namespace FPS.Game.Logic.Weapon
         private float fireTimeout = 0f;
 
         [Export]
-        private float damagePerBulletInHp = 0f; 
+        private float damagePerBulletInHp = 0f;
+
+        public Vector3 defaultPosition = Vector3.Zero;
+
+        private Vector3 _zoomPosition = Vector3.Zero;
+
+        [Export]
+        public Vector3 zoomPosition = Vector3.Zero;
+
 
         public override void _EnterTree()
         {
             base._EnterTree();
         }
+
+
+        public override void _ExitTree()
+        {
+            base._ExitTree();
+
+            if (Engine.IsEditorHint())
+                this.Position = this.defaultPosition;
+        }
         public override void _Ready()
         {
             base._Ready();
+            if (!Engine.IsEditorHint())
+            {
+                this.smokeEffect = GetNode<GPUParticles3D>(smokeEffectPath);
+                this.muzzleEffect = GetNode<GPUParticles3D>(muzzleEffectPath);
+                this.shotLight = GetNode<OmniLight3D>(shotLightPath);
+                this.audioShotPlayer = GetNode<AudioStreamPlayer3D>(audioShotPlayerPath);
+            }
 
-            this.smokeEffect = GetNode<GPUParticles3D>(smokeEffectPath);
-            this.muzzleEffect = GetNode<GPUParticles3D>(muzzleEffectPath);
-            this.shotLight = GetNode<OmniLight3D>(shotLightPath);
-            this.audioShotPlayer = GetNode<AudioStreamPlayer3D>(audioShotPlayerPath);
+            this.defaultPosition = this.Position;
         }
 
         public bool CanShoot()
@@ -68,11 +88,8 @@ namespace FPS.Game.Logic.Weapon
             this.audioShotPlayer.Play();
         }
 
-
-        public override void _Process(float delta)
+        public void ProcessWeapon(float delta)
         {
-            base._Process(delta);
-
             //dim the shot light
             this.shotLight.LightEnergy = Mathf.Lerp(this.shotLight.LightEnergy, 0, 5 * delta);
 

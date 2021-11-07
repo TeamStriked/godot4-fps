@@ -19,6 +19,7 @@ namespace FPS.Game.UI
 
         SpinBox sensX = null;
         SpinBox sensY = null;
+        SpinBox fov = null;
 
 
         [Export]
@@ -26,6 +27,10 @@ namespace FPS.Game.UI
 
         [Export]
         NodePath containerPath = null;
+
+        [Export]
+        NodePath fovPath = null;
+
         [Export]
         NodePath soundVolumePath = null;
 
@@ -81,9 +86,16 @@ namespace FPS.Game.UI
 
             this.sensX = GetNode(sensPathX) as SpinBox;
             this.sensY = GetNode(sensPathY) as SpinBox;
+            this.fov = GetNode(fovPath) as SpinBox;
 
             this.sensX.Value = ConfigValues.sensitivityX;
             this.sensY.Value = ConfigValues.sensitivityY;
+            this.fov.Value = ConfigValues.fov;
+
+            this.fov.ValueChanged += (float val) =>
+            {
+                ConfigValues.setFov(val);
+            };
 
             this.sensX.ValueChanged += (float val) =>
             {
@@ -132,16 +144,12 @@ namespace FPS.Game.UI
             this.SetProcess(false);
 
             var bus = AudioServer.GetBusIndex("Master");
-            this.volumeSlider.Value = db2linear(AudioServer.GetBusVolumeDb(bus));
+            this.volumeSlider.Value = FPS.Game.Config.ConfigValues.masterVolume;
             this.volumeSlider.ValueChanged += (float value) =>
             {
-                AudioServer.SetBusVolumeDb(bus, linear2db(value));
+                FPS.Game.Config.ConfigValues.setMasterVolume(value);
             };
         }
-
-        float db2linear(float p_db) { return Mathf.Exp(p_db * 0.11512925464970228420089957273422f); }
-        float linear2db(float p_linear) { return Mathf.Log(p_linear) * 8.6858896380650365530225783783321f; }
-
 
         public void onResChanged(int index)
         {

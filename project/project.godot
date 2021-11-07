@@ -75,11 +75,10 @@ config/icon="res://icon.png"
 [audio]
 
 driver/enable_input=true
-driver/output_latency=45
+driver/output_latency=60
 
 [autoload]
 
-Autoload="*res://bootloader/Autoload.cs"
 ResourceBackgroundLoader="*res://Game/Logic/World/ResourceBackgroundLoader.cs"
 
 [debug]
@@ -92,6 +91,10 @@ window/size/height=768
 window/dpi/allow_hidpi=true
 window/handheld/orientation=1
 window/vsync/vsync_mode=0
+
+[editor]
+
+import/use_multiple_threads=false
 
 [input]
 
@@ -107,12 +110,12 @@ game_moveBackward={
 }
 game_moveRight={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 game_moveLeft={
 "deadzone": 0.5,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":68,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":65,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
 ]
 }
 game_jumpUp={
@@ -170,6 +173,11 @@ game_reload={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"pressed":false,"keycode":82,"physical_keycode":0,"unicode":0,"echo":false,"script":null)
 ]
 }
+zoom={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"store_command":true,"alt_pressed":false,"shift_pressed":false,"meta_pressed":false,"command_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":2,"pressed":false,"double_click":false,"script":null)
+]
+}
 
 [layer_names]
 
@@ -188,8 +196,8 @@ limits/tcp/connect_timeout_seconds=120
 
 2d/run_on_thread=true
 3d/run_on_thread=true
+common/physics_ticks_per_second=128
 
 [rendering]
 
-driver/threads/thread_model=0
 environment/defaults/default_environment="res://default_env.tres"
