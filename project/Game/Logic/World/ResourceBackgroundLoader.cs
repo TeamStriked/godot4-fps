@@ -128,6 +128,8 @@ namespace FPS.Game.Logic.World
         public override void _Ready()
         {
             Godot.RenderingServer.RenderLoopEnabled = true;
+            this.ProcessMode = ProcessModeEnum.Always;
+
             base._Ready();
 
             this.AddChild(timer);

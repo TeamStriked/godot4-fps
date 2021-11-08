@@ -112,7 +112,6 @@ namespace FPS.Game.Logic.Player
                 this.playerChar.SetHeadRotation(foundInputFrame.mouseMotion.y);
                 this.playerChar.MotionVelocity = restoreFrame.velocity;
                 this.DoTeleport(restoreFrame.origin);
-                this.playerChar.MoveAndSlide();
 
                 this.storePuppetFrames.Clear();
                 this.AppendPuppetFrame(restoreFrame);
@@ -194,6 +193,7 @@ namespace FPS.Game.Logic.Player
 
             //handle recoil
             this.handleRecoil(delta);
+            this.playerChar.HandleCamera(delta, this.defaultSpeed);
         }
 
         public void sendInputFrames()

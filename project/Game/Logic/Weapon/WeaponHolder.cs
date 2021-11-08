@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,11 @@ namespace FPS.Game.Logic.Weapon
         public Weapon currentGun = null;
         private int currentWeaponIndex = 0;
 
+        private Vector3 originTranslation = Vector3.Zero;
+
         public override void _Ready()
         {
+            originTranslation = this.Position;
             foreach (var child in this.GetChildren())
             {
                 if (child is Node)
@@ -76,9 +80,13 @@ namespace FPS.Game.Logic.Weapon
 
         }
 
+        float SWAY = 50;
+        float VSWAY = 60;
+
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
+
 
             if (@event is InputEventMouseButton)
             {
@@ -97,6 +105,26 @@ namespace FPS.Game.Logic.Weapon
             }
 
             @event.Dispose();
+        }
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+
+            var cam = this.GetParent<Camera3D>();
+            var holder = cam.GetNode<Node3D>("WeaponHolderPosition");
+            var head = cam.GetParent<Node3D>();
+            var character = head.GetParent<CharacterBody3D>();
+
+            var pos = GlobalTransform;
+            pos.origin = holder.GlobalTransform.origin;
+            GlobalTransform = pos;
+
+            var rot = Rotation;
+            rot.y = Mathf.LerpAngle(rot.y, character.Rotation.y, SWAY * delta);
+            rot.x = Mathf.LerpAngle(rot.x, head.Rotation.x, VSWAY * delta);
+            Rotation = rot;
+
         }
     }
 

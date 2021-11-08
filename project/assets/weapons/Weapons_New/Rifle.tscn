@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Game/Logic/Weapon/Weapon.cs" id="1_cly8b"]
 [ext_resource type="PackedScene" uid="uid://7dr65tv0nmm1" path="res://assets/weapons/Weapons_New/RifleInstance.tscn" id="2_tdbsc"]
-[ext_resource type="Material" uid="uid://bwcgnli12ctr" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
+[ext_resource type="Material" uid="uid://drcjo66xat32g" path="res://Game/Logic/Weapon/Smoke.tres" id="3_67hug"]
 [ext_resource type="Texture2D" uid="uid://cxwy7p5uowjku" path="res://assets/weapons/smoke.png" id="3_jumv0"]
 [ext_resource type="Texture2D" uid="uid://by3il14ud4mmn" path="res://assets/weapons/fire.png" id="5_muqrv"]
 [ext_resource type="AudioStream" uid="uid://vaokp66d2yiv" path="res://assets/weapons/Sounds/1Assault_Rifle_Set/RifleWithEcho.mp3" id="6_mft8l"]

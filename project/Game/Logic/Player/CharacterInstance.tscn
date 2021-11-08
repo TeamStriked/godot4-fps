@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://c84s5mqqloawo"]
+[gd_scene load_steps=27 format=3 uid="uid://c84s5mqqloawo"]
 
 [ext_resource type="Script" path="res://Game/Logic/Player/CharacterInstance.cs" id="1_nwdc5"]
 [ext_resource type="AudioStream" uid="uid://db2x3v44snejt" path="res://assets/sounds/footsteps/landing/jumpland.wav" id="2_0wdwj"]
@@ -10,6 +10,10 @@
 [ext_resource type="PackedScene" uid="uid://das3d81a6v1oo" path="res://assets/weapons/Weapons_New/Rifle.tscn" id="6_7sc2r"]
 [ext_resource type="PackedScene" uid="uid://b5rdvrs3qak3n" path="res://assets/weapons/Weapons_New/Rifle05.tscn" id="7_51cf2"]
 [ext_resource type="PackedScene" uid="uid://gy7fx36uq8r7" path="res://assets/weapons/First/smg9/scene.tscn" id="8_4yrd3"]
+[ext_resource type="Script" path="res://Game/Logic/Player/WeaponHolderPosition.cs" id="11_k7xqo"]
+[ext_resource type="Texture2D" uid="uid://jr8j7a1jhwpj" path="res://assets/speed_line.png" id="12_vbiey"]
+[ext_resource type="Script" path="res://Game/Logic/Player/GunCamera.cs" id="13_6cyao"]
+[ext_resource type="Script" path="res://Game/Logic/Player/CamSubViewport.cs" id="13_svuc3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_msvy1"]
 resource_local_to_scene = true
@@ -32,11 +36,43 @@ resource_local_to_scene = true
 size = Vector3(0.5, 0.5, 0.5)
 
 [sub_resource type="CameraEffects" id="CameraEffects_tjqnb"]
-dof_blur_far_distance = 160.0
-dof_blur_far_transition = 90.0
-dof_blur_near_enabled = true
-dof_blur_near_distance = 0.05
-dof_blur_near_transition = 2.0
+dof_blur_far_distance = 1.0
+dof_blur_far_transition = 0.59
+dof_blur_near_distance = 1.0
+dof_blur_near_transition = 33.84
+dof_blur_amount = 0.11
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_wlsvq"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 3
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_vn2n4"]
+offsets = PackedFloat32Array(0.139535, 1)
+
+[sub_resource type="GradientTexture" id="GradientTexture_n5ia1"]
+gradient = SubResource( "Gradient_vn2n4" )
+
+[sub_resource type="Curve" id="Curve_ff4mp"]
+_data = [Vector2(0.0189873, 0.818966), 0.0, 1.26813, 0, 0, Vector2(0.981013, 0.672414), 0.0, 0.0, 0, 0]
+
+[sub_resource type="CurveTexture" id="CurveTexture_bsfqc"]
+curve = SubResource( "Curve_ff4mp" )
+
+[sub_resource type="ParticlesMaterial" id="ParticlesMaterial_hod3w"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_max = 360.0
+scale_curve = SubResource( "CurveTexture_bsfqc" )
+color = Color(1, 0.972549, 0.956863, 0.513726)
+color_ramp = SubResource( "GradientTexture_n5ia1" )
+anim_speed_max = 3.0
+anim_offset_min = 1.0
+anim_offset_max = 1.0
 
 [node name="Node3D" type="CharacterBody3D"]
 collision_layer = 512
@@ -48,8 +84,10 @@ footstepPlayerPath = NodePath("audio/footsteps")
 customSoundPlayerPath = NodePath("audio/custom_sound")
 aimRayPath = NodePath("head/fps_camera/aim_cast")
 cameraNodePath = NodePath("head/fps_camera")
+gunCameraNodePath = NodePath("head/fps_camera/SubViewportContainer/SubViewport/Camera3D")
 cameraThirdPersonPath = NodePath("tps_camera")
 tpsCharacterPath = NodePath("tps_character")
+speedLinesPath = NodePath("head/fps_camera/SpeedLines/GPUParticles2D")
 WalkSoundPath = "res://assets/sounds/footsteps/Concrete/Walk"
 SprintSoundPath = "res://assets/sounds/footsteps/Concrete/Run"
 landingSound = ExtResource( "2_0wdwj" )
@@ -66,29 +104,29 @@ script = null
 transform = Transform3D(-0.015, 0, -1.31134e-09, 0, 0.015, 0, 1.31134e-09, 0, -0.015, 0, -0.0903026, 0.191699)
 
 [node name="Skeleton3D" parent="tps_character/char_animated/Armature" index="0"]
-bones/0/rotation = Quaternion(-0.674211, -0.338972, 0.312057, 0.577198)
-bones/1/rotation = Quaternion(0.00457819, 0.00707933, 0.00554771, 0.999949)
-bones/2/rotation = Quaternion(0.0522614, 0.0119716, 0.0110295, 0.998501)
-bones/3/rotation = Quaternion(0.0924635, 0.0155172, -0.0031047, 0.99559)
-bones/4/rotation = Quaternion(0.0791712, 0.0501922, -0.00200062, 0.995595)
-bones/5/rotation = Quaternion(-0.0267578, 0.305546, -0.0574771, 0.950064)
-bones/8/rotation = Quaternion(0.709855, 0.352649, -0.428777, 0.433469)
-bones/9/rotation = Quaternion(0.398332, -0.205211, 0.0782885, 0.890556)
-bones/10/rotation = Quaternion(0.550803, -0.562465, 0.417722, 0.453605)
-bones/11/rotation = Quaternion(0.0201986, -0.217216, 0.0428667, 0.974973)
-bones/37/rotation = Quaternion(0.674592, -0.421888, 0.421565, 0.434994)
-bones/38/rotation = Quaternion(0.303068, -0.200705, -0.252249, 0.896793)
-bones/39/rotation = Quaternion(0.0521183, 0.246689, -0.72823, 0.637267)
-bones/40/rotation = Quaternion(0.122533, 0.0632376, -0.149777, 0.979057)
-bones/66/rotation = Quaternion(-0.138787, -0.153811, -0.97076, 0.121269)
+bones/0/rotation = Quaternion(-0.6723, -0.33794, 0.313204, 0.579407)
+bones/1/rotation = Quaternion(-0.000743413, 0.00599828, 0.00600113, 0.999964)
+bones/2/rotation = Quaternion(0.0479342, 0.0103725, 0.00793241, 0.998765)
+bones/3/rotation = Quaternion(0.0831181, 0.0118665, -0.000528643, 0.996469)
+bones/4/rotation = Quaternion(0.0812351, 0.0500693, 0.000677301, 0.995436)
+bones/5/rotation = Quaternion(-0.0171502, 0.312744, -0.0505224, 0.948338)
+bones/8/rotation = Quaternion(0.698905, 0.361563, -0.424732, 0.447667)
+bones/9/rotation = Quaternion(0.414091, -0.18989, 0.0571496, 0.888371)
+bones/10/rotation = Quaternion(0.555125, -0.571268, 0.407893, 0.446221)
+bones/11/rotation = Quaternion(0.0297953, -0.213719, 0.0496248, 0.975178)
+bones/37/rotation = Quaternion(0.676605, -0.406387, 0.417273, 0.450487)
+bones/38/rotation = Quaternion(0.297376, -0.226914, -0.240745, 0.895611)
+bones/39/rotation = Quaternion(0.0471088, 0.242985, -0.728468, 0.638806)
+bones/40/rotation = Quaternion(0.104984, 0.0855726, -0.152852, 0.978924)
+bones/66/rotation = Quaternion(-0.13885, -0.153967, -0.970815, 0.120537)
 bones/66/scale = Vector3(0.998998, 1, 0.999823)
-bones/67/rotation = Quaternion(-0.284111, -0.12094, 0.0078128, 0.951101)
-bones/68/rotation = Quaternion(0.487453, -0.0450676, -0.0202514, 0.87175)
+bones/67/rotation = Quaternion(-0.280002, -0.121728, 0.00744951, 0.952222)
+bones/68/rotation = Quaternion(0.485979, -0.0448909, -0.019991, 0.872588)
 bones/69/rotation = Quaternion(0.306826, -0.0520851, 0.0186006, 0.950157)
-bones/72/rotation = Quaternion(-0.194067, 0.114945, 0.960763, 0.161429)
+bones/72/rotation = Quaternion(-0.19427, 0.115474, 0.960803, 0.160567)
 bones/72/scale = Vector3(1.00001, 1, 1.00001)
-bones/73/rotation = Quaternion(-0.359673, 0.01866, -0.0158164, 0.932758)
-bones/74/rotation = Quaternion(0.593078, 0.0313698, 0.0476155, 0.803124)
+bones/73/rotation = Quaternion(-0.356054, 0.019337, -0.0156845, 0.934133)
+bones/74/rotation = Quaternion(0.591733, 0.0313806, 0.0477199, 0.804109)
 bones/75/rotation = Quaternion(0.299617, 0.0623958, 0.00648429, 0.951995)
 
 [node name="CP_Arm_CPP_0" parent="tps_character/char_animated/Armature/Skeleton3D" index="0"]
@@ -113,7 +151,7 @@ lod_bias = 30.0
 lod_bias = 30.0
 
 [node name="head_attachment" type="BoneAttachment3D" parent="tps_character/char_animated/Armature/Skeleton3D" index="7"]
-transform = Transform3D(0.981929, -0.140107, -0.127222, 0.150415, 0.169798, 0.973932, -0.114853, -0.975468, 0.187804, -531.147, 248.522, -15234.5)
+transform = Transform3D(0.98082, -0.146064, -0.129062, 0.15192, 0.15803, 0.975677, -0.122116, -0.976571, 0.17719, -465.015, 184.052, -15257.6)
 bone_name = "Head"
 bone_idx = 5
 script = null
@@ -129,7 +167,7 @@ shape = SubResource( "BoxShape3D_ega1o" )
 script = null
 
 [node name="body_attachment" type="BoneAttachment3D" parent="tps_character/char_animated/Armature/Skeleton3D" index="8"]
-transform = Transform3D(0.587881, 0.0829842, -0.80468, 0.808029, -0.107651, 0.579225, -0.0385581, -0.99072, -0.130339, 91.2826, 26.805, -9935.87)
+transform = Transform3D(0.586172, 0.0856812, -0.805644, 0.809208, -0.11078, 0.576983, -0.0398128, -0.990145, -0.13427, 85.3657, 30.8537, -9937.75)
 bone_name = "Spine"
 bone_idx = 1
 script = null
@@ -146,7 +184,7 @@ shape = SubResource( "BoxShape3D_neeey" )
 script = null
 
 [node name="upper_body_attachment" type="BoneAttachment3D" parent="tps_character/char_animated/Armature/Skeleton3D" index="9"]
-transform = Transform3D(0.63254, -0.154257, -0.759011, 0.772613, 0.0567933, 0.632332, -0.0544351, -0.986397, 0.155105, 179.12, -208.684, -12725.6)
+transform = Transform3D(0.622251, -0.130939, -0.771789, 0.780971, 0.0361415, 0.623521, -0.0537493, -0.990732, 0.124748, 196.472, -214.289, -12726.5)
 bone_name = "Spine2"
 bone_idx = 3
 script = null
@@ -163,7 +201,7 @@ shape = SubResource( "BoxShape3D_neeey" )
 script = null
 
 [node name="foot_attachment" type="BoneAttachment3D" parent="tps_character/char_animated/Armature/Skeleton3D" index="10"]
-transform = Transform3D(-0.0767168, -0.822464, -0.56364, -0.991991, 0.00600561, 0.126259, -0.100459, 0.568792, -0.816326, -1375.78, -1777.37, -1132.3)
+transform = Transform3D(-0.0768211, -0.822069, -0.564201, -0.991938, 0.00574787, 0.126689, -0.100905, 0.569365, -0.815872, -1361.94, -1787.59, -1121.9)
 bone_name = "RightFoot"
 bone_idx = 74
 script = null
@@ -180,7 +218,7 @@ shape = SubResource( "BoxShape3D_tb4wo" )
 script = null
 
 [node name="right_foot_attachment" type="BoneAttachment3D" parent="tps_character/char_animated/Armature/Skeleton3D" index="11"]
-transform = Transform3D(-0.950065, -0.217633, -0.220448, -0.302689, 0.798246, 0.519976, 0.0625998, 0.56153, -0.825001, 349.648, 2948.26, -1108.27)
+transform = Transform3D(-0.950029, -0.217049, -0.221183, -0.30265, 0.79799, 0.52039, 0.0633425, 0.562119, -0.824545, 365.408, 2937.69, -1096.52)
 bone_name = "LeftFoot"
 bone_idx = 68
 script = null
@@ -210,7 +248,7 @@ parameters/aim_up_down/add_amount = 0
 parameters/fly/blend_amount = 0.0
 parameters/movement/current = 0
 parameters/movement_time/scale = 2.0
-parameters/strafe_space/blend_position = Vector2(0.97907, -0.985019)
+parameters/strafe_space/blend_position = Vector2(0, 0)
 parameters/walk_space/blend_position = Vector2(0, 0)
 script = null
 
@@ -228,27 +266,68 @@ near = 0.01
 far = 400.0
 script = ExtResource( "3_gcthm" )
 
-[node name="WeaponHolder" type="Node3D" parent="head/fps_camera"]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
-script = ExtResource( "3_yut5h" )
-
-[node name="rifle" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "6_7sc2r" )]
-transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0664995, -0.852617, 0.00247955)
-visible = false
-
-[node name="rifle2" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "7_51cf2" )]
-transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0251721, -0.590818, -0.136259)
-visible = false
-
-[node name="scene" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "8_4yrd3" )]
-transform = Transform3D(-0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.0591198, -0.109621, -0.100386)
-visible = false
-
 [node name="aim_cast" type="RayCast3D" parent="head/fps_camera"]
 target_position = Vector3(0, 0, -200)
 collision_mask = 2049
 collide_with_areas = true
 script = null
+
+[node name="WeaponHolderPosition" type="Node3D" parent="head/fps_camera"]
+script = ExtResource( "11_k7xqo" )
+
+[node name="WeaponHolder" type="Node3D" parent="head/fps_camera"]
+top_level = true
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.0558484, -0.259276)
+script = ExtResource( "3_yut5h" )
+
+[node name="rifle" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "6_7sc2r" )]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0664995, -0.852617, 0.00247955)
+
+[node name="rifle2" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "7_51cf2" )]
+transform = Transform3D(0.5, 0, 0, 0, 0.499963, 0.0061085, 0, -0.0061085, 0.499963, 0.0251721, -0.854554, -0.136259)
+
+[node name="scene" parent="head/fps_camera/WeaponHolder" instance=ExtResource( "8_4yrd3" )]
+transform = Transform3D(-0.005, 0, -4.37114e-10, 0, 0.005, 0, 4.37114e-10, 0, -0.005, 0.0591198, -0.109621, -0.100386)
+
+[node name="SpeedLines" type="CanvasLayer" parent="head/fps_camera"]
+script = null
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="head/fps_camera/SpeedLines"]
+material = SubResource( "CanvasItemMaterial_wlsvq" )
+position = Vector2(453, 355)
+scale = Vector2(1.1, 1.1)
+skew = 4.37114e-08
+emitting = false
+process_material = SubResource( "ParticlesMaterial_hod3w" )
+texture = ExtResource( "12_vbiey" )
+script = null
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="head/fps_camera"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = null
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SubViewport" type="SubViewport" parent="head/fps_camera/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1024, 768)
+render_target_update_mode = 0
+script = ExtResource( "13_svuc3" )
+
+[node name="Camera3D" type="Camera3D" parent="head/fps_camera/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0101676, 2.53245, -0.246037)
+cull_mask = 2
+doppler_tracking = 2
+current = true
+fov = 65.0
+near = 0.01
+far = 400.0
+script = ExtResource( "13_6cyao" )
 
 [node name="tps_camera" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157198, 3.29522, 3.53642)

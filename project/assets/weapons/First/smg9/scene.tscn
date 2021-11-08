@@ -533,6 +533,7 @@ bones/48/scale = Vector3(1, 1, 1)
 script = null
 
 [node name="Mesh2" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/Skeleton3D"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "1_7q13x" )
 skin = SubResource( "Skin_qbfi0" )
@@ -552,6 +553,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0773588, -0.0567606)
 script = null
 
 [node name="base_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/base"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "2_bofxf" )
 skeleton = NodePath("")
@@ -563,6 +565,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.41152, 11.1526)
 script = null
 
 [node name="release_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/release"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "3_trlqg" )
 skeleton = NodePath("")
@@ -574,6 +577,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 11.5744, -2.12864)
 script = null
 
 [node name="scope_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/scope"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "4_5q0le" )
 skeleton = NodePath("")
@@ -585,6 +589,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16721, -1.29188)
 script = null
 
 [node name="lens_lens2_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/scope/lens"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "5_4mnkr" )
 skeleton = NodePath("")
@@ -596,6 +601,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.6923, 16.2106)
 script = null
 
 [node name="bolt_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/bolt"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "6_oyd1v" )
 skeleton = NodePath("")
@@ -607,6 +613,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.49719, 25.934)
 script = null
 
 [node name="grip_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/grip"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "7_8g6ur" )
 skeleton = NodePath("")
@@ -618,6 +625,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.10225, 5.97935)
 script = null
 
 [node name="trigger_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/trigger"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "8_duqoh" )
 skeleton = NodePath("")
@@ -629,6 +637,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.65633, 14.3827)
 script = null
 
 [node name="mag_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/mag"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "9_clqjs" )
 skeleton = NodePath("")
@@ -640,6 +649,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.25642, -0.217115)
 script = null
 
 [node name="bullet_smg9_0" type="MeshInstance3D" parent="RootNode (gltf orientation matrix)/RootNode (model correction matrix)/4deba8014dd84dccbfd17eea2106e5f5fbx/Node2/RootNode/Node32/smg9/mag/bullet"]
+layers = 2
 gi_mode = 1
 mesh = ExtResource( "10_rnux8" )
 skeleton = NodePath("")
@@ -660,5 +670,4 @@ script = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/CINEMA_4D_Main = ExtResource( "11_jjqd3" )
-blend_times = []
 script = null

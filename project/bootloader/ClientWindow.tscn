@@ -30,6 +30,7 @@ msaa = 2
 screen_space_aa = 1
 use_occlusion_culling = true
 physics_object_picking = true
+gui_embed_subwindows = true
 shadow_atlas_size = 4048
 shadow_atlas_quad_1 = 3
 shadow_atlas_quad_2 = 4

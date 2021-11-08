@@ -25,21 +25,23 @@ namespace FPS.Game.Logic.Player
         private Node3D _tpsCharacter;
 
         //physics
-        [Export]
         float defaultFov = 65f;
 
         //physics
-        [Export]
         float zoomFov = 50f;
+
+        //physics
+        [Export]
+        float runExtraFov = 10f;
 
         bool isThirdPerson = false;
 
         bool zoomIn = false;
 
-        [Export]
         float zoomInSpeed = 16.4f;
 
-        [Export]
+        float zoomRunSpeed = 50.0f;
+
         float zoomOutSpeed = 20.3f;
 
 
@@ -56,13 +58,18 @@ namespace FPS.Game.Logic.Player
         [Export]
         NodePath aimRayPath = null;
 
+
+
         RayCast3D aimRay = null;
+        Camera3D gunCamera = null;
         WeaponHolder weaponHolder = null;
         AudioStreamPlayer3D footstepPlayer = null;
         AudioStreamPlayer3D CustomSoundPlayer = null;
 
         [Export]
         NodePath cameraNodePath = null;
+        [Export]
+        NodePath gunCameraNodePath = null;
 
         [Export]
         NodePath cameraThirdPersonPath = null;
@@ -70,6 +77,10 @@ namespace FPS.Game.Logic.Player
         [Export]
         NodePath tpsCharacterPath = null;
 
+        [Export]
+        NodePath speedLinesPath = null;
+
+        private GPUParticles2D speedLines = null;
 
         private Node3D head = null;
         private FPSCamera _FPSCamera;
@@ -109,13 +120,18 @@ namespace FPS.Game.Logic.Player
         [Export]
         AudioStreamSample landingSound = null;
 
-        public override void _Process(float delta)
+        public void HandleCamera(float delta, float defaultSpeed)
         {
-            base._Process(delta);
+            if (this._FPSCamera == null)
+                return;
 
             var weapon = this.GetCurrentWeapon();
-
-            if (zoomIn)
+            if (this.getSpeed() > defaultSpeed)
+            {
+                float scale = 1.0f - (this.getSpeed() / defaultSpeed);
+                this._FPSCamera.Fov = Mathf.Lerp(this._FPSCamera.Fov, FPS.Game.Config.ConfigValues.fov - (runExtraFov * scale), this.zoomRunSpeed * delta);
+            }
+            else if (zoomIn)
             {
                 this._FPSCamera.Fov = Mathf.Lerp(this._FPSCamera.Fov, this.zoomFov, this.zoomInSpeed * delta);
 
@@ -255,6 +271,7 @@ namespace FPS.Game.Logic.Player
 
                 this._FPSCamera.Current = false;
                 this._FPSCamera.Visible = false;
+
             }
             else if (mode == PlayerCameraMode.FPS)
             {
@@ -263,6 +280,8 @@ namespace FPS.Game.Logic.Player
 
                 this._TPSCamera.Current = false;
                 this._TPSCamera.Visible = false;
+
+
             }
             else
             {
@@ -270,6 +289,7 @@ namespace FPS.Game.Logic.Player
                 this._TPSCamera.Current = false;
                 this._FPSCamera.Visible = false;
                 this._TPSCamera.Visible = false;
+
             }
         }
 
@@ -470,6 +490,7 @@ namespace FPS.Game.Logic.Player
         {
             base._EnterTree();
 
+            this.gunCamera = GetNode<Camera3D>(gunCameraNodePath);
 
             /*
                         foreach (var filePath in WalkSoundPaths)
@@ -478,6 +499,9 @@ namespace FPS.Game.Logic.Player
                             this.WalkSounds.Add(load);
                         }
             */
+            this.speedLines = GetNode<GPUParticles2D>(speedLinesPath);
+            this.speedLines.Emitting = false;
+
             this._FPSCamera = GetNode<FPSCamera>(cameraNodePath);
             this._TPSCamera = GetNode(cameraThirdPersonPath) as Camera3D;
             this._tpsCharacter = GetNode(tpsCharacterPath) as Node3D;
@@ -509,6 +533,11 @@ namespace FPS.Game.Logic.Player
 
             this.collider = GetNode("collider") as CollisionShape3D;
             this.colliderShape = this.collider.Shape as CapsuleShape3D;
+        }
+
+        public void enableSpeedLines(bool enable)
+        {
+            this.speedLines.Emitting = enable;
         }
 
         public bool canPlayFootstepSound = true;
@@ -605,6 +634,7 @@ namespace FPS.Game.Logic.Player
 
             return false;
         }
+
 
         // Called when the node enters the scene tree for the first time.
         public override void _Ready()
