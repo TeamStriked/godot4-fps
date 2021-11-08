@@ -181,8 +181,11 @@ zoom={
 
 [layer_names]
 
+3d_render/layer_2="Gun Cam"
 3d_physics/layer_1="World"
 3d_navigation/layer_1="World"
+3d_physics/layer_2="Gun Cam"
+3d_navigation/layer_2="Gun Cam"
 3d_physics/layer_10="Player"
 3d_navigation/layer_10="Player"
 3d_physics/layer_12="AimCast"

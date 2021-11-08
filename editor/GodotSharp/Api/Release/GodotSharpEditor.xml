@@ -1963,7 +1963,7 @@
         </member>
         <member name="T:Godot.EditorResourcePicker.ResourceSelectedHandler">
             <summary>
-            <para>Emitted when the resource value was set and user clicked to edit it.</para>
+            <para>Emitted when the resource value was set and user clicked to edit it. When <c>edit</c> is <c>true</c>, the signal was caused by the context menu "Edit" option.</para>
             </summary>
         </member>
         <member name="T:Godot.EditorResourcePicker.ResourceChangedHandler">

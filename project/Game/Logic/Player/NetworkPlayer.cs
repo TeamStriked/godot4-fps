@@ -229,7 +229,7 @@ namespace FPS.Game.Logic.Player
                     {
                         calculatedFrame.shifting = false;
 
-                        if (inputFrame.onSprinting && this.currentSpeedAmount > 0.1 && inputFrame.direction.y != 0)
+                        if (inputFrame.onSprinting && this.currentSpeedAmount > 0.1 && (inputFrame.direction.y != 0 || inputFrame.direction.x != 0))
                         {
                             calculatedFrame.crouching = false;
                             calculatedFrame.prone = false;
@@ -329,6 +329,8 @@ namespace FPS.Game.Logic.Player
             this.playerChar.setAnimationAim(lastExecuteFrame.mouseMotion);
 
 
+            var isRunning = (this.playerChar.getSpeed() > this.defaultSpeed);
+            this.playerChar.enableSpeedLines(isRunning);
 
             if (this.playerChar.IsOnFloor())
             {

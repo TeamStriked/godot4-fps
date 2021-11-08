@@ -1,13 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://b5rdvrs3qak3n"]
 
-[ext_resource type="PackedScene" uid="uid://dh0fc2016ao1t" path="res://assets/weapons/Weapons_New/Rifle05.glb" id="1_5l63t"]
+[ext_resource type="PackedScene" uid="uid://b34m37aunlqmp" path="res://assets/weapons/Weapons_New/Rifle05.glb" id="1_5l63t"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_kq85s"]
-filters = []
 animation = &"Automatic_Rifle_05"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1nv41"]
-filters = []
 animation = &"Automatic_Rifle_05"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vuurq"]
@@ -35,35 +33,62 @@ script = null
 [node name="Rifle05" parent="." instance=ExtResource( "1_5l63t" )]
 
 [node name="Character001" parent="Rifle05/Automatic_Rifle_05" index="0"]
-transform = Transform3D(1.49012e-07, -2.8213e-07, 1, -1, -4.37114e-08, 1.49012e-07, 4.37113e-08, -1, -2.8213e-07, 0, 0, 0)
+transform = Transform3D(2.38419e-07, -2.38419e-07, 1, -1, 0, 2.38419e-07, 0, -1, -2.38419e-07, 0, 0, 0)
 
 [node name="Character001Hub001" parent="Rifle05/Automatic_Rifle_05" index="1"]
-transform = Transform3D(2.38419e-07, -4.37114e-08, 1, -1, -4.37114e-08, 2.38419e-07, 4.37114e-08, -1, -4.37114e-08, 0, 1.53202, 0)
+transform = Transform3D(1.78814e-07, 0, 1, -1, 0, 2.08616e-07, 0, -1, 0, 0, 1.53202, 0)
 
 [node name="Skeleton3D" parent="Rifle05/Automatic_Rifle_05/Character001Hub001" index="0"]
-bones/1/rotation = Quaternion(0.133217, -0.438641, -0.178034, 0.870719)
-bones/2/rotation = Quaternion(0.462867, -3.92618e-07, 3.68051e-07, 0.886427)
-bones/3/rotation = Quaternion(-6.62979e-08, -0.493449, 5.5535e-08, 0.869775)
-bones/4/rotation = Quaternion(-0.21543, -0.937203, 0.091207, 0.258691)
-bones/21/rotation = Quaternion(-0.337627, -0.00525999, 0.609795, 0.717029)
-bones/22/rotation = Quaternion(0.947329, 0.000152871, -2.77174e-05, 0.320261)
-bones/23/rotation = Quaternion(-1.24175e-08, 0.00762034, -3.0536e-08, 0.999971)
-bones/24/rotation = Quaternion(-0.0956129, 0.685669, -0.254423, 0.675267)
+bones/1/rotation = Quaternion(0.135675, -0.4395, -0.174637, 0.870594)
+bones/2/rotation = Quaternion(0.463757, -2.06408e-07, -1.26721e-07, 0.885962)
+bones/3/rotation = Quaternion(-5.33274e-08, -0.493105, 3.31994e-08, 0.86997)
+bones/4/rotation = Quaternion(-0.214721, -0.936977, 0.0937053, 0.259208)
+bones/21/rotation = Quaternion(-0.336333, -0.00275248, 0.60881, 0.718487)
+bones/22/rotation = Quaternion(0.947748, -6.37141e-07, 2.2625e-05, 0.319018)
+bones/23/rotation = Quaternion(-1.39517e-08, 0.00818028, -2.11618e-08, 0.999967)
+bones/24/rotation = Quaternion(-0.0939217, 0.686208, -0.254458, 0.674944)
+
+[node name="Arm_mesh001" parent="Rifle05/Automatic_Rifle_05/Character001Hub001/Skeleton3D" index="0"]
+layers = 2
+
+[node name="Glove_mesh" parent="Rifle05/Automatic_Rifle_05/Character001Hub001/Skeleton3D" index="1"]
+layers = 2
 
 [node name="Character001LArmIKTarget" parent="Rifle05/Automatic_Rifle_05" index="2"]
-transform = Transform3D(0.787912, 0.211663, -0.578268, 0.273533, -0.961642, 0.0207117, -0.551701, -0.174495, -0.815584, 0.142974, 1.44846, -0.683294)
+transform = Transform3D(0.788886, 0.208349, -0.578143, 0.278042, -0.959989, 0.0334372, -0.548043, -0.187127, -0.81525, 0.142998, 1.45533, -0.683184)
 
 [node name="Character001RArmIKTarget" parent="Rifle05/Automatic_Rifle_05" index="3"]
-transform = Transform3D(-0.0549444, 0.982903, 0.175695, 0.00912275, 0.176445, -0.984272, -0.99845, -0.0524767, -0.0186616, 0.149908, 1.43192, -0.369235)
+transform = Transform3D(-0.0548514, 0.98351, 0.172293, 0.0224463, 0.173722, -0.984543, -0.998244, -0.0501356, -0.0316054, 0.149885, 1.43535, -0.369332)
 
 [node name="Skeleton3D2" parent="Rifle05/Automatic_Rifle_05" index="6"]
-bones/0/position = Vector3(0.127017, 1.44046, -0.372382)
-bones/0/rotation = Quaternion(-0.503637, 0.496329, -0.504447, 0.49552)
-bones/10/position = Vector3(0.126945, 1.40142, -0.535032)
-bones/10/rotation = Quaternion(-0.00573991, -0.00574013, -0.707656, 0.706511)
+bones/0/position = Vector3(0.127017, 1.44343, -0.372382)
+bones/0/rotation = Quaternion(-0.499499, 0.500496, -0.502037, 0.497959)
+bones/10/position = Vector3(0.126833, 1.40731, -0.53551)
+bones/10/rotation = Quaternion(-0.00108891, -0.00108901, -0.708898, 0.705309)
 
-[node name="AnimationPlayer" parent="Rifle05" index="1"]
-blend_times = []
+[node name="Rifle_05_Body_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="0"]
+layers = 2
+
+[node name="Rifle_05_Detail_01_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="1"]
+layers = 2
+
+[node name="Rifle_05_Detail_02_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="2"]
+layers = 2
+
+[node name="Rifle_05_Glasses_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="3"]
+layers = 2
+
+[node name="Rifle_05_Magazine_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="4"]
+layers = 2
+
+[node name="Rifle_05_Muffler_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="5"]
+layers = 2
+
+[node name="Rifle_05_Sigh_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="6"]
+layers = 2
+
+[node name="Rifle_05_Trigger_Mesh" parent="Rifle05/Automatic_Rifle_05/Skeleton3D2" index="7"]
+layers = 2
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = SubResource( "AnimationNodeStateMachine_ddmje" )

@@ -5,8 +5,6 @@ using System;
 
 public partial class Bootloader : Node
 {
-
-
     private void createServerWindow(string name = "window")
     {
         FPS.Game.Utils.Logger.InfoDraw("Load server..");
@@ -15,10 +13,10 @@ public partial class Bootloader : Node
         var serverWindow = (ServerWindow)scene.Instantiate();
         serverWindow.Name = name;
         serverWindow.Visible = false;
+        serverWindow.ProcessMode = ProcessModeEnum.Always;
 
         GetNode("box").AddChild(serverWindow);
     }
-
 
     private void createClientWindow(string name = "window")
     {
@@ -59,5 +57,4 @@ public partial class Bootloader : Node
 
         base._Ready();
     }
-
 }
